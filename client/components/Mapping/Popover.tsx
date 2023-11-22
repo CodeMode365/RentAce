@@ -1,55 +1,72 @@
+import { IPin } from "@/lib/pins";
 import React, { FC } from "react";
 import { FaStar } from "react-icons/fa6";
 import { Popup } from "react-map-gl";
+import TimeAgo from "react-timeago";
 
-interface iProps {
-  lng: number;
-  lat: number;
-  title: string;
-  desc: string;
+interface iProps extends IPin {
+  visible: boolean;
+  onClose: VoidFunction;
 }
 
-const Popover: FC<iProps> = ({ lng, lat, title, desc }) => {
-  return (
+const Popover: FC<iProps> = ({
+  long,
+  lat,
+  title,
+  desc,
+  rating,
+  id,
+  createdAt,
+  visible,
+  onClose,
+}) => {
+  return visible ? (
     <Popup
       latitude={lat}
-      longitude={lng}
-      closeButton
+      longitude={long}
+      closeButton={true}
       closeOnClick={false}
-      anchor="top"
+      anchor="left"
+      onClose={onClose}
     >
       <div>
         <div className="pb-1 mb-2 border-b shadow-sm">
           <h3 className="font-bold text-slate-800">Place</h3>
-          <p>Dharara</p>
+          <p>{title}</p>
         </div>
 
         <div className="pb-1 mb-2 border-b shadow-sm">
           <h3 className="font-bold text-slate-800 ">Review</h3>
-          <p>THis is so beafutiful.</p>
+          <p>{desc}</p>
         </div>
 
         <div className="pb-1 mb-2 border-b shadow-sm">
           <h3 className="font-bold text-slate-800">Rating</h3>
           <div className="flex">
-            <FaStar className="text-yellow-500" size={12} />
-            <FaStar className="text-yellow-500" size={12} />
-            <FaStar className="text-yellow-500" size={12} />
-            <FaStar className="text-yellow-500" size={12} />
-            <FaStar className="text-yellow-500" size={12} />
+            {Array.from({ length: rating }).map((rate, index) => (
+              <FaStar
+                className="text-yellow-500"
+                size={12}
+                key={index + "rating"}
+              />
+            ))}
           </div>
         </div>
 
         <div className="pb-1 shadow-sm">
           <h3 className="font-bold text-slate-800">Information</h3>
           <p>
-            Information Created by <b>Pabin</b>
+            Created by <b>Pabin</b>
           </p>
-          <span>1 hour ago</span>
+          {createdAt && (
+            <span>
+              <TimeAgo date={createdAt} />
+            </span>
+          )}
         </div>
       </div>
     </Popup>
-  );
+  ) : null;
 };
 
 export default Popover;
