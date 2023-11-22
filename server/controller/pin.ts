@@ -24,4 +24,15 @@ const getAllPins = asyncHandler(async (req: Request, res: Response) => {
     res.status(200).json(allPins)
 })
 
-export { addPin, getAllPins }
+const getPin = asyncHandler(async (req: Request, res: Response) => {
+    const pinId = req.params.id
+    const pin = await prisma.pin.findFirst({
+        where: {
+            id: pinId
+        }
+    })
+
+    res.status(200).json(pin)
+})
+
+export { addPin, getAllPins, getPin }
