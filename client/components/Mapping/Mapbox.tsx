@@ -16,14 +16,13 @@ import { IPin } from "@/lib/pins";
 import { Fullscreen } from "lucide-react";
 import DirectionFinder from "./DirectionFinder";
 import Direction from "./Direction";
+import ToggleMode from "./ToggleMode";
 
 const Mapbox = () => {
   const [userLocation, setUserLocation] = useState({
     latitude: 27.6974,
     longitude: 85.3318,
   });
-
-  const map = useRef(null);
 
   const [viewport, setViewPort] = useState({
     width: 400,
@@ -37,6 +36,7 @@ const Mapbox = () => {
 
   const [direction, setDirection] = useState();
   const [isLoading, setIsLoading] = useState(false);
+  const [isDay, setIsDay] = useState(true);
 
   useEffect(() => {
     const getLocation = () => {
@@ -89,9 +89,10 @@ const Mapbox = () => {
       const destination: IPin = destinationResponse.data;
 
       const directionResponse =
-        await axios.get(`${process.env.NEXT_PUBLIC_MAPBOX_ENDPOINT}/directions/v5/mapbox/cycling/${userLocation.longitude},${userLocation.latitude};${destination.long},${destination.lat}?geometries=geojson&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+        await axios.get(`${process.env.NEXT_PUBLIC_MAPBOX_ENDPOINT}/directions/v5/mapbox/cycling/${userLocation.longitude},${userLocation.latitude};${destination.long},${destination.lat}?alternatives=true&annotations=distance%2Cduration&geometries=geojson&language=en&overview=full&steps=true&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
           `);
 
+      console.log(directionResponse);
       if (directionResponse.data.code.includes("NoRoute")) {
         toast.error(directionResponse.data.message);
         return;
@@ -107,11 +108,14 @@ const Mapbox = () => {
 
   return (
     <Map
-      ref={map}
       {...viewport}
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string}
       style={{ width: "100vw", height: "100vh" }}
-      mapStyle="mapbox://styles/mapbox/streets-v9"
+      mapStyle={
+        isDay
+          ? "mapbox://styles/pabin234/clp9sw82s003801po9bsa758q"
+          : "mapbox://styles/pabin234/clp9sv2p5003l01o0dndwdzjl"
+      }
       onMove={handleViewportChange}
       onClick={handleMapClick}
     >
@@ -120,7 +124,7 @@ const Mapbox = () => {
           <Marker
             latitude={pin.lat}
             longitude={pin.long}
-            color="blue"
+            color={pin.id === currentPlaceId ? "blue" : "red"}
             onClick={() => {
               handleMarkerClick(pin.id, pin.long, pin.lat);
             }}
@@ -159,7 +163,8 @@ const Mapbox = () => {
         />
       )}
 
-      <Direction direction={direction} />
+      {direction && <Direction direction={direction} />}
+      <ToggleMode setIsDay={setIsDay} isDay={isDay} />
     </Map>
   );
 };

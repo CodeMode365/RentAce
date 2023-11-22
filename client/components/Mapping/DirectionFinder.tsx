@@ -20,17 +20,17 @@ const DirectionFinder: FC<iProps> = ({ isLoading, startFindingDirection }) => {
     <>
       <Tooltip>
         <TooltipTrigger
-          className="absolute top-10 right-5 text-sm bg-transparent"
+          className="absolute top-10 right-5 text-sm bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md"
           disabled={isLoading}
+          onClick={startFindingDirection}
         >
           <GrWaypoint
-            size={24}
+            size={12}
             className={`${
               !isLoading
                 ? "text-rose-500 cursor-pointer"
                 : "text-gray-500 cursor-not-allowed"
             }`}
-            onClick={startFindingDirection}
           />
         </TooltipTrigger>
         <TooltipContent>
