@@ -75,7 +75,7 @@ const Direction: FC<IProps> = ({ direction }) => {
                 <Layer
                   type="line"
                   paint={{
-                    "line-color": "rgba(42, 17, 233,.8)",
+                    "line-color": "rgb(14, 165, 233)",
                     "line-width": 6,
                   }}
                 />
