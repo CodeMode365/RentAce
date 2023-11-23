@@ -1,4 +1,4 @@
-import { IPin } from "@/lib/pins";
+import { IPin } from "@/types/pins";
 import React, { FC } from "react";
 import { FaStar } from "react-icons/fa6";
 import { Popup } from "react-map-gl";
