@@ -4,37 +4,42 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { HiDotsVertical } from "react-icons/hi";
 import { CgMenuGridO } from "react-icons/cg";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/lib/redux/store";
+import { openAuthModal } from "@/lib/redux/slices/modal";
 
 interface CustomWindow extends Window {
   authenticationWindow?: Window | null;
 }
 
 const TopBar = () => {
-  const openWindow = () => {
-    const customWindow = window as CustomWindow;
-    const authenticationPageURL = "http://localhost:3000/auth";
-    const windowFeatures = "width=600,height=400,top=100,left=100";
+  const dispatch = useDispatch<AppDispatch>();
 
-    // Check if the previous authentication window is open
-    if (
-      customWindow.authenticationWindow &&
-      !customWindow.authenticationWindow.closed
-    ) {
-      // If open, focus on the existing window
-      customWindow.authenticationWindow.focus();
-    } else {
-      // If not open, open a new window and set it as the authenticationWindow
-      customWindow.authenticationWindow = window.open(
-        authenticationPageURL,
-        "_blank",
-        `noopener,noreferrer,${windowFeatures}`
-      );
+  // const openWindow = () => {
+  //   const customWindow = window as CustomWindow;
+  //   const authenticationPageURL = "http://localhost:3000/auth";
+  //   const windowFeatures = "width=600,height=400,top=100,left=100";
 
-      // Optionally, focus on the newly opened window
-      if (customWindow.authenticationWindow) {
-        customWindow.authenticationWindow.focus();
-      }
-    }
+  //   if (
+  //     customWindow.authenticationWindow &&
+  //     !customWindow.authenticationWindow.closed
+  //   ) {
+  //     customWindow.authenticationWindow.focus();
+  //   } else {
+  //     customWindow.authenticationWindow = window.open(
+  //       authenticationPageURL,
+  //       "_blank",
+  //       `noopener,noreferrer,${windowFeatures}`
+  //     );
+
+  //     if (customWindow.authenticationWindow) {
+  //       customWindow.authenticationWindow.focus();
+  //     }
+  //   }
+  // };
+
+  const OpenAuthModla = () => {
+    dispatch(openAuthModal());
   };
 
   return (
@@ -57,7 +62,8 @@ const TopBar = () => {
         className="mx-1   flex items-center justify-center p-0 bg-transparent hover:bg-transparent border-none"
         size={"sm"}
         onClick={() => {
-          openWindow();
+          // openWindow();
+          OpenAuthModla();
         }}
       >
         <span
