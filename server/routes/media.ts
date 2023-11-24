@@ -3,8 +3,8 @@ import * as media from "../controller/media"
 
 const router = Router()
 
-router.get("/getAll", media.getAll)
-router.post("/upload", media.create)
-router.post("/delete", media.destroy)
+    .get("/getAll", media.getAll)
+    .post("/upload", media.create)
+    .post("/delete", media.destroy)
 
 export default router
