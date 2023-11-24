@@ -1,4 +1,6 @@
 import Mapbox from "@/components/Mapping/Mapbox";
+import AuthModal from "@/components/Modal/AuthModal";
+import LogoutModal from "@/components/Modal/LogoutModal";
 import OptionBar from "@/components/OptionBar";
 import Sidebar from "@/components/Sidebar";
 import TopBar from "@/components/TopBar";
@@ -10,6 +12,10 @@ const Home = () => {
       <TopBar />
       <OptionBar />
       <Sidebar />
+
+      <AuthModal />
+
+      <LogoutModal />
       <div>
         <Mapbox />
       </div>
