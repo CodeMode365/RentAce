@@ -26,11 +26,6 @@ const ActivityModal = () => {
     (state: RootState) => state.model.isActivityModalOpen
   );
 
-  // Create array with 1000 slides
-  const slides = Array.from({ length: 1000 }).map(
-    (el, index) => `Slide ${index + 1}`
-  );
-
   return (
     <>
       <div
