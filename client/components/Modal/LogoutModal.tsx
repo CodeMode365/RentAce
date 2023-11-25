@@ -19,7 +19,7 @@ const LogoutModal = () => {
     <div
       className={`${
         isLoutoutModalOpen ? "block" : "hidden"
-      } min-w-[300px] w-auto min-h-[100px] h-auto z-[9999] absolute top-10 left-1/2 -translate-x-1/2 bg-white rounded-md px-3 shadow-lg`}
+      } min-w-[300px] w-auto min-h-[100px] h-auto z-[99] absolute top-10 left-1/2 -translate-x-1/2 bg-white rounded-md px-3 shadow-lg`}
     >
       <div className="m-1">
         <h3 className="mt-2 font-[400] text-md text-rose-500">Logout</h3>

@@ -1,9 +1,9 @@
 "use client";
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useRef } from "react";
 import useAuth from "@/hooks/useAuth";
 
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -11,20 +11,22 @@ import AuthInput, { inputProps } from "@/components/reusables/AuthInput";
 
 import { RxCross2 } from "react-icons/rx";
 import { Button } from "@/components/ui/button";
+
+import useMedia from "@/hooks/useMedia";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { closeAuthModal } from "@/lib/redux/slices/modal";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 
 export default function AuthModal() {
   const auth = useAuth();
+  const { uploadMedia } = useMedia();
   const dispatch = useDispatch<AppDispatch>();
   const isThisModalOpen = useSelector(
     (state: RootState) => state.model.isAuthModalOpen
   );
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
+  const [image, setImage] = useState<File | null>();
 
   const fromSchema = z
     .object({
@@ -74,7 +76,7 @@ export default function AuthModal() {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     const { username, email, password } = data;
-
+    uploadMedia(image);
     await auth({ username, email, password, isLogin })
       .then(() => {
         toast.success(`Successfully ${isLogin ? "Logged In" : "Registered"}!`);
@@ -139,7 +141,7 @@ export default function AuthModal() {
   return (
     <div
       onClick={() => closeThisModal()}
-      className={`absolute bg-black/80 h-screen w-screen flex items-center justify-center flex-col overflow-auto z-[9999] ${
+      className={`absolute bg-black/80 h-screen w-screen flex items-center justify-center flex-col overflow-auto z-[99] ${
         isThisModalOpen ? "block" : "hidden"
       }`}
     >
@@ -166,7 +168,7 @@ export default function AuthModal() {
             {isLogin && "to"} your account
           </h2>
           {isLogin && (
-            <p className="text-center text-gray-400 leading-5">
+            <p className="text-center text-gray-400 leading-4 text-sm">
               Please create new account if <br />
               you haven&apos;t created one.
             </p>
@@ -185,8 +187,13 @@ export default function AuthModal() {
 
               <div className="rounded-sm border-2 flex items-center justify-between px-1 focus-within:border-sky-400">
                 <input
-                  type={"file"}
-                  id={"Profile"}
+                  type="file"
+                  name="image"
+                  id="image"
+                  // value={image}
+                  onChange={(e) => {
+                    if (e.target.files) setImage(e.target.files[0]);
+                  }}
                   placeholder={"Your profile"}
                   className="w-full h-full py-1 m-1 focus:border-none focus:outline-none "
                 />
