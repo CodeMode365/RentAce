@@ -1,15 +1,23 @@
 import express, { Request, Response } from "express"
+import { mediaRoute, pinRoute, authRoute, userRoute } from "./routes";
+import cors, { CorsOptions } from "cors"
 import { prisma } from "./script"
-import PinRoute from "./routes/pin"
-import UserRoute from "./routes/user"
 
 async function main() {
     const PORT = process.env.PORT || 3500;
+    const corsOptions: CorsOptions = {
+        origin: "http://localhost:3000",
+        methods: "*",
+        credentials: true
+    }
     const app = express()
 
         .use(express.json())
-        .use("/api/pin", PinRoute)
-        .use("/api/user", UserRoute)
+        .use(cors(corsOptions))
+        .use("/api/pin", pinRoute)
+        .use("/api/auth", authRoute)
+        .use("/api/media", mediaRoute)
+        .use("/api/user", userRoute)
 
         .get("/", (req: Request, res: Response) => {
             res.send("Hello world")

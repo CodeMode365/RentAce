@@ -1,62 +1,39 @@
+import asycnHandler from "express-async-handler"
 import { Request, Response } from "express"
 import { prisma } from "../script"
-import asyncHandler from "express-async-handler"
-import { compareWithHash, generateHash } from "../utils/Hash"
-import { generateToken } from "../utils/Token"
 
-const register = asyncHandler(async (req: Request, res: Response) => {
-    const { username, email, password } = req.body
-    const hashedPassword = await generateHash(password)
+const updateUserName = asycnHandler(async (req: Request, res: Response) => {
+    const { userId, newUserName } = req.body
 
-    const existingUser = await prisma.user.findFirst({
-        where: { email }
-    })
-
-    if (existingUser) {
-        res.status(409).json({ message: "Email Already Taken!" })
+    if (!userId || !newUserName) {
+        res.status(400).json({ message: "Requrement not met!" })
         return
     }
 
-    const newUser = await prisma.user.create({
-        data: {
-            username, email, password: hashedPassword
-        }, select: {
-            id: true,
-            email: true,
-            username: true,
-        }
-    })
-
-    const token = generateToken(newUser.id)
-
-    res.status(201).json({
-        username: newUser.username,
-        email: newUser.email,
-        token
-    })
-})
-
-const login = asyncHandler(async (req: Request, res: Response) => {
-    const { email, password } = req.body
-
-    const findUser = await prisma.user.findFirst({
+    const updatedUser = await prisma.user.update({
         where: {
-            email
+            id: userId
+        },
+        data: {
+            username: newUserName
+        }, select: {
+            username: true
         }
     })
 
-    if (!findUser) {
-        res.status(404).json({ message: "Email not registered!" })
-        return
-    }
-    if (!await compareWithHash(password, findUser.password)) {
-        res.status(406).json({ message: "Password didn't match!" })
-        return
-    }
-    const token = await generateToken(findUser.id)
-
-    res.status(200).send({ email: findUser.email, username: findUser.username, token })
-
+    res.status(200).json({ message: "Username updated!", data: updatedUser })
 })
 
-export { register, login }
+const updatePassword = asycnHandler(async (req: Request, res: Response) => {
+    const { userId, oldPassword, newPassword } = req.body
+
+    if (!userId || !oldPassword || !newPassword) {
+        res.status(400).json({ message: "Requirement not met!" })
+        return
+    }
+
+    res.status(200).json({ message: "Password Updated!" })
+})
+
+
+export { updateUserName, updatePassword }

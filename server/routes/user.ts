@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { login, register } from "../controller/user";
+import { updatePassword, updateUserName } from "../controller/user";
 
 const router = Router()
 
-    .post("/login", login)
-    .post("/register", register)
+    .post("/name", updateUserName)
+    .post("/password", updatePassword)
 
 export default router
