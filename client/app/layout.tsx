@@ -22,7 +22,7 @@ export default function RootLayout({
       <StateProvider>
         <body className={inter.className}>
           <TooltipProvider delayDuration={200}>
-            <Toaster />
+            <Toaster toastOptions={{className:"z-[100]"}}/>
             {children}
           </TooltipProvider>
         </body>
