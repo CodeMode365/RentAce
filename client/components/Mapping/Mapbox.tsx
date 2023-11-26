@@ -12,13 +12,17 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import Popover from "./Popover";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { IPin } from "@/lib/pins";
+import { IPin } from "@/types/pins";
 import { Fullscreen } from "lucide-react";
 import DirectionFinder from "./DirectionFinder";
 import Direction from "./Direction";
 import ToggleMode from "./ToggleMode";
+import { useDispatch } from "react-redux";
+import { stopAppLoading } from "@/lib/redux/slices/globalSetting";
 
 const Mapbox = () => {
+  const dispatch = useDispatch();
+
   const [userLocation, setUserLocation] = useState({
     latitude: 27.6974,
     longitude: 85.3318,
@@ -88,11 +92,15 @@ const Mapbox = () => {
       );
       const destination: IPin = destinationResponse.data;
 
+      console.log({
+        source: [userLocation.longitude, userLocation.latitude],
+        destination: [destination.long, destination.lat],
+      });
+
       const directionResponse =
-        await axios.get(`${process.env.NEXT_PUBLIC_MAPBOX_ENDPOINT}/directions/v5/mapbox/cycling/${userLocation.longitude},${userLocation.latitude};${destination.long},${destination.lat}?alternatives=true&annotations=distance%2Cduration&geometries=geojson&language=en&overview=full&steps=true&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+        await axios.get(`${process.env.NEXT_PUBLIC_MAPBOX_ENDPOINT}/directions/v5/mapbox/driving/${userLocation.longitude},${userLocation.latitude};${destination.long},${destination.lat}?alternatives=true&annotations=distance%2Cduration&geometries=geojson&language=en&overview=full&steps=true&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
           `);
 
-      console.log(directionResponse);
       if (directionResponse.data.code.includes("NoRoute")) {
         toast.error(directionResponse.data.message);
         return;
@@ -104,6 +112,11 @@ const Mapbox = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const setAppIsLoaded = () => {
+    dispatch(stopAppLoading());
+    console.log("Map is loaded")
   };
 
   return (
@@ -118,6 +131,9 @@ const Mapbox = () => {
       }
       onMove={handleViewportChange}
       onClick={handleMapClick}
+      onLoad={() => {
+        setAppIsLoaded();
+      }}
     >
       {pins?.map((pin: IPin) => (
         <Fragment key={pin.id}>
@@ -146,7 +162,7 @@ const Mapbox = () => {
         </Fragment>
       ))}
 
-      <ScaleControl position="top-right" />
+      <ScaleControl position="bottom-right" />
       <GeolocateControl
         position="bottom-right"
         showAccuracyCircle
