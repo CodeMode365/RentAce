@@ -4,9 +4,13 @@ import React, { useReducer, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
+import {
+  MdNotifications,
+  MdOutlineKeyboardDoubleArrowLeft,
+} from "react-icons/md";
 import {
   ActivitySquare,
+  Crown,
   History,
   Home,
   LogOut,
@@ -19,13 +23,13 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { closeSidebar } from "@/lib/redux/slices/sidebar";
 import {
-  closeActiviyModal,
   closeSettingsModal,
-  openActivityModal,
+  closeSpacesModal,
   openLogoutModal,
   openSettingsModal,
+  openSpacesModal,
 } from "@/lib/redux/slices/modal";
-import ActivityModal from "./Modal/ActivityModal";
+import SpacesModal from "./Modal/Spaces";
 import { Badge } from "./ui/badge";
 import clsx from "clsx";
 import SettingsModal from "./Modal/SettingsModal";
@@ -34,15 +38,21 @@ import { stat } from "fs";
 const navLinks = [
   { name: "Home", icon: Home, isActive: true, openModal: undefined },
   { name: "Profile", icon: UserCircle2, isActive: true, openModal: undefined },
-  { name: "Chats", icon: MessageSquare, isActive: false, openModal: undefined },
-  { name: "Settings", icon: Settings, isActive: true, openModal: "Settings" },
-  { name: "History", icon: History, isActive: false, openModal: undefined },
   {
-    name: "Activity",
-    icon: ActivitySquare,
+    name: "Spaces",
+    icon: Crown,
     isActive: true,
-    openModal: "Activities",
+    openModal: "Spaces",
   },
+  { name: "Chats", icon: MessageSquare, isActive: false, openModal: undefined },
+  {
+    name: "Notifications",
+    icon: MdNotifications,
+    isActive: false,
+    openModal: undefined,
+  },
+  { name: "History", icon: History, isActive: false, openModal: undefined },
+  { name: "Settings", icon: Settings, isActive: true, openModal: "Settings" },
 ];
 
 const Sidebar = () => {
@@ -52,7 +62,7 @@ const Sidebar = () => {
 
   function closeAllModal() {
     dispatch(closeSettingsModal());
-    dispatch(closeActiviyModal());
+    dispatch(closeSpacesModal());
   }
 
   function openSpecifiModal(type: string | undefined) {
@@ -61,9 +71,9 @@ const Sidebar = () => {
         closeAllModal();
         dispatch(openSettingsModal());
         break;
-      case "Activities":
+      case "Spaces":
         closeAllModal();
-        dispatch(openActivityModal());
+        dispatch(openSpacesModal());
         break;
       default:
         closeAllModal();
@@ -86,7 +96,7 @@ const Sidebar = () => {
       }`}
       onClick={closeSideNav}
     >
-      <ActivityModal />
+      <SpacesModal />
       <SettingsModal />
 
       <section

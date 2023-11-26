@@ -21,9 +21,9 @@ import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 
-const ActivityModal = () => {
+const SpacesModal = () => {
   const isThisModalOpen = useSelector(
-    (state: RootState) => state.model.isActivityModalOpen
+    (state: RootState) => state.model.isSpacesModalOpen
   );
 
   return (
@@ -101,4 +101,4 @@ const ActivityModal = () => {
   );
 };
 
-export default ActivityModal;
+export default SpacesModal;
