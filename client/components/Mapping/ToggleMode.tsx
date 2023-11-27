@@ -10,7 +10,7 @@ interface iProps {
 
 const ToggleMode: FC<iProps> = ({ isDay, setIsDay }) => {
   return (
-    <Button onClick={() => setIsDay(!isDay)} className="absolute z-50 right-5 top-[88px]">
+    <Button onClick={() => setIsDay(!isDay)} className="absolute z-50 right-3 top-[104px] rounded-full text-sky-600" variant={"secondary"}>
       {isDay ? <FaCloudMoon size={12}/> : <FaCloudSun size={12}/>}
     </Button>
   );

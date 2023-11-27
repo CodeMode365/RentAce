@@ -29,7 +29,7 @@ import {
   openSettingsModal,
   openSpacesModal,
 } from "@/lib/redux/slices/modal";
-import SpacesModal from "./Modal/Spaces";
+import SpacesModal from "./Modal/SpacesModal";
 import { Badge } from "./ui/badge";
 import clsx from "clsx";
 import SettingsModal from "./Modal/SettingsModal";

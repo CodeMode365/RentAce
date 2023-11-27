@@ -5,7 +5,7 @@ const modalSlice = createSlice({
     initialState: {
         isLogoutOpen: false,
         isAuthModalOpen: false,
-        isActivityModalOpen: false,
+        isSpacesModalOpen: false,
         isSettingsModalOpen: false,
     },
     reducers: {
@@ -21,11 +21,11 @@ const modalSlice = createSlice({
         closeAuthModal: (state) => ({
             ...state, isAuthModalOpen: false
         }),
-        openActivityModal: (state) => ({
-            ...state, isActivityModalOpen: true
+        openSpacesModal: (state) => ({
+            ...state, isSpacesModalOpen: true
         }),
-        closeActiviyModal: (state) => ({
-            ...state, isActivityModalOpen: false
+        closeSpacesModal: (state) => ({
+            ...state, isSpacesModalOpen: false
         }),
         openSettingsModal: (state) => ({
             ...state, isSettingsModalOpen: true
@@ -37,5 +37,5 @@ const modalSlice = createSlice({
     }
 })
 
-export const { openLogoutModal, closeLogoutModal, closeAuthModal, openAuthModal, openActivityModal, closeActiviyModal, openSettingsModal, closeSettingsModal } = modalSlice.actions
+export const { openLogoutModal, closeLogoutModal, closeAuthModal, openAuthModal, openSpacesModal, closeSpacesModal, openSettingsModal, closeSettingsModal } = modalSlice.actions
 export default modalSlice.reducer

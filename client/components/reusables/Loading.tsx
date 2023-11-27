@@ -2,17 +2,17 @@
 import React, { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { RootState } from "@/lib/redux/store";
 
-const LoadingStateProvider = ({ children }: { children: React.ReactNode }) => {
+const Loading = ({ children }: { children: React.ReactNode }) => {
   const isAppLoading = useSelector(
     (state: RootState) => state.globalSetting.isAppLoading
   );
   const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-      setIsLoading(isAppLoading);
-    }, [isAppLoading]);
+  useEffect(() => {
+    setIsLoading(isAppLoading);
+  }, [isAppLoading]);
 
   return (
     <>
@@ -32,4 +32,4 @@ const LoadingStateProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default LoadingStateProvider;
+export default Loading;
