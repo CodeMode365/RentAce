@@ -1,14 +1,10 @@
+import React, { FC } from "react";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { IPin } from "@/types/pins";
-import axios from "axios";
-import React, { FC, useState } from "react";
-import toast from "react-hot-toast";
 import { GrWaypoint } from "react-icons/gr";
-import { useMap } from "react-map-gl";
 
 interface iProps {
   startFindingDirection: VoidFunction;
