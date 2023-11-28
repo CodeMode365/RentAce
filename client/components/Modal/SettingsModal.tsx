@@ -43,7 +43,7 @@ const SettingsModal = () => {
             <CardHeader>
               <CardTitle className="text-xl">Account</CardTitle>
               <CardDescription className="text-sm leading-5">
-                Make changes to your account here. Click save when you're done.
+                Make changes to your account here. Click save when you&apos;re done.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs">
@@ -68,7 +68,7 @@ const SettingsModal = () => {
             <CardHeader>
               <CardTitle className="text-xl">Password</CardTitle>
               <CardDescription className="text-sm">
-                Change your password here. After saving, you'll be logged out.
+                Change your password here. After saving, you&apos;ll be logged out.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs">
