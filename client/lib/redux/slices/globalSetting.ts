@@ -2,12 +2,14 @@ import { createSlice } from "@reduxjs/toolkit"
 
 interface IGlobalState {
     colorMode: "Dark" | "Light",
-    isAppLoading: boolean
+    isAppLoading: boolean,
+    isAddingPin: boolean
 }
 
 const initialState: IGlobalState = {
     colorMode: "Dark",
-    isAppLoading: true
+    isAppLoading: true,
+    isAddingPin: true,
 }
 
 const globalSettingSlice = createSlice({
@@ -18,8 +20,10 @@ const globalSettingSlice = createSlice({
         toogleAppLoading: (state) => ({ ...state, isAppLoading: !state.isAppLoading }),
         stopAppLoading: (state) => ({ ...state, isAppLoading: false }),
         setAppLoading: (state) => ({ ...state, isAppLoading: true }),
+        setIsAddingPin: (state) => ({ ...state, isAddingPin: true }),
+        setIsNotAddingPin: (state) => ({ ...state, isAddingPin: false }),
     }
 })
 
-export const { toggleColorMode, setAppLoading, stopAppLoading } = globalSettingSlice.actions
+export const { toggleColorMode, setAppLoading, stopAppLoading, setIsAddingPin, setIsNotAddingPin } = globalSettingSlice.actions
 export default globalSettingSlice.reducer
