@@ -85,7 +85,7 @@ const SpacesModal = () => {
           </Swiper>
           <div className="">
             <p className="text-sm text-gray-600">
-              <span className="text-sky-500">Note:</span> Please don't register
+              <span className="text-sky-500">Note:</span> Please don&apos;t register
               the fake spaces.{" "}
             </p>
             <Button
