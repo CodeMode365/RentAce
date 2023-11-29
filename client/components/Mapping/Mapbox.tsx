@@ -1,7 +1,8 @@
 "use client";
 
-import React, { Fragment, useEffect, useRef, useState } from "react";
-import Map, {
+import React, { Fragment, useEffect, useState } from "react";
+import dynamic from "next/dynamic";
+import MapGl, {
   Marker,
   ScaleControl,
   GeolocateControl,
@@ -9,19 +10,33 @@ import Map, {
   NavigationControl,
 } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import Popover from "./Popover";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { IPin } from "@/types/pins";
-import { Fullscreen } from "lucide-react";
-import DirectionFinder from "./DirectionFinder";
-import Direction from "./Direction";
-import ToggleMode from "./ToggleMode";
-import { useDispatch } from "react-redux";
-import { stopAppLoading } from "@/lib/redux/slices/globalSetting";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setIsNotAddingPin,
+  stopAppLoading,
+} from "@/lib/redux/slices/globalSetting";
+import { RootState } from "@/lib/redux/store";
+import { Button } from "../ui/button";
+
+const Direction = dynamic(() => import("./Direction"), { ssr: false });
+const DirectionFinder = dynamic(() => import("./DirectionFinder"), {
+  ssr: false,
+});
+const ToggleMode = dynamic(() => import("./ToggleMode"), { ssr: false });
+const Popover = dynamic(() => import("./Popover"), { ssr: false });
+const AddSpaceModal = dynamic(
+  () => import("@/components/Modal/AddSpaceModal"),
+  { ssr: false }
+);
 
 const Mapbox = () => {
   const dispatch = useDispatch();
+  const isUserAddingPin = useSelector(
+    (state: RootState) => state.globalSetting.isAddingPin
+  );
 
   const [userLocation, setUserLocation] = useState({
     latitude: 27.6974,
@@ -80,8 +95,22 @@ const Mapbox = () => {
     setViewPort({ ...viewport, latitude: lat, longitude: long });
   };
 
+  const [tempPinCoordinates, setTempPinCoordinates] = useState<{
+    lat: number;
+    long: number;
+  } | null>(null);
+
+  const clearTempPin = () => {
+    setTempPinCoordinates(null);
+  };
+
   const handleMapClick = (e: MapLayerMouseEvent) => {
-    const { lat, lng } = e.lngLat;
+    if (isUserAddingPin) {
+      const { lat, lng } = e.lngLat;
+
+      // Set the temporary pin coordinates in the local state
+      setTempPinCoordinates({ lat, long: lng });
+    }
   };
 
   const findDirection = async () => {
@@ -116,11 +145,16 @@ const Mapbox = () => {
 
   const setAppIsLoaded = () => {
     dispatch(stopAppLoading());
-    console.log("Map is loaded")
+    console.log("Map is loaded");
+  };
+
+  const cancelAddingPin = () => {
+    setTempPinCoordinates(null);
+    dispatch(setIsNotAddingPin());
   };
 
   return (
-    <Map
+    <MapGl
       {...viewport}
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN as string}
       style={{ width: "100vw", height: "100vh" }}
@@ -135,6 +169,11 @@ const Mapbox = () => {
         setAppIsLoaded();
       }}
     >
+      {isUserAddingPin && !tempPinCoordinates && (
+        <span className=" absolute top-20 left-1/2 font-medium -translate-x-1/2 bg-white/80 p-2 rounded-md text-emerald-500 text-xl">
+          Please select the Area
+        </span>
+      )}
       {pins?.map((pin: IPin) => (
         <Fragment key={pin.id}>
           <Marker
@@ -179,9 +218,37 @@ const Mapbox = () => {
         />
       )}
 
+      {tempPinCoordinates && (
+        <>
+          <Button
+            className="z-2 absolute top-20 left-1/2 -translate-x-[200%]  shadow-xl border border-red-600"
+            variant={"destructive"}
+            size={"sm"}
+            onClick={() => cancelAddingPin()}
+          >
+            Cancel
+          </Button>
+          <AddSpaceModal>
+            <Button
+              className="z-2 absolute top-20 left-1/2 -translate-x-1/2 text-sky-600 shadow-xl border border-sky-500 hover:bg-sky-500 hover:text-white"
+              variant={"secondary"}
+              size={"sm"}
+            >
+              Next Step
+            </Button>
+          </AddSpaceModal>
+          <Marker
+            latitude={tempPinCoordinates.lat}
+            longitude={tempPinCoordinates.long}
+            color="#4d96f3" // Choose a color for the temporary pin
+            onClick={clearTempPin}
+          />
+        </>
+      )}
+
       {direction && <Direction direction={direction} />}
       <ToggleMode setIsDay={setIsDay} isDay={isDay} />
-    </Map>
+    </MapGl>
   );
 };
 

@@ -14,18 +14,21 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 
-import { RootState } from "@/lib/redux/store";
-import { useSelector } from "react-redux";
 import clsx from "clsx";
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
+import { useDispatch } from "react-redux";
+import { setIsAddingPin } from "@/lib/redux/slices/globalSetting";
+import { closeSidebar } from "@/lib/redux/slices/sidebar";
 
 const SpacesModal = () => {
-  const isThisModalOpen = useSelector(
-    (state: RootState) => state.model.isSpacesModalOpen
-  );
+  const dispatch = useDispatch();
 
+  const startAddingPin = () => {
+    dispatch(closeSidebar());
+    dispatch(setIsAddingPin());
+  };
   return (
     <>
       <div
@@ -33,8 +36,7 @@ const SpacesModal = () => {
           e.stopPropagation();
         }}
         className={clsx(
-          `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md  bg-white rounded-mdshadow-lg w-[650px] drop-shadow-md transition-all z-[100] h-auto`,
-          !isThisModalOpen && "hidden"
+          `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md  bg-white rounded-mdshadow-lg w-[650px] drop-shadow-md transition-all z-[100] h-auto`
         )}
       >
         <div className="relative p-4 ">
@@ -83,14 +85,16 @@ const SpacesModal = () => {
               </SwiperSlide>
             ))}
           </Swiper>
+
           <div className="">
             <p className="text-sm text-gray-600">
-              <span className="text-sky-500">Note:</span> Please don&apos;t register
-              the fake spaces.{" "}
+              <span className="text-sky-500">Note:</span> Please don&apos;t
+              register the fake spaces.{" "}
             </p>
             <Button
               size={"sm"}
               className="float-right my-2 bg-sky-500 hover:bg-sky-600"
+              onClick={() => startAddingPin()}
             >
               Add more
             </Button>
