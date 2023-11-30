@@ -12,63 +12,90 @@ datasource db {
 
 model User {
   id       String @id @default(uuid())
-  username String @db.VarChar(20)
-  email    String @unique() @db.VarChar(50)
-  password String @unique() @db.VarChar(250)
-  Pin      Pin[]
+  username String @db.VarChar(30)
+  email    String @unique @db.VarChar(50)
+  password String @db.VarChar(250)
+
+  spaces        Space[]
+  messages      Messages[]
+  conversations Conversation[]
+  UserImage     UserImage[]
+  notification  Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Pin {
-  id     String     @id @default(uuid())
-  title  String
-  desc   String
-  rating Int
-  lat    Float
-  long   Float
-  user   User?      @relation(fields: [userId], references: [id])
-  userId String?
-  images PinImage[]
+model Conversation {
+  id           String     @id @default(uuid())
+  name         String
+  participates User[]
+  messages     Messages[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Messages {
+  id             String       @id @default(uuid())
+  content        String
+  sender         User         @relation(fields: [senderId], references: [id])
+  receiver       Conversation @relation(fields: [conversationId], references: [id])
+  senderId       String
+  conversationId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Notification {
+  id         String  @id @default(uuid())
+  receiver   User    @relation(fields: [receiverId], references: [id])
+  receiverId String
+  isSeen     Boolean
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
 model Space {
-  id        String       @id @default(uuid())
-  lng       Float
-  lat       Float
-  title     String
-  ownerName String
-  spaceType SpaceType    @default(OTHER)
-  amount    String
-  payType   PayType      @default(MONTHLY)
-  desc      String
-  images    SpaceImage[]
-}
-
-model SpaceImage {
-  id           String  @id @default(uuid())
-  thumbnailUrl String
-  imageUrl     String
-  Space        Space?  @relation(fields: [spaceId], references: [id])
-  spaceId      String?
+  id         String       @id @default(uuid())
+  lng        Float
+  lat        Float
+  title      String
+  ownerName  String
+  spaceType  SpaceType    @default(OTHER)
+  amount     String
+  payType    PayType      @default(MONTHLY)
+  desc       String
+  SpaceImage SpaceImage[]
+  User       User         @relation(fields: [userId], references: [id])
+  userId     String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model PinImage {
-  id           String  @id @default(uuid())
+model SpaceImage {
+  id           String @id @default(uuid())
   thumbnailUrl String
   imageUrl     String
-  Pin          Pin?    @relation(fields: [pinId], references: [id])
-  pinId        String?
+  Space        Space  @relation(fields: [spaceId], references: [id])
+  spaceId      String
 
   createdAt DateTime @default(now())
-  updateAt  DateTime @updatedAt
+  updatedAt DateTime @updatedAt
+}
+
+model UserImage {
+  id           String @id @default(uuid())
+  thumbnailUrl String
+  imageUrl     String
+  user         User   @relation(fields: [userId], references: [id])
+  userId       String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum SpaceType {
