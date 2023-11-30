@@ -1,28 +1,35 @@
-import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Step1 from "./Steps/Step1";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Step2 from "./Steps/Step2";
 import Step3 from "./Steps/Step3";
+import clsx from "clsx";
 
 export default function AddSpaceModal({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
+  const stepWrapperRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    console.log(currentStep, currentStep * 200);
-  }, [currentStep, setCurrentStep]);
+  // useEffect(() => {
+  //   if (stepWrapperRef.current) {
+  //     stepWrapperRef.current.style.transform = `translateX(-${
+  //       currentStep * 200
+  //     }%)`;
+  //     console.log("changed modal");
+  //   }
+  //   console.log(currentStep, currentStep * 200);
+  //   setCurrentStep(0);
+  // }, [currentStep, setCurrentStep]);
 
   return (
     <Dialog>
@@ -37,27 +44,12 @@ export default function AddSpaceModal({
         </DialogHeader>
 
         <div
-          className={`flex  transition-all -translate-x-[${
-            Number(currentStep) * 200
-          }%]`}
+          ref={stepWrapperRef}
+          className={clsx(`flex transition-all w-auto`)}
         >
-          <Step1 setCurrentStep={setCurrentStep} />
-          <Step2 setCurrentStep={setCurrentStep} />
-          <Step3 setCurrentStep={setCurrentStep} />
+          {currentStep == 0 && <Step1 setCurrentStep={setCurrentStep} />}
+          {currentStep == 1 && <Step2 setCurrentStep={setCurrentStep} />}
         </div>
-        {/* 
-        {currentStep === 2 && (
-          <DialogFooter>
-            <Button
-              type="submit"
-              className="w-full border-sky-500 border text-sky-500 shadow-xl hover:bg-sky-500 hover:text-white"
-              size={"sm"}
-              variant={"secondary"}
-            >
-              Post Space
-            </Button>
-          </DialogFooter>
-        )} */}
       </DialogContent>
     </Dialog>
   );
