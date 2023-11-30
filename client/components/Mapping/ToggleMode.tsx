@@ -9,9 +9,23 @@ interface iProps {
 }
 
 const ToggleMode: FC<iProps> = ({ isDay, setIsDay }) => {
+  const handleTogglMode = () => {
+    setIsDay(!isDay);
+    if (document.documentElement.classList.contains("dark")) {
+      document.documentElement.classList.add("light");
+      document.documentElement.classList.remove("dark");
+    } else {
+      document.documentElement.classList.add("dark");
+      document.documentElement.classList.remove("light");
+    }
+  };
   return (
-    <Button onClick={() => setIsDay(!isDay)} className="absolute z-50 right-3 top-[104px] rounded-full text-sky-600" variant={"secondary"}>
-      {isDay ? <FaCloudMoon size={12}/> : <FaCloudSun size={12}/>}
+    <Button
+      onClick={() => handleTogglMode()}
+      className="absolute z-50 right-3 top-[104px] rounded-full text-sky-600"
+      variant={"secondary"}
+    >
+      {isDay ? <FaCloudMoon size={12} /> : <FaCloudSun size={12} />}
     </Button>
   );
 };
