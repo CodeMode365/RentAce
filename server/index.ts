@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express"
-import { mediaRoute, pinRoute, authRoute, userRoute } from "./routes";
+import { mediaRoute, spaceRoute, authRoute, userRoute } from "./routes";
 import cors, { CorsOptions } from "cors"
 import { prisma } from "./script"
 
@@ -14,10 +14,10 @@ async function main() {
 
         .use(express.json())
         .use(cors(corsOptions))
-        .use("/api/pin", pinRoute)
-        .use("/api/auth", authRoute)
-        .use("/api/media", mediaRoute)
-        .use("/api/user", userRoute)
+        .use("/api/v1/space", spaceRoute)
+        .use("/api/v1/auth", authRoute)
+        .use("/api/v1/media", mediaRoute)
+        .use("/api/v1/user", userRoute)
 
         .get("/", (req: Request, res: Response) => {
             res.send("Hello world")
