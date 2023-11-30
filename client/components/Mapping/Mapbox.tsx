@@ -181,7 +181,7 @@ const Mapbox = () => {
             longitude={pin.long}
             color={pin.id === currentPlaceId ? "blue" : "red"}
             onClick={() => {
-              handleMarkerClick(pin.id, pin.long, pin.lat);
+              !isUserAddingPin && handleMarkerClick(pin.id, pin.long, pin.lat);
             }}
           />
           <Popover
@@ -209,7 +209,7 @@ const Mapbox = () => {
         showUserLocation
       />
       <NavigationControl position="bottom-right" />
-      {currentPlaceId && (
+      {currentPlaceId && !isUserAddingPin && (
         <DirectionFinder
           isLoading={isLoading}
           startFindingDirection={() => {
@@ -221,7 +221,7 @@ const Mapbox = () => {
       {tempPinCoordinates && (
         <>
           <Button
-            className="z-2 absolute top-20 left-1/2 -translate-x-[200%]  shadow-xl border border-red-600"
+            className="z-2 absolute top-20 left-1/2 -translate-x-[110%] shadow-xl "
             variant={"destructive"}
             size={"sm"}
             onClick={() => cancelAddingPin()}
@@ -230,7 +230,7 @@ const Mapbox = () => {
           </Button>
           <AddSpaceModal>
             <Button
-              className="z-2 absolute top-20 left-1/2 -translate-x-1/2 text-sky-600 shadow-xl border border-sky-500 hover:bg-sky-500 hover:text-white"
+              className="z-2 absolute top-20 left-1/2  text-sky-600 shadow-xl border hover:bg-sky-500 hover:text-white"
               variant={"secondary"}
               size={"sm"}
             >

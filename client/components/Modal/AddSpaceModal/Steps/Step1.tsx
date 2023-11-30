@@ -169,7 +169,7 @@ const Step1: FC<iProps> = ({ setCurrentStep }) => {
           variant={"secondary"}
           onClick={() => {
             console.log("next step load");
-            setCurrentStep((prevStep) => prevStep + 1);
+            setCurrentStep((prevStep) => 1);
           }}
         >
           Next

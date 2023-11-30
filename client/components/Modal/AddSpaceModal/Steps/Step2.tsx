@@ -17,6 +17,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { Input } from "@/components/ui/input";
+import FullImage from "@/components/reusables/FullImage";
 
 interface iProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
@@ -44,14 +45,14 @@ const Step2: FC<iProps> = ({ setCurrentStep }) => {
   };
 
   return (
-    <div className="grid gap-4 py-4 translate-x-full  min-w-full">
+    <div className="grid gap-4 py-4  min-w-full">
       <h2 className="font-medium text-sky-500">Extra Info</h2>
 
       <div className="">
         <Label className="text-left">Description</Label>
         <Textarea
           placeholder="Describe your space here..."
-          className="col-span-4 mt-0"
+          className="col-span-4 mt-4"
         />
       </div>
 
@@ -91,19 +92,20 @@ const Step2: FC<iProps> = ({ setCurrentStep }) => {
               </div>
             </SwiperSlide>
 
-            {[...previews.toReversed()].map((prev, ind) => (
+            {[...previews.toReversed()].map((prevu, ind) => (
               <SwiperSlide key={"new-space-slide" + ind}>
                 <div className="relative cursor-pointer h-40 min-w-max bg-sky-100 rounded-lg flex items-center justify-center overflow-hidden">
                   <button className="z-20 rounded-full text-rose-500 bg-white/80 absolute bottom-2 right-2 p-2 hover:bg-rose-500 hover:text-white transition-all">
                     <Trash2 size={18} />
                   </button>
-
-                  <Image
-                    fill
-                    src={prev}
-                    alt="Image"
-                    className="object-cover hover:scale-110 hover:brightness-50 brightness-75 transition-all z-10"
-                  />
+                  <FullImage src={prevu} title={"Full screen View"}>
+                    <Image
+                      fill
+                      src={prevu}
+                      alt="Image"
+                      className="object-cover hover:scale-110 hover:brightness-50 brightness-75 transition-all z-10"
+                    />
+                  </FullImage>
                 </div>
               </SwiperSlide>
             ))}
@@ -116,7 +118,7 @@ const Step2: FC<iProps> = ({ setCurrentStep }) => {
           className=" bg-sky-500 shadow-xl font-normal text-white hover:bg-sky-500 hover:text-white"
           size={"sm"}
           variant={"secondary"}
-          onClick={() => setCurrentStep((prevStep) => prevStep - 1)}
+          onClick={() => setCurrentStep((prevStep) => 0)}
         >
           Prev
         </Button>
@@ -124,9 +126,9 @@ const Step2: FC<iProps> = ({ setCurrentStep }) => {
           className=" bg-sky-500 shadow-xl font-normal text-white hover:bg-sky-500 hover:text-white"
           size={"sm"}
           variant={"secondary"}
-          onClick={() => setCurrentStep((prevStep) => prevStep + 1)}
+          // onClick={() => setCurrentStep((prevStep) => prevStep + 1)}
         >
-          Next
+          Save
         </Button>
       </div>
     </div>
