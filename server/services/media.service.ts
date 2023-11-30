@@ -3,7 +3,7 @@ import { uploadToImageKit, generateThumbnailUrl, deleteFromImageKit } from "../u
 import { compressImage } from "../utils/sharp.util"
 
 const getMedias = async () => {
-    const media = await prisma.pinImage.findMany({})
+    const media = await prisma.image.findMany({})
     return media
 }
 
@@ -16,7 +16,7 @@ const createMedia = async (payload: Express.Multer.File) => {
     // const mediaData = {
     //     id: fileId, filePath, url, thumnbailUrl, originalName
     // }
-    const media = await prisma.pinImage.create({
+    const media = await prisma.image.create({
         data: {
             imageUrl: url,
             thumbnailUrl: thumnbailUrl,
@@ -27,7 +27,7 @@ const createMedia = async (payload: Express.Multer.File) => {
 
 const deleteOneMedia = async (fileId: string) => {
     await deleteFromImageKit(fileId)
-    const data = await prisma.pinImage.delete({
+    const data = await prisma.image.delete({
         where: { id: fileId },
     })
     return data
