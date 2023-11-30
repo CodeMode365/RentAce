@@ -36,6 +36,30 @@ model Pin {
   updatedAt DateTime @updatedAt
 }
 
+model Space {
+  id        String       @id @default(uuid())
+  lng       Float
+  lat       Float
+  title     String
+  ownerName String
+  spaceType SpaceType    @default(OTHER)
+  amount    String
+  payType   PayType      @default(MONTHLY)
+  desc      String
+  images    SpaceImage[]
+}
+
+model SpaceImage {
+  id           String  @id @default(uuid())
+  thumbnailUrl String
+  imageUrl     String
+  Space        Space?  @relation(fields: [spaceId], references: [id])
+  spaceId      String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model PinImage {
   id           String  @id @default(uuid())
   thumbnailUrl String
@@ -45,4 +69,20 @@ model PinImage {
 
   createdAt DateTime @default(now())
   updateAt  DateTime @updatedAt
+}
+
+enum SpaceType {
+  PAKRING
+  ROOM
+  FLAT
+  HOUSE
+  OTHER
+}
+
+enum PayType {
+  HOURLY
+  DAILY
+  WEEKLY
+  MONTHLY
+  ANNUALLY
 }
