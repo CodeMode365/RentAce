@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useReducer, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -9,7 +9,6 @@ import {
   MdOutlineKeyboardDoubleArrowLeft,
 } from "react-icons/md";
 import {
-  ActivitySquare,
   Crown,
   History,
   Home,
@@ -29,11 +28,14 @@ import {
   openSettingsModal,
   openSpacesModal,
 } from "@/lib/redux/slices/modal";
-import SpacesModal from "./Modal/SpacesModal";
+// import SpacesModal from "./Modal/SpacesModal";
 import { Badge } from "./ui/badge";
 import clsx from "clsx";
-import SettingsModal from "./Modal/SettingsModal";
-import { stat } from "fs";
+// import SettingsModal from "./Modal/SettingsModal";
+import dynamic from "next/dynamic";
+
+const SettingsModal = dynamic(() => import("./Modal/SettingsModal"));
+const SpacesModal = dynamic(() => import("./Modal/SpacesModal"));
 
 const navLinks = [
   { name: "Home", icon: Home, isActive: true, openModal: undefined },
@@ -59,6 +61,9 @@ const Sidebar = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
   const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isOpen);
+  const { isSpacesModalOpen, isSettingsModalOpen } = useSelector(
+    (state: RootState) => state.model
+  );
 
   function closeAllModal() {
     dispatch(closeSettingsModal());
@@ -96,8 +101,8 @@ const Sidebar = () => {
       }`}
       onClick={closeSideNav}
     >
-      <SpacesModal />
-      <SettingsModal />
+      {isSpacesModalOpen && <SpacesModal />}
+      {isSettingsModalOpen && <SettingsModal />}
 
       <section
         className={`relative w-60 h-full bg-white transition-transform ease-in-out duration-300 ${
@@ -111,7 +116,7 @@ const Sidebar = () => {
       >
         <div className="border-b mx-4 pt-3 pb-2 px-1 font-semibold text-lg shadow-sm flex items-center justify-between">
           <h1>
-            <span className="text-sky-500">Park</span>Out
+            <span className="text-sky-500">Rent</span>Ace
           </h1>
           <Button
             variant={"secondary"}
