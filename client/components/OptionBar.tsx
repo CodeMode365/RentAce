@@ -7,13 +7,21 @@ import AutoInput from "./AutoInput";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { openSidebar } from "@/lib/redux/slices/sidebar";
+import { openAuthModal } from "@/lib/redux/slices/modal";
 
 const OptionBar = () => {
   const dispatch = useDispatch<AppDispatch>();
   const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isOpen);
+  const isLoggedIn = useSelector(
+    (state: RootState) => state.globalSetting.isLoggedIn
+  );
 
   const openSideNav = () => {
-    dispatch(openSidebar());
+    if (isLoggedIn) {
+      dispatch(openSidebar());
+    } else {
+      dispatch(openAuthModal());
+    }
   };
 
   return (

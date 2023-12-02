@@ -1,3 +1,4 @@
+import AuthProvider from "@/lib/providers/AuthProvider";
 import dynamic from "next/dynamic";
 
 const TopBar = dynamic(() => import("@/components/TopBar"));
@@ -14,10 +15,11 @@ const Home = () => {
     <>
       <TopBar />
       <OptionBar />
-      <Sidebar />
 
+      <AuthProvider>
+        <Sidebar />
+      </AuthProvider>
       <AuthModal />
-
       <LogoutModal />
       <div>
         <Mapbox />
