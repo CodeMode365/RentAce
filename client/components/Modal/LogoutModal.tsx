@@ -4,15 +4,26 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { closeLogoutModal } from "@/lib/redux/slices/modal";
+import useLogout from "@/hooks/useLogout";
+import { closeSidebar } from "@/lib/redux/slices/sidebar";
+import { setLoggedOut } from "@/lib/redux/slices/globalSetting";
 
 const LogoutModal = () => {
   const dispatch = useDispatch<AppDispatch>();
+
   const isLoutoutModalOpen = useSelector(
     (state: RootState) => state.model.isLogoutOpen
   );
 
   const closeModal = () => {
     dispatch(closeLogoutModal());
+  };
+
+  const logOut = () => {
+    localStorage.clear();
+    dispatch(closeSidebar());
+    dispatch(closeLogoutModal());
+    dispatch(setLoggedOut());
   };
 
   return (
@@ -40,8 +51,7 @@ const LogoutModal = () => {
             variant={"destructive"}
             className="mx-1 text-xs py-0 border"
             onClick={() => {
-              alert("User logout");
-              closeModal();
+              logOut();
             }}
           >
             Logout
