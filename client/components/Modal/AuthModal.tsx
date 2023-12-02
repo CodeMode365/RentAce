@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import useAuth from "@/hooks/useAuth";
 
 import toast from "react-hot-toast";
@@ -19,10 +19,14 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/ui/dialog";
+import { Button } from "../ui/button";
+import { useDispatch } from "react-redux";
+import { setLoggedIn } from "@/lib/redux/slices/globalSetting";
 
-export default function AuthModal({ children }: { children: React.ReactNode }) {
+export default function AuthModal() {
   const auth = useAuth();
   const { uploadMedia } = useMedia();
+  const dispatch = useDispatch();
 
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
@@ -80,7 +84,9 @@ export default function AuthModal({ children }: { children: React.ReactNode }) {
     await auth({ username, email, password, isLogin })
       .then(() => {
         toast.success(`Successfully ${isLogin ? "Logged In" : "Registered"}!`);
-        // setTimeout(() => router.push("/dashboard"), 2000);
+        setTimeout(() => {
+          dispatch(setLoggedIn());
+        }, 1000);
         resetForm();
       })
       .catch((error: Error) => {
@@ -136,9 +142,19 @@ export default function AuthModal({ children }: { children: React.ReactNode }) {
 
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
+      <DialogTrigger>
+        <Button
+          className="mx-1 flex items-center justify-center p-0 bg-transparent hover:bg-transparent border-none"
+          size={"sm"}
+        >
+          <span className=" h-full w-full flex justify-center items-center px-6 bg-sky-500 hover:bg-sky-600 rounded-2xl">
+            Login
+          </span>
+        </Button>
+      </DialogTrigger>
+
       <DialogContent>
-        <form onSubmit={handleSubmit(onSubmit)} className="px-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="px-6">
           <DialogHeader>
             <DialogTitle>
               <h2 className="my-1 font-normal text-center text-black/80 text-xl">
@@ -174,7 +190,6 @@ export default function AuthModal({ children }: { children: React.ReactNode }) {
                   type="file"
                   name="image"
                   id="image"
-                  // value={image}
                   onChange={(e) => {
                     if (e.target.files) setImage(e.target.files[0]);
                   }}
