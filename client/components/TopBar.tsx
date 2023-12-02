@@ -62,19 +62,7 @@ const TopBar = () => {
         <HiDotsVertical size={24} />
       </Button>
 
-      {!isUserLoggedIn && (
-        <AuthModal>
-          <Button
-            className="mx-1   flex items-center justify-center p-0 bg-transparent hover:bg-transparent border-none"
-            size={"sm"}
-            ref={authOpener}
-          >
-            <span className=" h-full w-full flex justify-center items-center px-6 bg-sky-500 hover:bg-sky-600 rounded-2xl">
-              Login
-            </span>
-          </Button>
-        </AuthModal>
-      )}
+      {!isUserLoggedIn && <AuthModal />}
     </nav>
   );
 };
