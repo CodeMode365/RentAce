@@ -7,10 +7,11 @@ interface iData {
 
 export default function useAuth() {
   return async (data: iData) => {
-    console.log('loggin in')
+    console.log("loggin in");
     const { username, email, password, isLogin } = data;
     const path = isLogin ? "login" : "register";
     const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/${path}`;
+    console.log(url)
 
     const response = await fetch(url, {
       method: "POST",
@@ -31,6 +32,7 @@ export default function useAuth() {
 
     const val = await response.json();
     localStorage.setItem("token", val.token);
+    localStorage.setItem("isAuthorized", JSON.stringify(true));
     return val;
   };
 }

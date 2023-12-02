@@ -4,13 +4,13 @@ interface IGlobalState {
     colorMode: "Dark" | "Light",
     isAppLoading: boolean,
     isAddingPin: boolean,
-    isLoggedIn: boolean
+    isLoggedIn: boolean,
 }
 
 const initialState: IGlobalState = {
     colorMode: "Dark",
     isAppLoading: true,
-    isAddingPin: true,
+    isAddingPin: false,
     isLoggedIn: false,
 }
 
@@ -29,5 +29,5 @@ const globalSettingSlice = createSlice({
     }
 })
 
-export const { toggleColorMode, setAppLoading, stopAppLoading, setIsAddingPin, setIsNotAddingPin } = globalSettingSlice.actions
+export const { toggleColorMode, setAppLoading, stopAppLoading, setIsAddingPin, setIsNotAddingPin, setLoggedIn, setLoggedOut } = globalSettingSlice.actions
 export default globalSettingSlice.reducer
