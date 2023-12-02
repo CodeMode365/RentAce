@@ -28,7 +28,7 @@ const AuthInput: React.FC<inputProps> = ({
   isRequired,
 }) => {
   return (
-    <label className=" flex flex-col text-sm">
+    <label className=" flex flex-col text-md mb-1">
       <span className="my-1 ">
         {title} {isRequired && <span className="text-rose-500">*</span>}
       </span>

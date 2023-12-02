@@ -9,21 +9,21 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AuthInput, { inputProps } from "@/components/reusables/AuthInput";
 
-import { RxCross2 } from "react-icons/rx";
-import { Button } from "@/components/ui/button";
-
 import useMedia from "@/hooks/useMedia";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/lib/redux/store";
-import { closeAuthModal } from "@/lib/redux/slices/modal";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 
-export default function AuthModal() {
+export default function AuthModal({ children }: { children: React.ReactNode }) {
   const auth = useAuth();
   const { uploadMedia } = useMedia();
-  const dispatch = useDispatch<AppDispatch>();
-  const isThisModalOpen = useSelector(
-    (state: RootState) => state.model.isAuthModalOpen
-  );
+
   const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [image, setImage] = useState<File | null>();
@@ -134,45 +134,29 @@ export default function AuthModal() {
     },
   ];
 
-  const closeThisModal = () => {
-    dispatch(closeAuthModal());
-  };
-
   return (
-    <div
-      onClick={() => closeThisModal()}
-      className={`absolute bg-black/80 h-screen w-screen flex items-center justify-center flex-col overflow-auto z-[99] ${
-        isThisModalOpen ? "block" : "hidden"
-      }`}
-    >
-      <div onClick={(e) => e.stopPropagation()}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="relative  bg-white rounded-md p-6 shadow-lg min-w-[320px] w-[30vw] max-w-[500px] drop-shadow-md transition-all "
-        >
-          <Button
-            variant={"secondary"}
-            size={"icon"}
-            className="rounded-full absolute -top-3 -right-3 text-red-500"
-            type="button"
-            onClick={() => {
-              closeThisModal();
-            }}
-          >
-            <RxCross2 size={24} />
-          </Button>
-          <h2 className="my-1 text-xl font-normal text-center text-black/80">
-            <span className="text-sky-500 font-medium text-2xl">
-              {isLogin ? "Login" : "Register"}
-            </span>{" "}
-            {isLogin && "to"} your account
-          </h2>
-          {isLogin && (
-            <p className="text-center text-gray-400 leading-4 text-sm">
-              Please create new account if <br />
-              you haven&apos;t created one.
-            </p>
-          )}
+    <Dialog>
+      <DialogTrigger>{children}</DialogTrigger>
+      <DialogContent>
+        <form onSubmit={handleSubmit(onSubmit)} className="px-4">
+          <DialogHeader>
+            <DialogTitle>
+              <h2 className="my-1 font-normal text-center text-black/80 text-xl">
+                <span className="text-sky-500 font-medium">
+                  {isLogin ? "Login" : "Register"}
+                </span>{" "}
+                {isLogin && "to"} your account
+              </h2>
+            </DialogTitle>
+            <DialogDescription>
+              {isLogin && (
+                <p className="text-center text-gray-400 text-md">
+                  Please create new account if <br />
+                  you haven&apos;t created one.
+                </p>
+              )}
+            </DialogDescription>
+          </DialogHeader>
           {InputList.map((EachInput) => {
             return (
               (!EachInput.registerOnly || !isLogin) && (
@@ -182,7 +166,7 @@ export default function AuthModal() {
           })}
 
           {!isLogin && (
-            <label className=" flex flex-col text-sm">
+            <label className=" flex flex-col text-md">
               <span className="my-1 ">{"Upload Profile"}</span>
 
               <div className="rounded-sm border-2 flex items-center justify-between px-1 focus-within:border-sky-400">
@@ -201,7 +185,7 @@ export default function AuthModal() {
             </label>
           )}
 
-          <div className="flex items-center justify-between mx-2 flex-col md:flex-row text-sm">
+          <div className="flex items-center justify-between mx-2 flex-col md:flex-row text-md">
             <p className="mt-2 md:mt-0 text-md">
               {isLogin ? "Don't" : "Already"} have an Account?{" "}
               <button
@@ -221,22 +205,25 @@ export default function AuthModal() {
               {isLogin ? "Login" : "Register"}
             </button>
           </div>
-          {!isLogin && (
-            <p className="text-center leading-4 mx-1 text-gray-400 mt-2 text-sm">
-              By clicking Create Account you aggree to our
-              <span className="text-sky-400 hover:underline cursor-pointer">
-                {" "}
-                Terms{" "}
-              </span>
-              and have read and acknoledege our
-              <span className="text-sky-400 hover:underline cursor-pointer">
-                {" "}
-                Global Privacy statement.
-              </span>
-            </p>
-          )}
+
+          <DialogFooter>
+            {!isLogin && (
+              <p className="text-center mx-1 text-gray-400 mt-2 text-md">
+                By clicking Create Account you aggree to our
+                <span className="text-sky-400 hover:underline cursor-pointer">
+                  {" "}
+                  Terms{" "}
+                </span>
+                and have read and acknoledege our
+                <span className="text-sky-400 hover:underline cursor-pointer">
+                  {" "}
+                  Global Privacy statement.
+                </span>
+              </p>
+            )}
+          </DialogFooter>
         </form>
-      </div>
-    </div>
+      </DialogContent>
+    </Dialog>
   );
 }
