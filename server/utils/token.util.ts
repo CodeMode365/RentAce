@@ -1,6 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken"
 
-const secretKey = process.env.SECRET as string
+const secretKey = process.env.JWT_SECRET as string
 
 const generateToken = (userId: string): string => {
     const expiresIn = '1h';
