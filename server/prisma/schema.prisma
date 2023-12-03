@@ -31,7 +31,6 @@ model User {
 
 model Conversation {
   id           String     @id @default(uuid())
-  name         String
   participates User[]
   messages     Messages[]
 
