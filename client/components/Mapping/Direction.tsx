@@ -44,7 +44,7 @@ const Direction: FC<IProps> = ({ direction }) => {
           </div>
 
           <div>
-            <div className="absolute top-20 left-1/2 z-50 -translate-x-1/2 bg-white p-2 rounded-md text-md text-slate-800 border">
+            <div className="absolute top-32 left-1/2 z-50 -translate-x-1/2 bg-white p-2 rounded-md text-md text-slate-800 border">
               <strong className="underline">Route {currentRoute}:</strong>
               <p className="font-bold">
                 Distance:{" "}
