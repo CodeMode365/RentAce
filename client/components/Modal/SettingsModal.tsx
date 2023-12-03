@@ -16,15 +16,10 @@ import { RootState } from "@/lib/redux/store";
 import clsx from "clsx";
 
 const SettingsModal = () => {
-  const isThisModalOpen = useSelector(
-    (state: RootState) => state.model.isSettingsModalOpen
-  );
-
   return (
     <div
       className={clsx(
-        `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md   bg-white rounded-mdshadow-lg drop-shadow-md transition-all z-[100] p-4`,
-        !isThisModalOpen && "hidden"
+        `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white rounded-mdshadow-lg drop-shadow-md transition-all z-[100] p-4`
       )}
       onClick={(e) => {
         e.stopPropagation();
@@ -43,7 +38,8 @@ const SettingsModal = () => {
             <CardHeader>
               <CardTitle className="text-xl">Account</CardTitle>
               <CardDescription className="text-sm leading-5">
-                Make changes to your account here. Click save when you&apos;re done.
+                Make changes to your account here. Click save when you&apos;re
+                done.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs">
@@ -68,7 +64,8 @@ const SettingsModal = () => {
             <CardHeader>
               <CardTitle className="text-xl">Password</CardTitle>
               <CardDescription className="text-sm">
-                Change your password here. After saving, you&apos;ll be logged out.
+                Change your password here. After saving, you&apos;ll be logged
+                out.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-2 text-xs">
