@@ -21,6 +21,7 @@ import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { setIsAddingPin } from "@/lib/redux/slices/globalSetting";
 import { closeSidebar } from "@/lib/redux/slices/sidebar";
+import FullImage from "../reusables/FullImage";
 
 const SpacesModal = () => {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ const SpacesModal = () => {
           e.stopPropagation();
         }}
         className={clsx(
-          `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md  bg-white rounded-mdshadow-lg w-[650px] drop-shadow-md transition-all z-[100] h-auto`
+          `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md  bg-white rounded-mdshadow-lg w-[650px] drop-shadow-md transition-all h-auto`
         )}
       >
         <div className="relative p-4 ">
@@ -75,12 +76,17 @@ const SpacesModal = () => {
                       Sanothimi, Kathmandu
                     </p>
                   </div>
-                  <Image
-                    fill
+                  <FullImage
                     src="https://ik.imagekit.io/ParkingManagement/pexels-natasha-filippovskaya-4665699_H98ERhCQJ.jpg?updatedAt=1700900379518"
-                    alt="Image"
-                    className="object-cover hover:scale-110 hover:brightness-50 brightness-75 transition-all z-10"
-                  />
+                    title="Full image"
+                  >
+                    <Image
+                      fill
+                      src="https://ik.imagekit.io/ParkingManagement/pexels-natasha-filippovskaya-4665699_H98ERhCQJ.jpg?updatedAt=1700900379518"
+                      alt="Image"
+                      className="object-cover hover:scale-110 hover:brightness-50 brightness-75 transition-all z-10"
+                    />
+                  </FullImage>
                 </div>
               </SwiperSlide>
             ))}
