@@ -12,7 +12,6 @@ import MapGl, {
 import "mapbox-gl/dist/mapbox-gl.css";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { IPin } from "@/types/pins";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setIsNotAddingPin,
@@ -20,13 +19,14 @@ import {
 } from "@/lib/redux/slices/globalSetting";
 import { RootState } from "@/lib/redux/store";
 import { Button } from "../ui/button";
+import { ISpace } from "@/types/space";
 
 const Direction = dynamic(() => import("./Direction"), { ssr: false });
 const DirectionFinder = dynamic(() => import("./DirectionFinder"), {
   ssr: false,
 });
 const ToggleMode = dynamic(() => import("./ToggleMode"), { ssr: false });
-const Popover = dynamic(() => import("./Popover"), { ssr: false });
+const SpaceInfo = dynamic(() => import("./SpaceInfo"), { ssr: false });
 const AddSpaceModal = dynamic(
   () => import("@/components/Modal/AddSpaceModal"),
   { ssr: false }
@@ -50,7 +50,7 @@ const Mapbox = () => {
     longitude: userLocation.longitude,
     zoom: 8,
   });
-  const [pins, setPins] = useState<any[]>();
+  const [spaces, setSpaces] = useState<ISpace[]>();
   const [currentPlaceId, setCurrentPlaceId] = useState<null | string>(null);
 
   const [direction, setDirection] = useState();
@@ -69,21 +69,21 @@ const Mapbox = () => {
       }
     };
 
-    const getPins = async () => {
+    const getSpaces = async () => {
       try {
         const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/pin`
+          `${process.env.NEXT_PUBLIC_SERVER_URL}/space`
         );
-        toast.success("Pins fetched!");
-        setPins(res.data);
+        toast.success("Spaces fetched!");
+        setSpaces(res.data);
       } catch (error) {
         console.error(error);
-        toast.error("Error fetching the Pins!");
+        toast.error("Error fetching the Spaces!");
       }
     };
 
     getLocation();
-    getPins();
+    getSpaces();
   }, []);
 
   const handleViewportChange = (nextViewport: any) => {
@@ -119,15 +119,15 @@ const Mapbox = () => {
       const destinationResponse = await axios.get(
         `${process.env.NEXT_PUBLIC_SERVER_URL}/pin/getPin/${currentPlaceId}`
       );
-      const destination: IPin = destinationResponse.data;
+      const destination: ISpace = destinationResponse.data;
 
       console.log({
         source: [userLocation.longitude, userLocation.latitude],
-        destination: [destination.long, destination.lat],
+        destination: [destination.lng, destination.lat],
       });
 
       const directionResponse =
-        await axios.get(`${process.env.NEXT_PUBLIC_MAPBOX_ENDPOINT}/directions/v5/mapbox/driving/${userLocation.longitude},${userLocation.latitude};${destination.long},${destination.lat}?alternatives=true&annotations=distance%2Cduration&geometries=geojson&language=en&overview=full&steps=true&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+        await axios.get(`${process.env.NEXT_PUBLIC_MAPBOX_ENDPOINT}/directions/v5/mapbox/driving/${userLocation.longitude},${userLocation.latitude};${destination.lng},${destination.lat}?alternatives=true&annotations=distance%2Cduration&geometries=geojson&language=en&overview=full&steps=true&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
           `);
 
       if (directionResponse.data.code.includes("NoRoute")) {
@@ -174,32 +174,30 @@ const Mapbox = () => {
           Please select the Area
         </span>
       )}
-      {pins?.map((pin: IPin) => (
-        <Fragment key={pin.id}>
-          <Marker
-            latitude={pin.lat}
-            longitude={pin.long}
-            color={pin.id === currentPlaceId ? "blue" : "red"}
-            onClick={() => {
-              !isUserAddingPin && handleMarkerClick(pin.id, pin.long, pin.lat);
-            }}
-          />
-          <Popover
-            id={pin.id}
-            rating={pin.rating}
-            desc={pin.desc}
-            lat={pin.lat}
-            long={pin.long}
-            title={pin.title}
-            createdAt={pin.createdAt}
-            updateAt={pin.updateAt}
-            visible={currentPlaceId === pin.id}
-            onClose={() => {
-              setCurrentPlaceId(null);
-            }}
-          />
-        </Fragment>
-      ))}
+      {spaces?.map((space: ISpace) => {
+        const { lng, lat, id } = space;
+        return (
+          <Fragment key={id}>
+            <Marker
+              latitude={lat}
+              longitude={lng}
+              color={id === currentPlaceId ? "blue" : "red"}
+              onClick={() => {
+                !isUserAddingPin && handleMarkerClick(id, lng, lat);
+              }}
+            />
+            {currentPlaceId === id && (
+              <SpaceInfo
+                {...space}
+                
+                onClose={() => {
+                  setCurrentPlaceId(null);
+                }}
+              />
+            )}
+          </Fragment>
+        );
+      })}
 
       <ScaleControl position="bottom-right" />
       <GeolocateControl
