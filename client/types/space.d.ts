@@ -1,3 +1,5 @@
+import { PayType, SpaceType } from "./enum";
+
 export interface iSpaceData {
     title: string;
     owner: string;
@@ -7,3 +9,23 @@ export interface iSpaceData {
     description: string;
     images: File[];
 }
+
+export interface ISpace {
+    id: string;
+    lng: number;
+    lat: number;
+    title: string;
+    ownerName: string;
+    spaceType: SpaceType;
+    amount: string;
+    payType: PayType;
+    desc: string;
+    creator: User;
+    creatorId: string;
+    images?: Image[];
+    comments?: Comment[];
+    rating?: Rating[];
+    createdAt: Date;
+    updatedAt: Date;
+}
+
