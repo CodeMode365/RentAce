@@ -18,9 +18,7 @@ const addSpace = asyncHandler(async (req: Request, res: Response) => {
             payType,
             creatorId: userId,
             images: {
-                connect: [
-                    images.map((img: any) => ({ id: img.id as string }))
-                ]
+                connect: images.map((img: any) => ({ id: img.id as string }))
             }
         }
     })

@@ -28,7 +28,7 @@ import FullImage from "@/components/reusables/FullImage";
 import { iSpaceData } from "@/types/space";
 import useMedia from "@/hooks/useMedia";
 
-interface iAcutalImages {
+export interface iAcutalImages {
   id: string;
   imageUrl: string;
   thumbnailUrl: string;
@@ -39,7 +39,7 @@ interface iProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   data: iSpaceData;
   setData: Dispatch<SetStateAction<iSpaceData>>;
-  handleSubmit: () => Promise<void>;
+  handleSubmit: (actualImages: iAcutalImages[]) => Promise<void>;
 }
 
 const Step2: FC<iProps> = ({ setCurrentStep, data, setData, handleSubmit }) => {
@@ -156,7 +156,9 @@ const Step2: FC<iProps> = ({ setCurrentStep, data, setData, handleSubmit }) => {
           className=" bg-sky-500 shadow-xl font-normal text-white hover:bg-sky-500 hover:text-white"
           size={"sm"}
           variant={"secondary"}
-          onClick={handleSubmit}
+          onClick={() => {
+            handleSubmit(actualImages);
+          }}
         >
           Save
         </Button>

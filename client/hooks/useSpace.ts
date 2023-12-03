@@ -2,19 +2,21 @@ import { iSpaceData } from "@/types/space";
 import axios from "axios";
 import useAuthKey from "./useAuthKey";
 import toast from "react-hot-toast";
+import { iAcutalImages } from "@/components/Modal/AddSpaceModal/Steps/Step2";
 
 export default function useSpace() {
     const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/space`;
     const token = useAuthKey()
 
-    const addSpace = async (data: iSpaceData) => {
+    const addSpace = async (data: iSpaceData, actualImages: iAcutalImages[]) => {
         const { owner: ownerName, amount, description: desc, images, payType, spaceType, title } = data
         return await axios
             .post(`${url}/add`,
                 {
                     lng: 23, lat: 140, ownerName, amount, desc,
                     spaceType: spaceType.toUpperCase(),
-                    payType: payType.toUpperCase(), title
+                    payType: payType.toUpperCase(), title,
+                    images: actualImages
                 },
                 {
                     headers: {
@@ -27,7 +29,7 @@ export default function useSpace() {
             })
             .catch((error) => {
                 toast.error("Failed to Register Space!");
-                return;
+                throw new Error(error.message);
             });
     }
 
