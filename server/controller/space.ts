@@ -4,7 +4,7 @@ import { prisma } from "../script"
 
 const addSpace = asyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params
-    const { lng, lat, title, desc, ownerName, spaceType, payType, amount } = req.body
+    const { lng, lat, title, desc, ownerName, spaceType, payType, amount, images } = req.body
 
     const newSpace = await prisma.space.create({
         data: {
@@ -16,7 +16,12 @@ const addSpace = asyncHandler(async (req: Request, res: Response) => {
             title,
             spaceType,
             payType,
-            creatorId: userId
+            creatorId: userId,
+            images: {
+                connect: [
+                    images.map((img: any) => ({ id: img.id as string }))
+                ]
+            }
         }
     })
 
