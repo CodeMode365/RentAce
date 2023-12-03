@@ -6,6 +6,7 @@ import {
 import cors, { CorsOptions } from "cors"
 import { prisma } from "./script"
 import { initializeSocketIO } from "./utils/socket.util";
+import routePaster from "./utils/routepaster.util";
 
 const app = express()
 const { server, io } = initializeSocketIO(app)
@@ -20,6 +21,7 @@ async function main() {
 
     app.use(express.json())
     app.use(cors(corsOptions))
+    app.use("/", routePaster)
     app.use("/api/v1/space", spaceRoute)
     app.use("/api/v1/auth", authRoute)
     app.use("/api/v1/media", mediaRoute)
