@@ -80,7 +80,8 @@ export default function AuthModal() {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     const { username, email, password } = data;
-    uploadMedia(image);
+    if (!isLogin) await uploadMedia(image);
+
     await auth({ username, email, password, isLogin })
       .then(() => {
         toast.success(`Successfully ${isLogin ? "Logged In" : "Registered"}!`);
