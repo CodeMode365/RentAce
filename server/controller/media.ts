@@ -10,13 +10,15 @@ const getAll = asyncHandler(async (req: Request, res: Response) => {
 
 const create = asyncHandler(async (req: Request, res: Response) => {
     const image = req.file;
+    const { userId } = req.params
+
 
     if (!image) {
         res.status(400).json({ message: "File missing!" })
         return
     }
-    const data = await createMedia(image)
-    res.status(201).json({ message: "Media Created", data })
+    const data = await createMedia(image, userId)
+    res.status(201).json(data)
 })
 
 
