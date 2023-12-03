@@ -28,18 +28,12 @@ import { cn } from "@/lib/utils";
 import { CheckIcon, MoveDown } from "lucide-react";
 import React, { Dispatch, FC, SetStateAction, useState } from "react";
 
-interface iData {
-  title: string;
-  owner: string;
-  spaceType: string;
-  amount: string;
-  payType: string;
-}
+import { iSpaceData } from "@/components/Modal/AddSpaceModal";
 
 interface iProps {
   setCurrentStep: Dispatch<SetStateAction<number>>;
-  data: iData;
-  setData: Dispatch<SetStateAction<iData>>;
+  data: iSpaceData;
+  setData: Dispatch<SetStateAction<iSpaceData>>;
 }
 
 const Step1: FC<iProps> = ({ setCurrentStep, data, setData }) => {

@@ -3,7 +3,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ImageDown, Trash2 } from "lucide-react";
 import Image from "next/image";
-import React, { ChangeEvent, FC, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  Dispatch,
+  FC,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 import {
   Navigation,
   Pagination,
@@ -18,18 +25,39 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import { Input } from "@/components/ui/input";
 import FullImage from "@/components/reusables/FullImage";
+import { iSpaceData } from "@/types/space";
+import useMedia from "@/hooks/useMedia";
+
+interface iAcutalImages {
+  id: string;
+  imageUrl: string;
+  thumbnailUrl: string;
+  createdAt: string;
+}
 
 interface iProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
+  data: iSpaceData;
+  setData: Dispatch<SetStateAction<iSpaceData>>;
+  handleSubmit: () => Promise<void>;
 }
 
-const Step2: FC<iProps> = ({ setCurrentStep }) => {
+const Step2: FC<iProps> = ({ setCurrentStep, data, setData, handleSubmit }) => {
+  const { uploadMedia } = useMedia();
+
+  const [actualImages, setActualImages] = useState<iAcutalImages[]>([]);
   const [images, setImages] = useState<FileList | null>(null);
   const [previews, setPreviews] = useState<string[]>([]);
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
 
+    if (files && files.length > 0) {
+      const res = await uploadMedia(files[0]);
+      if (res) {
+        setActualImages([...actualImages, res.data as iAcutalImages]);
+      }
+    }
     console.log(images);
     setImages((prev) =>
       prev ? ((prev as FileList).length > 0 ? prev : files) : files
@@ -38,7 +66,6 @@ const Step2: FC<iProps> = ({ setCurrentStep }) => {
     const selectedImage = e.target.files?.[0];
 
     if (selectedImage) {
-      // Create a preview URL for the selected image
       const imageURL = URL.createObjectURL(selectedImage);
       setPreviews((prev) => [...prev, imageURL]);
     }
@@ -53,6 +80,8 @@ const Step2: FC<iProps> = ({ setCurrentStep }) => {
         <Textarea
           placeholder="Describe your space here..."
           className="col-span-4 mt-4"
+          value={data.description}
+          onChange={(e) => setData({ ...data, description: e.target.value })}
         />
       </div>
 
@@ -92,16 +121,17 @@ const Step2: FC<iProps> = ({ setCurrentStep }) => {
               </div>
             </SwiperSlide>
 
-            {[...previews.toReversed()].map((prevu, ind) => (
+            {[...actualImages.toReversed()].map((img, ind) => (
               <SwiperSlide key={"new-space-slide" + ind}>
-                <div className="relative cursor-pointer h-40 min-w-max bg-sky-100 rounded-lg flex items-center justify-center overflow-hidden">
+                <div className="cursor-pointer h-40 min-w-max bg-sky-100 rounded-lg flex items-center justify-center overflow-hidden">
                   <button className="z-20 rounded-full text-rose-500 bg-white/80 absolute bottom-2 right-2 p-2 hover:bg-rose-500 hover:text-white transition-all">
                     <Trash2 size={18} />
                   </button>
-                  <FullImage src={prevu} title={"Full screen View"}>
+                  <FullImage src={img.imageUrl} title={"Full screen View"}>
                     <Image
                       fill
-                      src={prevu}
+                      sizes=""
+                      src={img.thumbnailUrl}
                       alt="Image"
                       className="object-cover hover:scale-110 hover:brightness-50 brightness-75 transition-all z-10"
                     />
@@ -126,7 +156,7 @@ const Step2: FC<iProps> = ({ setCurrentStep }) => {
           className=" bg-sky-500 shadow-xl font-normal text-white hover:bg-sky-500 hover:text-white"
           size={"sm"}
           variant={"secondary"}
-          // onClick={() => setCurrentStep((prevStep) => prevStep + 1)}
+          onClick={handleSubmit}
         >
           Save
         </Button>
