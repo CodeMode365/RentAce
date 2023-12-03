@@ -40,11 +40,17 @@ const createConversation = asyncHandler(async (req: Request, res: Response) => {
                 },
             ],
         },
+        select: {
+            participates: true,
+            id: true,
+            createdAt: true,
+            updatedAt: true
+        }
     });
 
 
     if (existingConversation) {
-        res.status(302).json(existingConversation)
+        res.status(200).json({ message: "Existing conversation", data: existingConversation })
         return
     }
 
@@ -57,11 +63,11 @@ const createConversation = asyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    res.status(201).json(newConversation)
+    res.status(201).json({ message: "Conversation created", data: newConversation })
 })
 
 const deleteConversation = asyncHandler(async (req: Request, res: Response) => {
-    const { conversationId } = req.params
+    const conversationId = req.params.id
 
     const existingConversation = await prisma.conversation.findFirst({
         where: {
