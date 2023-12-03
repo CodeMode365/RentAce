@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import { prisma } from "../script"
 import asyncHandler from "express-async-handler"
 import { compareWithHash, generateHash } from "../utils/Hash"
-import { generateToken } from "../utils/Token"
+import { generateToken } from "../utils/token.util"
 
 const register = asyncHandler(async (req: Request, res: Response) => {
     const { username, email, password } = req.body
