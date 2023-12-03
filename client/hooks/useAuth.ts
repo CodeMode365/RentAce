@@ -7,7 +7,6 @@ interface iData {
 
 export default function useAuth() {
   return async (data: iData) => {
-    console.log("loggin in");
     const { username, email, password, isLogin } = data;
     const path = isLogin ? "login" : "register";
     const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/${path}`;
