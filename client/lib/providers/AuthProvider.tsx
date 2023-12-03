@@ -1,17 +1,24 @@
 "use client";
 
-import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/store";
+import { setLoggedIn } from "../redux/slices/globalSetting";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const isLoggedIn = useSelector(
-    (state: RootState) => state.globalSetting.isLoggedIn
-  );
+  const dispatch = useDispatch<AppDispatch>();
 
-  if (isLoggedIn) {
-    return <>{children}</>;
-  }
+  useEffect(() => {
+    if (window) {
+      if (localStorage.getItem("token")) {
+        if (localStorage.getItem("isAuthorized")) {
+          dispatch(setLoggedIn());
+        }
+      }
+    }
+  }, []);
+
+  return <>{children}</>;
 };
 
 export default AuthProvider;
