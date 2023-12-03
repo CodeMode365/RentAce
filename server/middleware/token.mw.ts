@@ -11,7 +11,7 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
 
     const token = authKey.split(" ")[1];
     const decoded = verifyToken(token);
-
+    
     if (!decoded) {
         console.log('error decording')
         return res.status(500).json({ message: "Error validating Token!" })
