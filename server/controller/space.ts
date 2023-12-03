@@ -3,7 +3,8 @@ import asyncHandler from "express-async-handler"
 import { prisma } from "../script"
 
 const addSpace = asyncHandler(async (req: Request, res: Response) => {
-    const { lng, lat, title, desc, ownerName, spaceType, payType, userId, amount } = req.body
+    const { userId } = req.params
+    const { lng, lat, title, desc, ownerName, spaceType, payType, amount } = req.body
 
     const newSpace = await prisma.space.create({
         data: {
@@ -13,9 +14,9 @@ const addSpace = asyncHandler(async (req: Request, res: Response) => {
             desc,
             ownerName,
             title,
-            userId,
             spaceType,
-            payType
+            payType,
+            creatorId: userId
         }
     })
 
@@ -38,5 +39,26 @@ const getSpace = asyncHandler(async (req: Request, res: Response) => {
 
     res.status(200).json(pin)
 })
+// const updateSpace = asyncHandler(async (req: Request, res: Response) => {
+//     const {spaceId, lng, lat, } = req.params
+//     const pin = await prisma.space.update({
+//         where: {
+//             id: spaceId
+//         }
+//     })
 
-export { addSpace, getAllSpaces, getSpace }
+//     res.status(200).json(pin)
+// })
+
+const deleteSpace = asyncHandler(async (req: Request, res: Response) => {
+    const spaceId = req.params.id
+    const pin = await prisma.space.delete({
+        where: {
+            id: spaceId
+        }
+    })
+
+    res.status(200).json(pin)
+})
+
+export { addSpace, getAllSpaces, getSpace, deleteSpace }
