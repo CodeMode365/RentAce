@@ -7,7 +7,7 @@ const getMedias = async () => {
     return media
 }
 
-const createMedia = async (payload: Express.Multer.File) => {
+const createMedia = async (payload: Express.Multer.File, userId: string) => {
     const { buffer, originalname } = payload
     const data = await compressImage(buffer)
     const meta = await uploadToImageKit(data, originalname)
@@ -20,6 +20,7 @@ const createMedia = async (payload: Express.Multer.File) => {
         data: {
             imageUrl: url,
             thumbnailUrl: thumnbailUrl,
+            creatorId: userId
         }
     })
     return media
