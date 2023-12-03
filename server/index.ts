@@ -1,7 +1,14 @@
 import express, { Request, Response } from "express"
-import { mediaRoute, spaceRoute, authRoute, userRoute } from "./routes";
+import {
+    mediaRoute, spaceRoute, authRoute, userRoute,
+    messageRoute, notificationRoute, ratingRoute, commentRoute, conversationRoute
+} from "./routes";
 import cors, { CorsOptions } from "cors"
 import { prisma } from "./script"
+import { initializeSocketIO } from "./utils/socket.util";
+
+const app = express()
+const { server, io } = initializeSocketIO(app)
 
 async function main() {
     const PORT = process.env.PORT || 3500;
@@ -10,22 +17,30 @@ async function main() {
         methods: "*",
         credentials: true
     }
-    const app = express()
 
-        .use(express.json())
-        .use(cors(corsOptions))
-        .use("/api/v1/space", spaceRoute)
-        .use("/api/v1/auth", authRoute)
-        .use("/api/v1/media", mediaRoute)
-        .use("/api/v1/user", userRoute)
+    app.use(express.json())
+    app.use(cors(corsOptions))
+    app.use("/api/v1/space", spaceRoute)
+    app.use("/api/v1/auth", authRoute)
+    app.use("/api/v1/media", mediaRoute)
+    app.use("/api/v1/user", userRoute)
+    app.use("/api/v1/conversation", conversationRoute)
+    app.use("/api/v1/message", messageRoute)
+    app.use("/api/v1/notification", notificationRoute)
+    app.use("/api/v1/rating", ratingRoute)
+    app.use("/api/v1/comment", commentRoute)
 
-        .get("/", (req: Request, res: Response) => {
-            res.send("Hello world")
-        })
+    app.get("/", (req: Request, res: Response) => {
+        res.status(200).json({ message: "Hello world!" })
+    })
 
-        .listen(PORT, () => {
-            console.log(`Server on: http://localhost:${PORT}`)
-        })
+    app.all("*", (req: Request, res: Response) => {
+        res.status(404).json({ message: "Route not found!" })
+    })
+
+    server.listen(PORT, () => {
+        console.log(`Server on: http://localhost:${PORT}`)
+    })
 }
 
 
@@ -39,3 +54,5 @@ main()
         await prisma.$disconnect()
         process.exit(1)
     })
+
+export { io }
