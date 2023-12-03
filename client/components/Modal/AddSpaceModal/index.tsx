@@ -7,29 +7,35 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import Step1 from "./Steps/Step1";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Step2 from "./Steps/Step2";
-import Step3 from "./Steps/Step3";
 import clsx from "clsx";
+import { iSpaceData } from "@/types/space";
+import useSpace from "@/hooks/useSpace";
 
 export default function AddSpaceModal({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { addSpace } = useSpace();
   const [currentStep, setCurrentStep] = useState(0);
   const stepWrapperRef = useRef<HTMLDivElement | null>(null);
+  const [images, setImages] = useState<File[]>([]);
 
-  // useEffect(() => {
-  //   if (stepWrapperRef.current) {
-  //     stepWrapperRef.current.style.transform = `translateX(-${
-  //       currentStep * 200
-  //     }%)`;
-  //     console.log("changed modal");
-  //   }
-  //   console.log(currentStep, currentStep * 200);
-  //   setCurrentStep(0);
-  // }, [currentStep, setCurrentStep]);
+  const [data, setData] = useState<iSpaceData>({
+    title: "",
+    owner: "",
+    spaceType: "",
+    amount: "",
+    payType: "",
+    description: "",
+    images: [],
+  });
+
+  const handleSubmit = async () => {
+    await addSpace(data);
+  };
 
   return (
     <Dialog>
@@ -47,8 +53,21 @@ export default function AddSpaceModal({
           ref={stepWrapperRef}
           className={clsx(`flex transition-all w-auto`)}
         >
-          {currentStep == 0 && <Step1 setCurrentStep={setCurrentStep} />}
-          {currentStep == 1 && <Step2 setCurrentStep={setCurrentStep} />}
+          {currentStep == 0 && (
+            <Step1
+              setCurrentStep={setCurrentStep}
+              data={data}
+              setData={setData}
+            />
+          )}
+          {currentStep == 1 && (
+            <Step2
+              setCurrentStep={setCurrentStep}
+              data={data}
+              setData={setData}
+              handleSubmit={handleSubmit}
+            />
+          )}
         </div>
       </DialogContent>
     </Dialog>
