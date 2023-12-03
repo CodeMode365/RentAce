@@ -23,15 +23,26 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toPascalCase } from "@/lib/utilities/toPascalCase";
 import { cn } from "@/lib/utils";
 import { CheckIcon, MoveDown } from "lucide-react";
 import React, { Dispatch, FC, SetStateAction, useState } from "react";
 
-interface iProps {
-  setCurrentStep: Dispatch<SetStateAction<number>>;
+interface iData {
+  title: string;
+  owner: string;
+  spaceType: string;
+  amount: string;
+  payType: string;
 }
 
-const Step1: FC<iProps> = ({ setCurrentStep }) => {
+interface iProps {
+  setCurrentStep: Dispatch<SetStateAction<number>>;
+  data: iData;
+  setData: Dispatch<SetStateAction<iData>>;
+}
+
+const Step1: FC<iProps> = ({ setCurrentStep, data, setData }) => {
   const spacestype = [
     {
       value: "parking",
@@ -54,6 +65,7 @@ const Step1: FC<iProps> = ({ setCurrentStep }) => {
       label: "Other",
     },
   ];
+
   const paymentType = [
     { label: "Hourly", value: "hourlt" },
     { label: "Daily", value: "daily" },
@@ -63,6 +75,8 @@ const Step1: FC<iProps> = ({ setCurrentStep }) => {
   ];
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
+
+  const { title, owner, spaceType, amount, payType } = data;
 
   return (
     <div className={`grid gap-4 py-4 min-w-full`}>
@@ -76,6 +90,8 @@ const Step1: FC<iProps> = ({ setCurrentStep }) => {
           id="title"
           className="col-span-3"
           placeholder="e.g: Flat for rent for offices uses only."
+          value={title}
+          onChange={(e) => setData({ ...data, title: e.target.value })}
         />
       </div>
 
@@ -87,6 +103,8 @@ const Step1: FC<iProps> = ({ setCurrentStep }) => {
           id="owner"
           className="col-span-3"
           placeholder="e.g. Pabin Dhami"
+          value={owner}
+          onChange={(e) => setData({ ...data, owner: e.target.value })}
         />
       </div>
 
@@ -101,8 +119,8 @@ const Step1: FC<iProps> = ({ setCurrentStep }) => {
               aria-expanded={open}
               className="w-[200px] justify-between"
             >
-              {value
-                ? spacestype.find((space) => space.value === value)?.label
+              {data.spaceType
+                ? toPascalCase(data.spaceType)
                 : "Select space..."}
               <MoveDown size={14} />
             </Button>
@@ -124,6 +142,10 @@ const Step1: FC<iProps> = ({ setCurrentStep }) => {
                     onSelect={(currentValue) => {
                       setValue(currentValue === value ? "" : currentValue);
                       setOpen(false);
+                      setData({
+                        ...data,
+                        spaceType: toPascalCase(currentValue),
+                      });
                     }}
                   >
                     {space.label}
@@ -143,11 +165,23 @@ const Step1: FC<iProps> = ({ setCurrentStep }) => {
 
       <div className="grid grid-cols-4 items-center gap-4">
         <Label className="text-right">Amount</Label>
-        <Input id="fee" className="col-span-2" placeholder="e.g. Rs .20" />
+        <Input
+          id="fee"
+          className="col-span-2"
+          placeholder="e.g. Rs .20"
+          value={amount}
+          onChange={(e) => setData({ ...data, amount: e.target.value })}
+        />
 
-        <Select>
+        <Select
+          onValueChange={(selected) => {
+            setData({ ...data, payType: toPascalCase(selected) });
+          }}
+        >
           <SelectTrigger className="w-auto">
-            <SelectValue placeholder="Pay Type" />
+            <SelectValue
+              placeholder={`${data.payType ? data.payType : "Pay Type"}`}
+            />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
@@ -169,7 +203,7 @@ const Step1: FC<iProps> = ({ setCurrentStep }) => {
           variant={"secondary"}
           onClick={() => {
             console.log("next step load");
-            setCurrentStep((prevStep) => 1);
+            setCurrentStep(1);
           }}
         >
           Next
