@@ -1,29 +1,25 @@
-import { IPin } from "@/types/pins";
+import { ISpace } from "@/types/space";
 import React, { FC } from "react";
 import { FaStar } from "react-icons/fa6";
 import { Popup } from "react-map-gl";
 import TimeAgo from "react-timeago";
 
-interface iProps extends IPin {
-  visible: boolean;
+interface iProps extends ISpace {
   onClose: VoidFunction;
 }
 
-const Popover: FC<iProps> = ({
-  long,
+const SpaceInfo: FC<iProps> = ({
+  lng,
   lat,
   title,
   desc,
-  rating,
-  id,
   createdAt,
-  visible,
   onClose,
 }) => {
-  return visible ? (
+  return (
     <Popup
       latitude={lat}
-      longitude={long}
+      longitude={lng}
       closeButton={true}
       closeOnClick={false}
       anchor="left"
@@ -43,7 +39,7 @@ const Popover: FC<iProps> = ({
         <div className="pb-1 mb-2 border-b shadow-sm">
           <h3 className="font-bold text-slate-800">Rating</h3>
           <div className="flex">
-            {Array.from({ length: rating }).map((rate, index) => (
+            {Array.from({ length: 5 }).map((rate, index) => (
               <FaStar
                 className="text-yellow-500"
                 size={12}
@@ -66,7 +62,7 @@ const Popover: FC<iProps> = ({
         </div>
       </div>
     </Popup>
-  ) : null;
+  );
 };
 
-export default Popover;
+export default SpaceInfo;
