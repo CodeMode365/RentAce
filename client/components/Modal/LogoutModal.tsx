@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Button } from "../ui/button";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import { closeLogoutModal } from "@/lib/redux/slices/modal";
-import useLogout from "@/hooks/useLogout";
-import { closeSidebar } from "@/lib/redux/slices/sidebar";
 import { setLoggedOut } from "@/lib/redux/slices/globalSetting";
 
 const LogoutModal = () => {
@@ -21,7 +19,6 @@ const LogoutModal = () => {
 
   const logOut = () => {
     localStorage.clear();
-    dispatch(closeSidebar());
     dispatch(closeLogoutModal());
     dispatch(setLoggedOut());
   };

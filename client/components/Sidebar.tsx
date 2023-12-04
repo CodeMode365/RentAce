@@ -20,7 +20,6 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { closeSidebar } from "@/lib/redux/slices/sidebar";
 import {
   closeSettingsModal,
   closeSpacesModal,
@@ -28,11 +27,16 @@ import {
   openSettingsModal,
   openSpacesModal,
 } from "@/lib/redux/slices/modal";
-// import SpacesModal from "./Modal/SpacesModal";
 import { Badge } from "./ui/badge";
 import clsx from "clsx";
-// import SettingsModal from "./Modal/SettingsModal";
 import dynamic from "next/dynamic";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+} from "./ui/sheet";
 
 const SettingsModal = dynamic(() => import("./Modal/SettingsModal"));
 const SpacesModal = dynamic(() => import("./Modal/SpacesModal"));
@@ -57,10 +61,9 @@ const navLinks = [
   { name: "Settings", icon: Settings, isActive: true, openModal: "Settings" },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
-  const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isOpen);
   const { isSpacesModalOpen, isSettingsModalOpen } = useSelector(
     (state: RootState) => state.model
   );
@@ -86,107 +89,81 @@ const Sidebar = () => {
     }
   }
 
-  const closeSideNav = () => {
-    dispatch(closeSidebar());
-  };
-
   const Open_lotout_Modal = () => {
     dispatch(openLogoutModal());
   };
 
   return (
-    <div
-      className={`absolute left-0 top-0 w-screen h-screen bg-black/80 z-[98] ${
-        isSidebarOpen ? "block" : "hidden"
-      }`}
-      onClick={closeSideNav}
-    >
-      {isSpacesModalOpen && <SpacesModal />}
-      {isSettingsModalOpen && <SettingsModal />}
+    <Sheet>
+      <SheetTrigger asChild>{children}</SheetTrigger>
 
-      <section
-        className={`relative w-60 h-full bg-white transition-transform ease-in-out duration-300 ${
-          isSidebarOpen
-            ? "translate-x-0 opacity-100"
-            : "-translate-x-full opacity-0"
-        }`}
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
-      >
-        <div className="border-b mx-4 pt-3 pb-2 px-1 font-semibold text-lg shadow-sm flex items-center justify-between">
+      <SheetContent className="w-64" side={"left"}>
+        <SheetHeader className="border-b mx-4 pt-3 pb-2 px-1 font-semibold text-lg shadow-sm flex items-center justify-between">
           <h1>
             <span className="text-sky-500">Rent</span>Ace
           </h1>
-          <Button
-            variant={"secondary"}
-            size={"icon"}
-            className="bg-transparent hover:bg-transparent"
-            onClick={() => {
-              closeSideNav();
-            }}
-          >
-            <MdOutlineKeyboardDoubleArrowLeft
-              size={24}
-              className="text-gray-500"
-            />
-          </Button>
-        </div>
+        </SheetHeader>
+        <>
+          {isSettingsModalOpen && <SettingsModal />}
 
-        <ul className="my-2 mx-2">
-          {navLinks.map((link, index) => (
-            <li
-              key={"nav-item-" + index}
-              aria-disabled={link.isActive}
-              className={clsx(
-                `
+          {isSpacesModalOpen && <SpacesModal />}
+          <ul className="my-2 mx-2">
+            {navLinks.map((link, index) => (
+              <li
+                key={"nav-item-" + index}
+                aria-disabled={link.isActive}
+                className={clsx(
+                  `
               py-2 px-2 font text-xs rounded-sm mb-1 flex items-center cursor-pointer shadow-sm`,
-                activeIndex === index
-                  ? "bg-sky-400 text-white"
-                  : "text-gray-700",
-                !link.isActive && "text-gray-700/60 cursor-wait"
-              )}
-              onClick={() => {
-                link.isActive && setActiveIndex(index);
-                openSpecifiModal(link.openModal);
-              }}
-            >
-              <span className="mr-2">
-                <link.icon size={18} />
-              </span>
-              {link.name}
-              {!link.isActive && (
-                <span className="ml-auto">
-                  <Badge className="bg-rose-500 animate-bounce text-[10px] hover:bg-rose-500">
-                    soon
-                  </Badge>
+                  activeIndex === index
+                    ? "bg-sky-400 text-white"
+                    : "text-gray-700",
+                  !link.isActive && "text-gray-700/60 cursor-wait"
+                )}
+                onClick={() => {
+                  link.isActive && setActiveIndex(index);
+                  openSpecifiModal(link.openModal);
+                }}
+              >
+                <span className="mr-2">
+                  <link.icon size={18} />
                 </span>
-              )}
-            </li>
-          ))}
-        </ul>
+                {link.name}
+                {!link.isActive && (
+                  <span className="ml-auto">
+                    <Badge className="bg-rose-500 animate-bounce text-[10px] hover:bg-rose-500">
+                      soon
+                    </Badge>
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
 
-        <div className="absolute bottom-0 h-auto flex items-center border-t w-11/12 mx-auto py-2">
-          <Avatar className="mr-2 mx-2 shadow-md ">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col justify-center">
-            <h3 className="font-normal leading-tight text-sm">Ramesh Poudel</h3>
-            <span className=" text-xs leading-tight text-sky-500 animate-pulse delay-1000">
-              Admin
-            </span>
+          <div className="absolute bottom-0 h-auto flex items-center border-t w-11/12 mx-auto py-2">
+            <Avatar className="mr-2 mx-2 shadow-md ">
+              <AvatarImage src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col justify-center">
+              <h3 className="font-normal leading-tight text-sm">
+                Ramesh Poudel
+              </h3>
+              <span className=" text-xs leading-tight text-sky-500 animate-pulse delay-1000">
+                Admin
+              </span>
+            </div>
+            <div className="ml-6 h-full my-auto flex items-center text-rose-500">
+              <LogOut
+                size={20}
+                className="cursor-pointer"
+                onClick={() => Open_lotout_Modal()}
+              />
+            </div>
           </div>
-          <div className="ml-6 h-full my-auto flex items-center text-rose-500">
-            <LogOut
-              size={20}
-              className="cursor-pointer"
-              onClick={() => Open_lotout_Modal()}
-            />
-          </div>
-        </div>
-      </section>
-    </div>
+        </>
+      </SheetContent>
+    </Sheet>
   );
 };
 

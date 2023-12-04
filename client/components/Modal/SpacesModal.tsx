@@ -20,14 +20,12 @@ import { Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { setIsAddingPin } from "@/lib/redux/slices/globalSetting";
-import { closeSidebar } from "@/lib/redux/slices/sidebar";
 import FullImage from "../reusables/FullImage";
 
 const SpacesModal = () => {
   const dispatch = useDispatch();
 
   const startAddingPin = () => {
-    dispatch(closeSidebar());
     dispatch(setIsAddingPin());
   };
   return (
@@ -58,8 +56,8 @@ const SpacesModal = () => {
             navigation
             pagination={{ clickable: true }}
             scrollbar={{ draggable: true }}
-            onSwiper={(swiper) => console.log(swiper)}
-            onSlideChange={() => console.log("slide change")}
+            // onSwiper={(swiper) => console.log(swiper)}
+            // onSlideChange={() => console.log("slide change")}
             style={{ paddingBottom: "14px" }}
           >
             {Array.from({ length: 10 }).map((_, ind) => (

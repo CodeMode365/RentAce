@@ -1,8 +1,7 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { GlobalSettingReducer, ModalReducer, SidebarReducer } from "./slices";
+import { GlobalSettingReducer, ModalReducer } from "./slices";
 
 const rootReducer = combineReducers({
-    sidebar: SidebarReducer,
     model: ModalReducer,
     globalSetting: GlobalSettingReducer
 })
