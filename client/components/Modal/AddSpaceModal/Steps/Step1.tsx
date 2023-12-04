@@ -28,8 +28,7 @@ import { cn } from "@/lib/utils";
 import { CheckIcon, MoveDown } from "lucide-react";
 import React, { Dispatch, FC, SetStateAction, useState } from "react";
 
-import { iSpaceData } from "@/components/Modal/AddSpaceModal";
-
+import { iSpaceData } from "@/types/space";
 interface iProps {
   setCurrentStep: Dispatch<SetStateAction<number>>;
   data: iSpaceData;
@@ -113,8 +112,8 @@ const Step1: FC<iProps> = ({ setCurrentStep, data, setData }) => {
               aria-expanded={open}
               className="w-[200px] justify-between"
             >
-              {data.spaceType
-                ? toPascalCase(data.spaceType)
+              {spaceType
+                ? toPascalCase(spaceType)
                 : "Select space..."}
               <MoveDown size={14} />
             </Button>
@@ -174,7 +173,7 @@ const Step1: FC<iProps> = ({ setCurrentStep, data, setData }) => {
         >
           <SelectTrigger className="w-auto">
             <SelectValue
-              placeholder={`${data.payType ? data.payType : "Pay Type"}`}
+              placeholder={`${payType ? payType : "Pay Type"}`}
             />
           </SelectTrigger>
           <SelectContent>
