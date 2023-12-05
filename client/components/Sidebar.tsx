@@ -20,7 +20,6 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import { closeSidebar } from "@/lib/redux/slices/sidebar";
 import {
   closeSettingsModal,
   closeSpacesModal,
@@ -28,11 +27,16 @@ import {
   openSettingsModal,
   openSpacesModal,
 } from "@/lib/redux/slices/modal";
-// import SpacesModal from "./Modal/SpacesModal";
 import { Badge } from "./ui/badge";
 import clsx from "clsx";
-// import SettingsModal from "./Modal/SettingsModal";
 import dynamic from "next/dynamic";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHeader,
+  SheetTrigger,
+} from "./ui/sheet";
 
 const SettingsModal = dynamic(() => import("./Modal/SettingsModal"));
 const SpacesModal = dynamic(() => import("./Modal/SpacesModal"));
@@ -57,10 +61,9 @@ const navLinks = [
   { name: "Settings", icon: Settings, isActive: true, openModal: "Settings" },
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ children }: { children: React.ReactNode }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const dispatch = useDispatch<AppDispatch>();
-  const isSidebarOpen = useSelector((state: RootState) => state.sidebar.isOpen);
   const { isSpacesModalOpen, isSettingsModalOpen } = useSelector(
     (state: RootState) => state.model
   );
@@ -85,10 +88,6 @@ const Sidebar = () => {
         break;
     }
   }
-
-  const closeSideNav = () => {
-    dispatch(closeSidebar());
-  };
 
   const Open_lotout_Modal = () => {
     dispatch(openLogoutModal());
