@@ -1,6 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 
-const Header = () => {
+interface iProps {
+  title?: string;
+}
+
+const Header: FC<iProps> = ({ title }) => {
   const currentDate = new Date();
 
   const year = currentDate.getFullYear();
@@ -17,7 +21,7 @@ const Header = () => {
   return (
     <header className="flex w-11/12 mx-auto justify-between border-b py-2">
       <div className="">
-        <h2 className="text-md font-normal">Home</h2>
+        <h2 className="text-md font-normal">{title}</h2>
       </div>
       <div>
         <span className="text-xs">{fullDate}</span>
