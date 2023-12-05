@@ -1,3 +1,4 @@
+import Operation from "@/components/Operational/Operation";
 import dynamic from "next/dynamic";
 
 const TopBar = dynamic(() => import("@/components/TopBar"));
@@ -14,7 +15,8 @@ const Home = () => {
       <TopBar />
       <OptionBar />
 
-      <Sidebar />
+      {/* <Sidebar /> */}
+      <Operation />
       <LogoutModal />
       <div>
         <Mapbox />
