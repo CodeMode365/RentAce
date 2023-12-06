@@ -64,4 +64,19 @@ const deleteSpace = asyncHandler(async (req: Request, res: Response) => {
     res.status(200).json(pin)
 })
 
-export { addSpace, getAllSpaces, getSpace, deleteSpace }
+const getMySpaces = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params
+
+    const usersSpace = await prisma.user.findFirst({
+        where: {
+            id: userId
+        },
+        include: {
+            spaces: true
+        }
+    })
+
+    res.status(200).json(usersSpace)
+})
+
+export { addSpace, getAllSpaces, getSpace, deleteSpace, getMySpaces }
