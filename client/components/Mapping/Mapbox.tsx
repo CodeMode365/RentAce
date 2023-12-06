@@ -170,8 +170,8 @@ const Mapbox = () => {
       }}
     >
       {isUserAddingPin && !tempPinCoordinates && (
-        <span className=" absolute top-20 left-1/2 font-medium -translate-x-1/2 bg-white/80 p-2 rounded-md text-emerald-500 text-xl">
-          Please select the Area
+        <span className=" absolute top-20 left-1/2 animate-bounce -translate-x-1/2 bg-white p-2 rounded-md text-emerald-500 text-[16px] shadow-md">
+          Mark your space point
         </span>
       )}
       {spaces?.map((space: ISpace) => {
@@ -189,7 +189,6 @@ const Mapbox = () => {
             {currentPlaceId === id && (
               <SpaceInfo
                 {...space}
-                
                 onClose={() => {
                   setCurrentPlaceId(null);
                 }}
