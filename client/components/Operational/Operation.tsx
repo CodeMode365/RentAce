@@ -2,55 +2,17 @@
 
 import React, { useState } from "react";
 import Sidebar from "../Sidebar";
-// import SpacesModal from "../Modal/SpacesModal";
 import Home from "./Home";
-import { ScrollArea } from "../ui/scroll-area";
-import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import {
-  MdNotifications,
-  MdOutlineKeyboardDoubleArrowLeft,
-} from "react-icons/md";
-import {
-  Crown,
-  History,
-  LucideHome,
-  LogOut,
-  MessageSquare,
-  // Settings,
-  UserCircle2,
-} from "lucide-react";
-
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch, RootState } from "@/lib/redux/store";
-// import { closeSidebar } from "@/lib/redux/slices/sidebar";
-import {
-  closeSettingsModal,
-  closeSpacesModal,
-  openLogoutModal,
-  openSettingsModal,
-  openSpacesModal,
-} from "@/lib/redux/slices/modal";
-// import SpacesModal from "./Modal/SpacesModal";
-import { Badge } from "@/components/ui/badge";
-import clsx from "clsx";
-// import SettingsModal from "./Modal/SettingsModal";
-import dynamic from "next/dynamic";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/store";
 import Settings from "./Settings";
 import Profile from "./Profile";
 import Spaces from "./Spaces";
 
-const SettingsModal = dynamic(() => import("@/components/Modal/SettingsModal"));
-const SpacesModal = dynamic(() => import("@/components/Modal/SpacesModal"));
-
 const Operation = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const dispatch = useDispatch<AppDispatch>();
 
-  const Open_lotout_Modal = () => {
-    dispatch(openLogoutModal());
-  };
   const isDashboardOpen = useSelector(
     (state: RootState) => state.dashoard.isDashboardOpen
   );
