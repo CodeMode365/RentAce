@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -30,16 +30,7 @@ import {
 import { Badge } from "./ui/badge";
 import clsx from "clsx";
 import dynamic from "next/dynamic";
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTrigger,
-} from "./ui/sheet";
-
-const SettingsModal = dynamic(() => import("./Modal/SettingsModal"));
-const SpacesModal = dynamic(() => import("./Modal/SpacesModal"));
+import { closeDashboard } from "@/lib/redux/slices/dashboard";
 
 const navLinks = [
   { name: "Home", icon: Home, isActive: true, openModal: undefined },
@@ -61,12 +52,14 @@ const navLinks = [
   { name: "Settings", icon: Settings, isActive: true, openModal: "Settings" },
 ];
 
-const Sidebar = ({ children }: { children: React.ReactNode }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const Sidebar = ({
+  setActiveIndex,
+  activeIndex,
+}: {
+  setActiveIndex: Dispatch<SetStateAction<number>>;
+  activeIndex: number;
+}) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isSpacesModalOpen, isSettingsModalOpen } = useSelector(
-    (state: RootState) => state.model
-  );
 
   function closeAllModal() {
     dispatch(closeSettingsModal());
@@ -93,6 +86,9 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
     dispatch(openLogoutModal());
   };
 
+  const close = () => {
+    dispatch(closeDashboard());
+  };
   return (
     <section
       className={` bg-white transition-transform ease-in-out duration-300  h-full`}
@@ -109,7 +105,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           size={"icon"}
           className="bg-transparent hover:bg-transparent"
           onClick={() => {
-            closeSideNav();
+            close();
           }}
         >
           <MdOutlineKeyboardDoubleArrowLeft
@@ -162,7 +158,7 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
           </span>
         </div>
         <div className="ml-6 h-full my-auto flex items-center text-rose-500">
-          <LogOut
+          <LogOut   
             size={20}
             className="cursor-pointer"
             onClick={() => Open_lotout_Modal()}
