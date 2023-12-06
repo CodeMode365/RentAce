@@ -45,11 +45,11 @@ const TopBar = () => {
   const authOpener = useRef<HTMLButtonElement | null>(null);
 
   return (
-    <nav className="absolute top-0 left-0 w-screen h-10 flex justify-end py-4 z-50">
+    <nav className="absolute top-0 right-4 w-screen flex justify-end py-4 z-50">
       <Button
         variant={"secondary"}
         size={"icon"}
-        className="mx-1 rounded-full shadow-lg"
+        className="mx-1 rounded-full shadow-lg h-10 w-10 "
       >
         <CgMenuGridO size={24} />
       </Button>
@@ -57,7 +57,7 @@ const TopBar = () => {
       <Button
         variant={"secondary"}
         size={"icon"}
-        className="mx-1 rounded-full shadow-lg"
+        className="mx-1 rounded-full shadow-lg h-10 w-10 "
       >
         <HiDotsVertical size={24} />
       </Button>
