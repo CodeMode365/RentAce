@@ -225,7 +225,12 @@ const Mapbox = () => {
           >
             Cancel
           </Button>
-          <AddSpaceModal>
+          <AddSpaceModal
+            pos={{
+              lng: tempPinCoordinates.long,
+              lat: tempPinCoordinates.lat,
+            }}
+          >
             <Button
               className="z-2 absolute top-20 left-1/2  text-sky-600 shadow-xl border hover:bg-sky-500 hover:text-white"
               variant={"secondary"}

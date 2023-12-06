@@ -25,8 +25,13 @@ const intialData: iSpaceData = {
 
 export default function AddSpaceModal({
   children,
+  pos,
 }: {
   children: React.ReactNode;
+  pos: {
+    lng: number;
+    lat: number;
+  };
 }) {
   const { addSpace } = useSpace();
   const [currentStep, setCurrentStep] = useState(0);
@@ -35,7 +40,7 @@ export default function AddSpaceModal({
   const [data, setData] = useState<iSpaceData>(intialData);
 
   const handleSubmit = async (actualImages: iAcutalImages[]) => {
-    await addSpace(data, actualImages).then((res) => {
+    await addSpace(data, actualImages, pos).then((res) => {
       setData(intialData);
     });
   };

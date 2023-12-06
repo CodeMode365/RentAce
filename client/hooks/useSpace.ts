@@ -8,12 +8,12 @@ export default function useSpace() {
     const url = `${process.env.NEXT_PUBLIC_SERVER_URL}/space`;
     const token = useAuthKey()
 
-    const addSpace = async (data: iSpaceData, actualImages: iAcutalImages[]) => {
+    const addSpace = async (data: iSpaceData, actualImages: iAcutalImages[], pos: { lng: number, lat: number }) => {
         const { owner: ownerName, amount, description: desc, images, payType, spaceType, title } = data
         return await axios
             .post(`${url}/add`,
                 {
-                    lng: 23, lat: 140, ownerName, amount, desc,
+                    lng: pos.lng, lat: pos.lat, ownerName, amount, desc,
                     spaceType: spaceType.toUpperCase(),
                     payType: payType.toUpperCase(), title,
                     images: actualImages
