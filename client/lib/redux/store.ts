@@ -1,9 +1,10 @@
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
-import { GlobalSettingReducer, ModalReducer } from "./slices";
+import { GlobalSettingReducer, ModalReducer, Dashboard } from "./slices";
 
 const rootReducer = combineReducers({
     model: ModalReducer,
-    globalSetting: GlobalSettingReducer
+    globalSetting: GlobalSettingReducer,
+    dashoard: Dashboard
 })
 
 const store = configureStore({
