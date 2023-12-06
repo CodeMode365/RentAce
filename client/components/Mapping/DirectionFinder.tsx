@@ -16,7 +16,7 @@ const DirectionFinder: FC<iProps> = ({ isLoading, startFindingDirection }) => {
     <>
       <Tooltip>
         <TooltipTrigger
-          className="absolute top-14 right-3 text-sm bg-secondary text-primary-foreground hover:bg-secondary/90 h-10 px-4 py-2 rounded-full shadow-lg "
+          className="absolute top-[70px] right-4 text-sm bg-secondary text-primary-foreground hover:bg-secondary/90 h-10 px-4 py-2 rounded-full shadow-lg "
           disabled={isLoading}
           onClick={startFindingDirection}
         >
