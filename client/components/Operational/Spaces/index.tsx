@@ -14,6 +14,7 @@ import InfoCard from "../Home/InfoCard";
 import SpacesModal from "@/components/Modal/SpacesModal";
 import SpacesCarousel from "./SpacesCarousel";
 import { Button } from "@/components/ui/button";
+import TableData from "../Home/TableData";
 
 const Spaces = () => {
   return (
@@ -56,6 +57,8 @@ const Spaces = () => {
       <div className="w-full p-2 my-4 px-6">
         <SpacesCarousel />
       </div>
+
+      <TableData />
     </div>
   );
 };

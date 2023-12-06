@@ -5,11 +5,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Book, Heart, User } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { Scatter } from "react-chartjs-2";
+import Charts from "../Home/Charts";
 
 const Profile = () => {
   return (
     <div className="w-full h-full p-4 overflow-y-auto absolute ">
-      <Header />
+      <Header title="Profile" />
       <div className="w-full p-2 my-4 px-6 ">
         <Card className="relative bg-gradient-to-r from-indigo-200 via-purple-300 to-pink-500">
           <CardContent className="">
@@ -42,7 +44,7 @@ const Profile = () => {
           </CardContent>
         </Card>
 
-        <div className="grid grid-cols-12 mt-4 gap-8">
+        <div className="grid grid-cols-12 mt-4 gap-4">
           <Card className="col-span-4">
             <CardContent className="flex justify-evenly items-center mt-4">
               <div className="text-center ">
@@ -60,6 +62,10 @@ const Profile = () => {
             </CardContent>
           </Card>
           <Card className=" col-span-8"></Card>
+        </div>
+
+        <div className=" mt-4">
+          <Charts />
         </div>
       </div>
     </div>
