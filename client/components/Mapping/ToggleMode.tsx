@@ -22,7 +22,7 @@ const ToggleMode: FC<iProps> = ({ isDay, setIsDay }) => {
   return (
     <Button
       onClick={() => handleTogglMode()}
-      className="absolute z-50 right-3 top-[104px] rounded-full text-sky-600"
+      className="absolute z-50 right-4 top-[118px] rounded-full text-sky-600"
       variant={"secondary"}
     >
       {isDay ? <FaCloudMoon size={12} /> : <FaCloudSun size={12} />}
