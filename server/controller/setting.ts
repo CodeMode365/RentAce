@@ -40,6 +40,14 @@ const updatePassword = asyncHandler(async (req: Request, res: Response) => {
     res.status(200).json({ message: "Password Updated!" });
 })
 
+const updateGeneralInfo = asyncHandler(async (req: Request, res: Response) => {
+
+})
+
+const updateNotificationSetting = asyncHandler(async (req: Request, res: Response) => {
+
+})
 
 
-export { updatePassword }
+
+export { updatePassword, updateGeneralInfo, updateNotificationSetting }
