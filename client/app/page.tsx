@@ -14,7 +14,6 @@ const Home = () => {
       <TopBar />
       <OptionBar />
 
-      {/* <Sidebar /> */}
       <Operation />
       <LogoutModal />
       <div>
