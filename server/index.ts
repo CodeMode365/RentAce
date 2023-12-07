@@ -1,12 +1,8 @@
 import express, { Request, Response } from "express"
-import {
-    mediaRoute, spaceRoute, authRoute, userRoute,
-    messageRoute, notificationRoute, ratingRoute, commentRoute, conversationRoute
-} from "./routes";
 import cors, { CorsOptions } from "cors"
 import { prisma } from "./script"
 import { initializeSocketIO } from "./utils/socket.util";
-import routePaster from "./utils/routepaster.util";
+import allRoutes from "./routes"
 
 const app = express()
 const { server, io } = initializeSocketIO(app)
@@ -21,16 +17,8 @@ async function main() {
 
     app.use(express.json())
     app.use(cors(corsOptions))
-    app.use("/", routePaster)
-    app.use("/api/v1/space", spaceRoute)
-    app.use("/api/v1/auth", authRoute)
-    app.use("/api/v1/media", mediaRoute)
-    app.use("/api/v1/user", userRoute)
-    app.use("/api/v1/conversation", conversationRoute)
-    app.use("/api/v1/message", messageRoute)
-    app.use("/api/v1/notification", notificationRoute)
-    app.use("/api/v1/rating", ratingRoute)
-    app.use("/api/v1/comment", commentRoute)
+    app.use("/api/v1", allRoutes)
+
 
     app.get("/", (req: Request, res: Response) => {
         res.status(200).json({ message: "Hello world!" })
