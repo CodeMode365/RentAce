@@ -19,7 +19,7 @@ const SettingsModal = () => {
   return (
     <div
       className={clsx(
-        `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white rounded-mdshadow-lg drop-shadow-md transition-all z-[100] p-4`
+        `absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-white rounded-mdshadow-lg drop-shadow-md transition-all z-[10] p-4`
       )}
       onClick={(e) => {
         e.stopPropagation();
