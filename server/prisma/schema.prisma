@@ -16,6 +16,12 @@ model User {
   email    String   @unique @db.VarChar(50)
   password String   @db.VarChar(250)
   userType UserType @default(CANDIDATE)
+  phone    String   @db.VarChar(40)
+  Address  String   @db.VarChar(40)
+  Country  String   @db.VarChar(40)
+  State    String   @db.VarChar(40)
+  City     String   @db.VarChar(40)
+  Zip      String   @db.VarChar(40)
 
   Image         Image[]
   spaces        Space[]
@@ -70,6 +76,7 @@ model Space {
   amount    String
   payType   PayType   @default(MONTHLY)
   desc      String
+  status    Status    @default(PENDING)
 
   creator   User      @relation(fields: [creatorId], references: [id])
   creatorId String
@@ -140,4 +147,11 @@ enum PayType {
   WEEKLY
   MONTHLY
   ANNUALLY
+}
+
+enum Status {
+  PENDING
+  ACCEPTED
+  REJECTED
+  BLOCKED
 }
