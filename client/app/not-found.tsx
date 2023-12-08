@@ -8,10 +8,10 @@ const Error = () => {
       <div className="absolute left-1/2 top-[8%] -translate-x-1/2 text-center flex items-center flex-col">
         <div className=" my-14">
           <h2 className="font-bold text-3xl text-sky-500">
-            Sorry, the page wasn't found!
+            Sorry, the page wasn&apos;t found!
           </h2>
           <p className="text-md my-2 text-gray-500 font-medium">
-            Sorry, we couldn&apos;t find the page you&apos;re looking for.{" "}
+            Sorry&lsqo; we couldn&apos;t find the page you&apos;re looking for.{" "}
             <br />
             Perhaps you&apos;ve mistyped the URL? <br /> Be sure to check your
             spelling.
