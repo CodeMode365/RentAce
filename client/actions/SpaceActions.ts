@@ -46,16 +46,17 @@ export const getMySpaces = async (token: string) => {
     return data
 }
 
-export const getSingleSpace = async (token: string, spaceId: string) => {
-    const res = await fetch(`${url}/${spaceId}`, {
+export const getSingleSpace = async (token: string, spaceId: string, fulldetail: boolean = false) => {
+    const res = await fetch(`${url}/${spaceId}?fulldetail=${fulldetail}`, {
         method: "GET",
         headers: {
             "Content-type": "application/json",
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
         },
-        cache: "no-cache",
+        // cache: "no-cache",
         next: {
-            tags: ['spaces', `${spaceId}`]
+            tags: ['spaces', `${spaceId}`],
+            revalidate: 20,
         }
     })
     const data = await res.json()
