@@ -49,14 +49,17 @@ const getSpace = asyncHandler(async (req: Request, res: Response) => {
                     select: {
                         id: false,
                         password: false,
-                        userType: false
+                        userType: false,
+                        username: true,
+                        Image: true,
                     }
                 },
                 images: {
                     select: {
                         createdAt: false,
                         updatedAt: false,
-                        spaceId: false 
+                        spaceId: false,
+                        imageUrl:true,
                     }
                 },
                 rating: true,
