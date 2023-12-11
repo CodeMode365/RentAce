@@ -3,6 +3,17 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 import {
   MdNotifications,
@@ -21,6 +32,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import {
+  closeLogoutModal,
   closeSettingsModal,
   closeSpacesModal,
   openLogoutModal,
@@ -31,6 +43,7 @@ import { Badge } from "./ui/badge";
 import clsx from "clsx";
 import dynamic from "next/dynamic";
 import { closeDashboard } from "@/lib/redux/slices/dashboard";
+import { setLoggedOut } from "@/lib/redux/slices/globalSetting";
 
 const navLinks = [
   { name: "Home", icon: Home, isActive: true, openModal: undefined },
@@ -88,6 +101,13 @@ const Sidebar = ({
 
   const close = () => {
     dispatch(closeDashboard());
+  };
+
+  const logOut = () => {
+    localStorage.clear();
+    dispatch(closeLogoutModal());
+    dispatch(setLoggedOut());
+    dispatch(setLoggedOut());
   };
   return (
     <section
@@ -158,11 +178,30 @@ const Sidebar = ({
           </span>
         </div>
         <div className="ml-6 h-full my-auto flex items-center text-rose-500">
-          <LogOut   
-            size={20}
-            className="cursor-pointer"
-            onClick={() => Open_lotout_Modal()}
-          />
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <LogOut
+                size={20}
+                className="cursor-pointer"
+                // onClick={() => Open_lotout_Modal()}
+              />
+            </AlertDialogTrigger>
+            <AlertDialogContent className="">
+              <AlertDialogHeader>
+                <AlertDialogTitle>Do you want to logout?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Youa&apos;ll be logged out of the current account and is not
+                  retrival.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => {}}>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={() => logOut()}>
+                  Logout
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       </div>
     </section>
