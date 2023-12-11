@@ -1,10 +1,28 @@
-export { default as authRoute } from "./auth"
-export { default as spaceRoute } from "./space"
-export { default as mediaRoute } from "./media"
-export { default as userRoute } from "./user"
-export { default as commentRoute } from "./comments"
-export { default as conversationRoute } from "./conversation"
-export { default as messageRoute } from "./message"
-export { default as ratingRoute } from "./rating"
-export { default as notificationRoute } from "./notification"
-export { default as settingRoute } from "./setting"
+import { Router } from "express"
+
+import authRoute from "./auth"
+import spaceRoute from "./space"
+import mediaRoute from "./media"
+import commentRoute from "./comments"
+import conversationRoute from "./conversation"
+import messageRoute from "./message"
+import ratingRoute from "./rating"
+import notificationRoute from "./notification"
+import settingRoute from "./setting"
+import routePaster from "../utils/routepaster.util"
+
+
+const router = Router()
+
+router.use("/", routePaster)
+router.use("/space", spaceRoute)
+router.use("/auth", authRoute)
+router.use("/media", mediaRoute)
+router.use("/conversation", conversationRoute)
+router.use("/message", messageRoute)
+router.use("/notification", notificationRoute)
+router.use("/rating", ratingRoute)
+router.use("/comment", commentRoute)
+router.use("/settings", settingRoute)
+
+export default router
