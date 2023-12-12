@@ -54,7 +54,13 @@ const navLinks = [
     isActive: true,
     openModal: "Spaces",
   },
-  { name: "Chats", icon: MessageSquare, isActive: false, openModal: undefined },
+  {
+    name: "Chats",
+    icon: MessageSquare,
+    isActive: true,
+
+    openModal: undefined,
+  },
   {
     name: "Notifications",
     icon: MdNotifications,
