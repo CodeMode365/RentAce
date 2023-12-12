@@ -6,7 +6,7 @@ const router = Router()
 
     .post("/add", authenticateToken, addSpace)
     .get("/", getAllSpaces)
+    .get("/self", authenticateToken, getMySpaces)
     .get("/:id", getSpace)
-    .get("/self", getMySpaces)
 
 export default router
