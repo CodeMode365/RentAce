@@ -39,7 +39,7 @@ interface iProps {
   setCurrentStep: React.Dispatch<React.SetStateAction<number>>;
   data: iSpaceData;
   setData: Dispatch<SetStateAction<iSpaceData>>;
-  handleSubmit: (actualImages: iAcutalImages[]) => Promise<void>;
+  handleSubmit: (actualImages: iAcutalImages[]) => void;
 }
 
 const Step2: FC<iProps> = ({ setCurrentStep, data, setData, handleSubmit }) => {
