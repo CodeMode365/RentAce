@@ -5,9 +5,9 @@ const router = Router()
 
     .get("/", getAllComments)
     .get("/:id", getComment)
-    .post("/", createComment)
-    .patch("/:id", editComment)
-    .delete("/:id", deleteComment)
+    .post("/new", createComment)
+    .patch("/edit/:id", editComment)
+    .delete("/del/:id", deleteComment)
 
 
 export default router
