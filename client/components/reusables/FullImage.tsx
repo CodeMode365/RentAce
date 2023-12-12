@@ -16,8 +16,8 @@ const FullImage = ({
       <DialogTrigger>{children}</DialogTrigger>
       <DialogContent className="max-h-[80vh] w-auto max-w-[70vw] overflow-hidden bg-transparent shadow-none border-none pt-10">
         <Image
-          width={200}
-          height={200}
+          width={400}
+          height={400}
           src={src}
           alt={`${title} full image`}
           className="object-contain h-full w-full"
