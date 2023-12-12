@@ -19,7 +19,7 @@ const Direction: FC<IProps> = ({ direction }) => {
     <>
       {direction ? (
         <>
-          <div className="absolute top-5 left-1/2 -translate-x-1/2">
+          <div className="absolute top-5 left-1/2 -translate-x-1/2 z-20">
             {Array.from({ length: direction.routes.length }).map((_, index) => (
               <Button
                 key={"route-btn-" + index}
