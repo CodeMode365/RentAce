@@ -40,7 +40,7 @@ const GeneralTab = () => {
         <CardHeader>
           <CardTitle>General Info</CardTitle>
           <CardDescription>
-            Make changes to your account here. Click save when you're done.
+            Make changes to your account here. Click save when you&apos;re done.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
