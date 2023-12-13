@@ -14,12 +14,9 @@ import { Button } from "@/components/ui/button";
 import AutoInput from "./AutoInput";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/redux/store";
-import dynamic from "next/dynamic";
 import { openDashboard } from "@/lib/redux/slices/dashboard";
-import Operation from "./Operational/Operation";
 import ReusableTooltip from "./reusables/ReusableTooltip";
 
-const Sidebar = dynamic(() => import("@/components/Sidebar"));
 
 interface iProps {
   currentDirOption: "Driving" | "Cycling" | "Walking";
