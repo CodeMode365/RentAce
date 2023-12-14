@@ -25,6 +25,7 @@ export const Auth = async (data: iData) => {
             email,
             password,
         }),
+        cache: "no-cache"
     });
 
     const response = await res.json()
