@@ -67,6 +67,26 @@ export const getSingleSpace = async (token: string, spaceId: string, fulldetail:
     return data
 }
 
+export const deleteSpace = async (token: string, spaceId: string) => {
+    const res = await fetch(`${url}/remove/${spaceId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+        cache: "no-cache",
+        next: {
+            revalidate: 20,
+        }
+    })
+    const data = await res.json()
+    if (!res.ok) {
+        throw new Error(data.message)
+    }
+
+    return data
+}
+
 
 interface iPostingData extends Omit<iSpaceData, 'owner' | 'description' | 'images'> {
     desc: string;
