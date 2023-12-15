@@ -2,7 +2,7 @@
 
 import { iAcutalImages } from "@/components/Modal/AddSpaceModal/Steps/Step2"
 import { iSpaceData } from "@/types/space"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 
 const url = `${process.env.SERVER_URL}/space` as string
 
@@ -77,13 +77,15 @@ export const deleteSpace = async (token: string, spaceId: string) => {
         cache: "no-cache",
         next: {
             revalidate: 20,
-        }
+        },
     })
+
     const data = await res.json()
     if (!res.ok) {
         throw new Error(data.message)
     }
-
+    revalidateTag('spaces')
+    revalidatePath('/')
     return data
 }
 
@@ -115,6 +117,8 @@ export const postNewSpace = async (token: string, postingData: iPostingData, act
         throw new Error(data.message)
     }
 
+    revalidateTag('spaces')
+    revalidatePath('/')
     // revalidatePath(['mySpaces', 'allSpaces'])
     return data
 }
