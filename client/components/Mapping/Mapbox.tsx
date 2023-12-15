@@ -10,16 +10,23 @@ import MapGl, {
   NavigationControl,
 } from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
-import axios from "axios";
+
 import toast from "react-hot-toast";
+
 import { useDispatch, useSelector } from "react-redux";
+import useAuthKey from "@/hooks/useAuthKey";
+import { getAllSpaces, getSingleSpace } from "@/actions/SpaceActions";
+import { getDirections } from "@/actions/MapActions";
+
 import {
   setIsNotAddingPin,
   stopAppLoading,
 } from "@/lib/redux/slices/globalSetting";
 import { RootState } from "@/lib/redux/store";
-import { Button } from "../ui/button";
 import { ISpace } from "@/types/space";
+import { Button } from "../ui/button";
+import OptionBar from "../OptionBar";
+import RefetchData from "./RefetchData";
 
 const Direction = dynamic(() => import("./Direction"), { ssr: false });
 const DirectionFinder = dynamic(() => import("./DirectionFinder"), {
@@ -33,6 +40,7 @@ const AddSpaceModal = dynamic(
 );
 
 const Mapbox = () => {
+  const token = useAuthKey();
   const dispatch = useDispatch();
   const isUserAddingPin = useSelector(
     (state: RootState) => state.globalSetting.isAddingPin
@@ -56,6 +64,20 @@ const Mapbox = () => {
   const [direction, setDirection] = useState();
   const [isLoading, setIsLoading] = useState(false);
   const [isDay, setIsDay] = useState(true);
+  const [currentDirOption, setCurrentDirOption] = useState<
+    "Driving" | "Cycling" | "Walking"
+  >("Driving");
+
+  const getSpaces = () => {
+    getAllSpaces(token)
+      .then((res) => {
+        toast.success(res.message);
+        setSpaces(res.data);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
+  };
 
   useEffect(() => {
     const getLocation = () => {
@@ -68,22 +90,9 @@ const Mapbox = () => {
         alert("Please turn on your location!");
       }
     };
-
-    const getSpaces = async () => {
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_SERVER_URL}/space`
-        );
-        toast.success("Spaces fetched!");
-        setSpaces(res.data);
-      } catch (error) {
-        console.error(error);
-        toast.error("Error fetching the Spaces!");
-      }
-    };
+    getSpaces();
 
     getLocation();
-    getSpaces();
   }, []);
 
   const handleViewportChange = (nextViewport: any) => {
@@ -116,28 +125,23 @@ const Mapbox = () => {
   const findDirection = async () => {
     setIsLoading(true);
     try {
-      const destinationResponse = await axios.get(
-        `${process.env.NEXT_PUBLIC_SERVER_URL}/pin/getPin/${currentPlaceId}`
+      const destinationResponse = await getSingleSpace(
+        token,
+        currentPlaceId as string
       );
       const destination: ISpace = destinationResponse.data;
+      const directionResponse = await getDirections(
+        { lng: userLocation.longitude, lat: userLocation.latitude },
+        { lng: destination.lng, lat: destination.lat }
+      );
 
-      console.log({
-        source: [userLocation.longitude, userLocation.latitude],
-        destination: [destination.lng, destination.lat],
-      });
-
-      const directionResponse =
-        await axios.get(`${process.env.NEXT_PUBLIC_MAPBOX_ENDPOINT}/directions/v5/mapbox/driving/${userLocation.longitude},${userLocation.latitude};${destination.lng},${destination.lat}?alternatives=true&annotations=distance%2Cduration&geometries=geojson&language=en&overview=full&steps=true&access_token=${process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-          `);
-
-      if (directionResponse.data.code.includes("NoRoute")) {
+      if (directionResponse.code.includes("NoRoute")) {
         toast.error(directionResponse.data.message);
         return;
       }
-
-      setDirection(directionResponse.data);
+      setDirection(directionResponse);
     } catch (error: any) {
-      toast.error("Failed to fetch Direction!");
+      toast.error("Failed fetching Direction!");
     } finally {
       setIsLoading(false);
     }
@@ -169,6 +173,11 @@ const Mapbox = () => {
         setAppIsLoaded();
       }}
     >
+      <OptionBar
+        currentDirOption={currentDirOption}
+        setCurrentDirOption={setCurrentDirOption}
+      />
+
       {isUserAddingPin && !tempPinCoordinates && (
         <span className=" absolute top-20 left-1/2 animate-bounce -translate-x-1/2 bg-white p-2 rounded-md text-emerald-500 text-[16px] shadow-md">
           Mark your space point
@@ -188,7 +197,7 @@ const Mapbox = () => {
             />
             {currentPlaceId === id && (
               <SpaceInfo
-                {...space}
+                props={space}
                 onClose={() => {
                   setCurrentPlaceId(null);
                 }}
@@ -250,6 +259,7 @@ const Mapbox = () => {
 
       {direction && <Direction direction={direction} />}
       <ToggleMode setIsDay={setIsDay} isDay={isDay} />
+      <RefetchData onClick={() => getSpaces()} />
     </MapGl>
   );
 };
