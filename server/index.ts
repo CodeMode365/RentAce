@@ -3,6 +3,7 @@ import cors, { CorsOptions } from "cors"
 import { prisma } from "./script"
 import { initializeSocketIO } from "./utils/socket.util";
 import allRoutes from "./routes"
+import { limiter } from "./utils/reqlimiter.util";
 
 const app = express()
 const { server, io } = initializeSocketIO(app)
@@ -16,6 +17,7 @@ async function main() {
     }
 
     app.use(express.json())
+    app.use(limiter)
     app.use(cors(corsOptions))
     app.use("/api/v1", allRoutes)
 
