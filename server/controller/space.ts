@@ -59,7 +59,7 @@ const getSpace = asyncHandler(async (req: Request, res: Response) => {
                         createdAt: false,
                         updatedAt: false,
                         spaceId: false,
-                        imageUrl:true,
+                        imageUrl: true,
                     }
                 },
                 rating: true,
@@ -88,25 +88,43 @@ const getSpace = asyncHandler(async (req: Request, res: Response) => {
 // })
 
 const deleteSpace = asyncHandler(async (req: Request, res: Response) => {
-    const spaceId = req.params.id
-    const space = await prisma.space.delete({
+    const { id: spaceId, userId } = req.params
+
+    console.log(spaceId, userId)
+
+    const existSpace = await prisma.space.findFirst({
         where: {
+            AND: [
+                { id: spaceId },
+                { creatorId: userId }
+            ]
+        }
+    })
+
+    if (!existSpace) {
+        res.status(401).json({ message: "Unauthorized action!" })
+        return
+    }
+
+    await prisma.space.delete({
+        where: {
+
             id: spaceId
         }
     })
 
-    res.status(200).json(space)
+    res.status(200).json({ message: "Space deleted!" })
 })
 
 const getMySpaces = asyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params
 
-    const spaces = await prisma.user.findFirst({
+    const spaces = await prisma.space.findMany({
         where: {
-            id: userId
+            creatorId: userId
         },
-        select: {
-            spaces: true
+        include: {
+            images: true
         }
     })
 
