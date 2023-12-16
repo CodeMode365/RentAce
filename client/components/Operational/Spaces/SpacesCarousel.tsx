@@ -67,7 +67,6 @@ const SpacesCarousel = () => {
 
   useEffect(() => {
     getSpaces();
-
   }, []);
   return (
     <Card className="p-4 shadow-md">
@@ -135,10 +134,10 @@ const SpacesCarousel = () => {
                   </p>
                 </div>
                 {spc.images && (
-                  <FullImage src={spc.images[0].imageUrl} title="Full image">
+                  <FullImage src={spc?.images[0]?.imageUrl} title="Full image">
                     <Image
                       fill
-                      src={spc.images[0].imageUrl}
+                      src={spc?.images[0]?.imageUrl}
                       alt="Image"
                       className="object-cover hover:scale-110 hover:brightness-50 brightness-75 transition-all z-[1]"
                     />
