@@ -1,8 +1,6 @@
 "use client";
 
 import React, { useState, useCallback } from "react";
-import useAuth from "@/hooks/useAuth";
-
 import toast from "react-hot-toast";
 import { z } from "zod";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -22,9 +20,9 @@ import {
 import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { setLoggedIn } from "@/lib/redux/slices/globalSetting";
+import { Auth } from "@/actions/AuthActions";
 
 export default function AuthModal() {
-  const auth = useAuth();
   const { uploadMedia } = useMedia();
   const dispatch = useDispatch();
 
@@ -82,15 +80,17 @@ export default function AuthModal() {
     const { username, email, password } = data;
     if (!isLogin) await uploadMedia(image);
 
-    await auth({ username, email, password, isLogin })
-      .then(() => {
+    await Auth({ username, email, password, isLogin })
+      .then((res) => {
+        console.log(res, "responded");
         toast.success(`Successfully ${isLogin ? "Logged In" : "Registered"}!`);
+        localStorage.setItem("token", res.token);
+        localStorage.setItem("isAuthorized", JSON.stringify(true));
         setTimeout(() => {
           dispatch(setLoggedIn());
         }, 1000);
-        resetForm();
       })
-      .catch((error: Error) => {
+      .catch((error) => {
         toast.error(error.message);
       });
   };
