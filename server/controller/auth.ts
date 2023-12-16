@@ -17,9 +17,12 @@ const register = asyncHandler(async (req: Request, res: Response) => {
         return
     }
 
+    const userInfoStore = await prisma.userInfo.create({ data: {}, select: { id: true } },)
+
     const newUser = await prisma.user.create({
         data: {
-            username, email, password: hashedPassword
+            username, email, password: hashedPassword,
+            userInfoId: userInfoStore.id
         }, select: {
             id: true,
             email: true,
