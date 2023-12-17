@@ -11,7 +11,9 @@ import { useRef, useState } from "react";
 import Step2, { iAcutalImages } from "./Steps/Step2";
 import clsx from "clsx";
 import { iSpaceData } from "@/types/space";
-import useSpace from "@/hooks/useSpace";
+import { postNewSpace } from "@/actions/SpaceActions";
+import useAuthKey from "@/hooks/useAuthKey";
+import toast from "react-hot-toast";
 
 const intialData: iSpaceData = {
   title: "",
@@ -33,16 +35,41 @@ export default function AddSpaceModal({
     lat: number;
   };
 }) {
-  const { addSpace } = useSpace();
+  const token = useAuthKey();
   const [currentStep, setCurrentStep] = useState(0);
   const stepWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const [data, setData] = useState<iSpaceData>(intialData);
 
-  const handleSubmit = async (actualImages: iAcutalImages[]) => {
-    await addSpace(data, actualImages, pos).then((res) => {
-      setData(intialData);
-    });
+  const handleSubmit = (actualImages: iAcutalImages[]) => {
+    const {
+      amount,
+      description: desc,
+      owner: ownerName,
+      payType,
+      spaceType,
+      title,
+    } = data;
+    postNewSpace(
+      token,
+      {
+        amount,
+        desc,
+        ownerName,
+        payType,
+        spaceType,
+        title,
+      },
+      actualImages,
+      pos
+    )
+      .then((res) => {
+        toast.success(res.message);
+        setData(intialData);
+      })
+      .catch((error) => {
+        toast.error(error.message);
+      });
   };
 
   return (
