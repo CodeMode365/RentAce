@@ -1,4 +1,3 @@
-import Operation from "@/components/Operational/Operation";
 import dynamic from "next/dynamic";
 
 const TopBar = dynamic(() => import("@/components/TopBar"));
@@ -11,7 +10,6 @@ const Home = () => {
     <>
       <TopBar />
 
-      <Operation />
       <div>
         <Mapbox />
       </div>
