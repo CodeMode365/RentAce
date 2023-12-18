@@ -11,12 +11,20 @@ import {
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import InfoCard from "../Home/InfoCard";
-import SpacesModal from "@/components/Modal/SpacesModal";
 import SpacesCarousel from "./SpacesCarousel";
 import { Button } from "@/components/ui/button";
 import TableData from "../Home/TableData";
+import { useDispatch } from "react-redux";
+import { setIsAddingPin } from "@/lib/redux/slices/globalSetting";
+import { closeDashboard } from "@/lib/redux/slices/dashboard";
 
 const Spaces = () => {
+  const dispatch = useDispatch();
+
+  const startAddingPin = () => {
+    dispatch(closeDashboard());
+    dispatch(setIsAddingPin());
+  };
   return (
     <div className="w-full h-full p-4 overflow-y-auto absolute ">
       <Header title="Spaces" />
@@ -30,7 +38,9 @@ const Spaces = () => {
             </CardTitle>
             <CardDescription>
               Now you can post new spaces from here!
-              <Button className="-mb-4 my-2">Post Space</Button>
+              <Button className="-mb-4 my-2" onClick={startAddingPin}>
+                Post Space
+              </Button>
             </CardDescription>
           </CardHeader>
           <CardContent className="">
