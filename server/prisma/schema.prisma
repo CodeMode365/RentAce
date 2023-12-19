@@ -22,7 +22,7 @@ model User {
 
   Image         Image[]
   spaces        Space[]
-  messages      Messages[]
+  messages      Message[]
   conversations Conversation[]
   notification  Notification[]
   comments      Comment[]
@@ -34,18 +34,18 @@ model User {
 
 model Conversation {
   id           String     @id @default(uuid())
-  participates User[]
-  messages     Messages[]
+  participates User[] 
+  messages     Message[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model Messages {
+model Message {
   id             String       @id @default(uuid())
   content        String
   sender         User         @relation(fields: [senderId], references: [id])
-  receiver       Conversation @relation(fields: [conversationId], references: [id])
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
   senderId       String
   conversationId String
 
