@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HiDotsVertical } from "react-icons/hi";
 import { CgMenuGridO } from "react-icons/cg";
@@ -43,6 +43,11 @@ const TopBar = () => {
   // };
 
   const authOpener = useRef<HTMLButtonElement | null>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    setIsLoaded(true);
+  }, []);
 
   return (
     <nav className="absolute top-0 right-4 w-screen flex justify-end py-4 z-20">
@@ -62,7 +67,7 @@ const TopBar = () => {
         <HiDotsVertical size={24} />
       </Button>
 
-      {!isUserLoggedIn && <AuthModal />}
+      {!isUserLoggedIn && isLoaded && <AuthModal />}
     </nav>
   );
 };
