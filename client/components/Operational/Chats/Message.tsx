@@ -16,7 +16,7 @@ const Message: FC<iProps> = ({ senderType, content }) => {
       } my-1`}
     >
       <div
-        className={`max-w-[60%] bg-sky-200 h-auto rounded-lg p-2 
+        className={`max-w-[60%] h-auto rounded-lg p-2 
           ${
             isSender()
               ? "bg-sky-200 rounded-br-none"
