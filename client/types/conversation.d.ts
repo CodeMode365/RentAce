@@ -1,7 +1,9 @@
+import { IUser } from "./user";
+import { IMessage } from "./message"
 export interface IConversation {
     id: string;
-    participates: User[];
-    messages: Messages[];
+    participates: IUser[];
+    messages: IMessage[];
     createdAt: Date;
     updatedAt: Date;
 }
