@@ -6,7 +6,7 @@ import { verifyToken } from "../utils/token.util";
 const router = Router()
 
     .get("/:conversationId", authenticateToken, getMessages)
-    .post('/', authenticateToken, sendMessage)
+    .post('/send', authenticateToken, sendMessage)
     .delete("/:messageId", deleteMessage)
     .patch("/:messageId", editMessage)
 
