@@ -5,6 +5,7 @@ interface IGlobalState {
     isAppLoading: boolean,
     isAddingPin: boolean,
     isLoggedIn: boolean,
+    activeChat: string | null
 }
 
 const initialState: IGlobalState = {
@@ -12,6 +13,7 @@ const initialState: IGlobalState = {
     isAppLoading: true,
     isAddingPin: false,
     isLoggedIn: false,
+    activeChat: null
 }
 
 const globalSettingSlice = createSlice({
@@ -26,8 +28,9 @@ const globalSettingSlice = createSlice({
         setIsNotAddingPin: (state) => ({ ...state, isAddingPin: false }),
         setLoggedIn: (state) => ({ ...state, isLoggedIn: true }),
         setLoggedOut: (state) => ({ ...state, isLoggedIn: false }),
+        setActiveChat: (state, action) => ({ ...state, activeChat: action.payload.chatId })
     }
 })
 
-export const { toggleColorMode, setAppLoading, stopAppLoading, setIsAddingPin, setIsNotAddingPin, setLoggedIn, setLoggedOut } = globalSettingSlice.actions
+export const { toggleColorMode, setAppLoading, stopAppLoading, setIsAddingPin, setIsNotAddingPin, setLoggedIn, setLoggedOut, setActiveChat } = globalSettingSlice.actions
 export default globalSettingSlice.reducer
