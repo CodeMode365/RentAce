@@ -35,3 +35,16 @@ export const Auth = async (data: iData) => {
 
     return response;
 }
+
+
+export const GetMyInfo = async (token: string) => {
+    const res = await fetch(`${endpoint}/auth/my-info`, {
+        method: "GET",
+    })
+
+    const response = await res.json()
+    if (!res.ok) {
+        throw new Error(response.message)
+    }
+    return response
+}
