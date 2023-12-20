@@ -62,4 +62,18 @@ const login = asyncHandler(async (req: Request, res: Response) => {
 
 })
 
-export { register, login }
+const myInfo = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params
+
+    const findUser = await prisma.user.findFirst({
+        where: {
+            id: userId
+        }
+    })
+
+    console.log("Users", findUser)
+
+    res.status(200).send(findUser)
+})
+
+export { register, login, myInfo }
