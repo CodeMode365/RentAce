@@ -4,7 +4,8 @@ import { prisma } from "../script"
 
 
 const createConversation = asyncHandler(async (req: Request, res: Response) => {
-    const { senderId, receiverId } = req.body;
+    const { receiverId } = req.body;
+    const senderId = req.params.userId
 
 
     const existingConversation = await prisma.conversation.findFirst({
@@ -107,20 +108,38 @@ const findConversations = asyncHandler(async (req: Request, res: Response) => {
     res.status(200).json(existingConversations)
 })
 
-const getUsersConversation = asyncHandler(async (req: Request, res: Response) => {
-    const { userId } = req.body
+const getMyConversations = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params
 
+
+    console.log("hello")
     const usersConversations = await prisma.conversation.findMany({
         where: {
             participates: {
                 some: {
                     id: userId
                 }
+            },
+        },
+        include: {
+            participates: {
+                where: {
+                    id: {
+                        not: userId
+                    }
+                }
+            },
+            messages: {
+                take: 1,
+                orderBy: {
+                    createdAt: "desc"
+                }
             }
-        }
+        },
+
     })
 
     res.status(200).json(usersConversations)
 })
 
-export { createConversation, deleteConversation, findConversations, getUsersConversation }
+export { createConversation, deleteConversation, findConversations, getMyConversations }
