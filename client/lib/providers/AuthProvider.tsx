@@ -1,22 +1,47 @@
 "use client";
 
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/store";
-import { setLoggedIn } from "../redux/slices/globalSetting";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../redux/store";
+import {
+  setLoggedIn,
+  setLoggedOut,
+  setUserInfo,
+} from "../redux/slices/globalSetting";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { isLoggedIn } = useSelector((state: RootState) => state.globalSetting);
 
   useEffect(() => {
-    if (window) {
-      if (localStorage.getItem("token")) {
-        if (localStorage.getItem("isAuthorized")) {
-          dispatch(setLoggedIn());
+    async function authenticate() {
+      try {
+        if (window) {
+          if (localStorage.getItem("token")) {
+            if (localStorage.getItem("isAuthorized")) {
+              const res = await fetch(
+                `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/my-info`,
+                {
+                  method: "GET",
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                }
+              );
+
+              const response = await res.json();
+              dispatch(setLoggedIn());
+              dispatch(setUserInfo({ userInfo: response }));
+              console.log(response)
+            }
+          }
         }
+      } catch (error) {
+        dispatch(setLoggedOut());
       }
     }
-  }, []);
+    authenticate();
+  }, [isLoggedIn]);
 
   return <>{children}</>;
 };
