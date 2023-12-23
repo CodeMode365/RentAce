@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import Message from "./Message";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -12,20 +12,22 @@ import toast from "react-hot-toast";
 import { IMessage } from "@/types/message";
 import { RootState } from "@/lib/redux/store";
 import { useSelector } from "react-redux";
+import { IConversation } from "@/types/conversation";
 
 interface iProps {
-  activeChatId: string;
+  activeChat: IConversation;
 }
 
-const ChattingArea: FC<iProps> = ({ activeChatId }) => {
+const ChattingArea: FC<iProps> = ({ activeChat }) => {
   const token = useAuthKey();
   const [page, setPage] = useState(1);
   const [messages, setMessages] = useState<IMessage[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const { userInfo } = useSelector((state: RootState) => state.globalSetting);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const getUsersMessage = async () => {
-    await getMessages(token, activeChatId, page)
+    await getMessages(token, activeChat.id, page)
       .then((res) => {
         setMessages(res);
       })
@@ -35,16 +37,24 @@ const ChattingArea: FC<iProps> = ({ activeChatId }) => {
   };
   useEffect(() => {
     getUsersMessage();
-  }, [activeChatId]);
+  }, [activeChat.id]);
 
   const sendCurrentMessage = async () => {
-    await sendMessage(token, inputMessage, activeChatId)
+    await sendMessage(token, inputMessage, activeChat.id)
       .then((res) => {
         toast.success(res.message);
         setInputMessage("");
       })
       .catch((error) => toast.error(error.message));
   };
+
+  useEffect(() => {
+    if (scrollAreaRef.current) {
+      console.log(scrollAreaRef.current.scrollTop);
+      scrollAreaRef.current.scrollTo(0, scrollAreaRef.current.scrollHeight);
+      console.log(scrollAreaRef.current.scrollTop);
+    }
+  }, [messages]);
 
   return (
     <div className="flex flex-col h-full">
@@ -59,13 +69,16 @@ const ChattingArea: FC<iProps> = ({ activeChatId }) => {
         </div>
         <div>
           <h2 className="text-lg text-gray-800 flex flex-col">
-            <span>{}</span>
+            <span>{activeChat?.participates[0]?.username}</span>
             <span className="text-rose-500 text-sm">Busy</span>
           </h2>
         </div>
       </div>
 
-      <ScrollArea className="flex-1 overflow-hidden border py-3 px-3">
+      <ScrollArea
+        className="flex-1 overflow-auto border py-3 px-3"
+        ref={scrollAreaRef}
+      >
         <div className="flex justify-between flex-col">
           {messages.map((msg) => (
             <Message
