@@ -1,3 +1,4 @@
+import { IConversation } from "@/types/conversation";
 import { createSlice } from "@reduxjs/toolkit"
 
 interface IGlobalState {
@@ -5,7 +6,7 @@ interface IGlobalState {
     isAppLoading: boolean,
     isAddingPin: boolean,
     isLoggedIn: boolean,
-    activeChat: string | null,
+    activeChat: IConversation | null,
     userInfo?: {
         id: string;
         email: string;
@@ -35,7 +36,7 @@ const globalSettingSlice = createSlice({
         setIsNotAddingPin: (state) => ({ ...state, isAddingPin: false }),
         setLoggedIn: (state) => ({ ...state, isLoggedIn: true }),
         setLoggedOut: (state) => ({ ...state, isLoggedIn: false }),
-        setActiveChat: (state, action) => ({ ...state, activeChat: action.payload.chatId }),
+        setActiveChat: (state, action) => ({ ...state, activeChat: action.payload.activeChat }),
         setUserInfo: (state, action) => ({ ...state, userInfo: action.payload.userInfo })
     }
 })
