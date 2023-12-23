@@ -10,11 +10,25 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { MoreVertical } from "lucide-react";
-import React from "react";
+import { FC } from "react";
 
-const UserListItem = () => {
+interface iProps {
+  userName: string;
+  isActive: boolean;
+  lastMessage: string;
+}
+
+const UserListItem: FC<iProps> = ({ userName, isActive, lastMessage }) => {
+  const message =
+    lastMessage && lastMessage.length > 20
+      ? lastMessage.slice(0,20) + "..."
+      : lastMessage;
   return (
-    <div className="items-center border-b rounded-sm p-2 shadow-sm my-[2px] w-full grid grid-cols-12 cursor-pointer hover:bg-gray-100 transition-all">
+    <div
+      className={`items-center border-b rounded-sm p-2 shadow-sm my-[2px] w-full grid grid-cols-12 cursor-pointer hover:bg-gray-100 transition-all ${
+        isActive && "bg-sky-100"
+      }`}
+    >
       <div className="col-span-3 relative mr-5">
         <Avatar className="shadow-md h-10 w-10">
           <AvatarImage src="https://github.com/shadcn.png" />
@@ -26,7 +40,7 @@ const UserListItem = () => {
 
       <div className="col-span-9">
         <h3 className="text-[16px] font-medium flex justify-between">
-          <span>Suman Tamang</span>
+          <span>{userName}</span>
           <DropdownMenu>
             <DropdownMenuTrigger>
               <span className="text-gray-600 h-6 w-6 flex items-center justify-center rounded-full hover:bg-gray-100">
@@ -46,7 +60,7 @@ const UserListItem = () => {
           </DropdownMenu>
         </h3>
 
-        <p className="text-sm text-gray-500">Some important message...</p>
+        <p className="text-sm text-gray-500 text-left">{message}</p>
       </div>
     </div>
   );
