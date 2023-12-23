@@ -97,7 +97,7 @@ const getMessages = asyncHandler(async (req: Request, res: Response) => {
         take: parseInt(limit as string),
         skip: parseInt(page as string),
         orderBy: {
-            createdAt: "desc"
+            createdAt: "asc"
         }
     })
 
