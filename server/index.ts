@@ -9,7 +9,7 @@ const app = express()
 const { server, io } = initializeSocketIO(app)
 
 async function main() {
-    const PORT = process.env.PORT || 3500;
+    const PORT = process.env.PORT || 3700;
     const corsOptions: CorsOptions = {
         origin: "http://localhost:3000",
         methods: "*",
@@ -47,4 +47,4 @@ main()
         process.exit(1)
     })
 
-export { io }
+// export { io }
