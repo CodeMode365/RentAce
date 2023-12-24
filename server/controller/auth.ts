@@ -71,8 +71,6 @@ const myInfo = asyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    console.log("Users", findUser)
-
     res.status(200).send(findUser)
 })
 
