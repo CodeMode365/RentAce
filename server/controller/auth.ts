@@ -58,7 +58,7 @@ const login = asyncHandler(async (req: Request, res: Response) => {
     }
     const token = await generateToken(findUser.id)
 
-    res.status(200).send({ email: findUser.email, username: findUser.username, token })
+    res.status(200).json({ email: findUser.email, username: findUser.username, token })
 
 })
 
@@ -71,7 +71,7 @@ const myInfo = asyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    res.status(200).send(findUser)
+    res.status(200).json(findUser)
 })
 
 export { register, login, myInfo }
