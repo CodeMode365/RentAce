@@ -30,13 +30,18 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
               );
 
               const response = await res.json();
+              if (!res.ok) {
+                localStorage.clear();
+                dispatch(setLoggedOut());
+                return;
+              }
               dispatch(setLoggedIn());
               dispatch(setUserInfo({ userInfo: response }));
-              console.log(response)
             }
           }
         }
       } catch (error) {
+        localStorage.clear();
         dispatch(setLoggedOut());
       }
     }
