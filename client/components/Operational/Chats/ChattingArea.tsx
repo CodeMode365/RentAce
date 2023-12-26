@@ -80,8 +80,9 @@ const ChattingArea: FC<iProps> = ({ activeChat }) => {
         ref={scrollAreaRef}
       >
         <div className="flex justify-between flex-col">
-          {messages.map((msg) => (
+          {messages.map((msg, ind) => (
             <Message
+              key={"msg-" + ind}
               content={msg.content}
               senderType={userInfo?.id == msg.senderId ? "User" : "Other"}
             />
