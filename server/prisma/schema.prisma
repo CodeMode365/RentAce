@@ -33,8 +33,8 @@ model User {
 }
 
 model Conversation {
-  id           String     @id @default(uuid())
-  participates User[] 
+  id           String    @id @default(uuid())
+  participates User[]
   messages     Message[]
 
   createdAt DateTime @default(now())
@@ -123,14 +123,15 @@ model Image {
 }
 
 model UserInfo {
-  id      String  @id @default(uuid())
-  phone   String? @db.VarChar(40)
-  Address String? @db.VarChar(40)
-  Country String? @db.VarChar(40)
-  State   String? @db.VarChar(40)
-  City    String? @db.VarChar(40)
-  Zip     String? @db.VarChar(40)
-  User    User?
+  id       String  @id @default(uuid())
+  phone    String? @db.VarChar(40)
+  Address  String? @db.VarChar(40)
+  Country  String? @db.VarChar(40)
+  State    String? @db.VarChar(40)
+  City     String? @db.VarChar(40)
+  Zip      String? @db.VarChar(40)
+  User     User?
+  isPublic Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
