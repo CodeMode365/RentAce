@@ -148,17 +148,17 @@ export default function AuthModal() {
           className="mx-1 flex items-center justify-center p-0 bg-transparent hover:bg-transparent border-none"
           size={"sm"}
         >
-          <span className=" h-full w-full flex justify-center items-center px-6 bg-sky-500 hover:bg-sky-600 rounded-2xl">
+          <span className=" h-full w-full flex justify-center items-center px-6 bg-sky-500 hover:bg-sky-600 rounded-2xl dark:text-white">
             Login
           </span>
         </Button>
       </DialogTrigger>
 
-      <DialogContent>
+      <DialogContent >
         <form onSubmit={handleSubmit(onSubmit)} className="px-6">
           <DialogHeader>
             <DialogTitle>
-              <h2 className="my-1 font-normal text-center text-black/80 text-xl">
+              <h2 className="my-1 font-normal text-center text-black/80 text-xl dark:text-white/80">
                 <span className="text-sky-500 font-medium">
                   {isLogin ? "Login" : "Register"}
                 </span>{" "}

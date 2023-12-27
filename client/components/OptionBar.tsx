@@ -60,7 +60,7 @@ const OptionBar: FC<iProps> = ({ currentDirOption, setCurrentDirOption }) => {
 
   return (
     <>
-      <section className="absolute top-3 left-3 z-20 bg-white pb-6 shadow-lg rounded-md w-[320px] dark:bg-slate-700">
+      <section className="absolute top-3 left-3 z-20 bg-white pb-6 shadow-lg rounded-md w-[320px] dark:bg-slate-900">
         <div className="realative w-full min-h-[20px] flex items-center justify-center my-2">
           {isLoggedIn && (
             <Button

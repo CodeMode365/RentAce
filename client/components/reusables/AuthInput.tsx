@@ -33,12 +33,12 @@ const AuthInput: React.FC<inputProps> = ({
         {title} {isRequired && <span className="text-rose-500">*</span>}
       </span>
 
-      <div className="rounded-sm border-2 flex items-center justify-between px-1 focus-within:border-sky-400">
+      <div className="rounded-sm border-2 flex items-center justify-between px-1 focus-within:border-sky-400 dark:bg-white">
         <input
           type={showIcon && showPassword ? "text" : type}
           id={title}
           placeholder={placeholder}
-          className="w-full h-full py-1 m-1 focus:border-none focus:outline-none"
+          className="w-full h-full py-1 m-1 focus:border-none focus:outline-none dark:text-black"
           {...register(id)}
         />
 
