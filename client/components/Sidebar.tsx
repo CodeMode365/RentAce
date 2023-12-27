@@ -117,7 +117,7 @@ const Sidebar = ({
   };
   return (
     <section
-      className={` bg-white transition-transform ease-in-out duration-300  h-full`}
+      className={` bg-white transition-transform ease-in-out duration-300  h-full dark:bg-slate-900`}
       onClick={(e) => {
         e.stopPropagation();
       }}
@@ -148,8 +148,8 @@ const Sidebar = ({
             aria-disabled={link.isActive}
             className={clsx(
               `
-              py-2 px-2 font text-xs rounded-sm mb-1 flex items-center cursor-pointer shadow-sm`,
-              activeIndex === index ? "bg-sky-400 text-white" : "text-gray-700",
+              py-2 px-2 font text-xs rounded-sm mb-1 flex items-center cursor-pointer shadow-sm `,
+              activeIndex === index ? "bg-sky-400 text-white" : "text-gray-700 dark:text-gray-500",
               !link.isActive && "text-gray-700/60 cursor-wait"
             )}
             onClick={() => {
@@ -163,7 +163,7 @@ const Sidebar = ({
             {link.name}
             {!link.isActive && (
               <span className="ml-auto">
-                <Badge className="bg-rose-500 animate-bounce text-[10px] hover:bg-rose-500">
+                <Badge className="bg-rose-500 animate-bounce text-[10px] dark:text-white hover:bg-rose-500">
                   soon
                 </Badge>
               </span>
