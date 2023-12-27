@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { HiDotsVertical } from "react-icons/hi";
 import { CgMenuGridO } from "react-icons/cg";
@@ -42,7 +42,6 @@ const TopBar = () => {
   //   }
   // };
 
-  const authOpener = useRef<HTMLButtonElement | null>(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
