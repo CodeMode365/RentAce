@@ -60,13 +60,13 @@ const OptionBar: FC<iProps> = ({ currentDirOption, setCurrentDirOption }) => {
 
   return (
     <>
-      <section className="absolute top-3 left-3 z-20 bg-white pb-6 shadow-lg rounded-md w-[320px] ">
+      <section className="absolute top-3 left-3 z-20 bg-white pb-6 shadow-lg rounded-md w-[320px] dark:bg-slate-700">
         <div className="realative w-full min-h-[20px] flex items-center justify-center my-2">
           {isLoggedIn && (
             <Button
               size={"icon"}
               variant={"secondary"}
-              className="absolute left-2 bg-transparent hover:bg-transparent"
+              className="absolute left-2 bg-transparent hover:bg-transparent dark:text-white"
               onClick={open}
             >
               <Menu size={20} />
@@ -95,7 +95,7 @@ const OptionBar: FC<iProps> = ({ currentDirOption, setCurrentDirOption }) => {
               <div className="col-span-1 flex flex-col items-center justify-center">
                 <span>
                   <ReusableTooltip content={<p>Swap</p>}>
-                    <ArrowUpDown size={20} className="text-gray-600" />
+                    <ArrowUpDown size={20} className="text-gray-600 dark:text-white" />
                   </ReusableTooltip>
                 </span>
               </div>
