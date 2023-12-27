@@ -40,14 +40,23 @@ interface iProps {
   data: iSpaceData;
   setData: Dispatch<SetStateAction<iSpaceData>>;
   handleSubmit: (actualImages: iAcutalImages[]) => void;
+  actualImages: iAcutalImages[];
+  setActualImages: Dispatch<SetStateAction<iAcutalImages[]>>;
 }
 
-const Step2: FC<iProps> = ({ setCurrentStep, data, setData, handleSubmit }) => {
+const Step2: FC<iProps> = ({
+  setCurrentStep,
+  data,
+  setData,
+  handleSubmit,
+  actualImages,
+  setActualImages,
+}) => {
   const { uploadMedia } = useMedia();
 
-  const [actualImages, setActualImages] = useState<iAcutalImages[]>([]);
-  const [images, setImages] = useState<FileList | null>(null);
-  const [previews, setPreviews] = useState<string[]>([]);
+  // const [actualImages, setActualImages] = useState<iAcutalImages[]>([]);
+  // const [images, setImages] = useState<FileList | null>(null);
+  // const [previews, setPreviews] = useState<string[]>([]);
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -58,17 +67,17 @@ const Step2: FC<iProps> = ({ setCurrentStep, data, setData, handleSubmit }) => {
         setActualImages([...actualImages, res.data as iAcutalImages]);
       }
     }
-    console.log(images);
-    setImages((prev) =>
-      prev ? ((prev as FileList).length > 0 ? prev : files) : files
-    );
+    // console.log(images);
+    // setImages((prev) =>
+    //   prev ? ((prev as FileList).length > 0 ? prev : files) : files
+    // );
 
-    const selectedImage = e.target.files?.[0];
+    // const selectedImage = e.target.files?.[0];
 
-    if (selectedImage) {
-      const imageURL = URL.createObjectURL(selectedImage);
-      setPreviews((prev) => [...prev, imageURL]);
-    }
+    // if (selectedImage) {
+    //   const imageURL = URL.createObjectURL(selectedImage);
+    //   setPreviews((prev) => [...prev, imageURL]);
+    // }
   };
 
   return (

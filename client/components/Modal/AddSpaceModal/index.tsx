@@ -40,6 +40,7 @@ export default function AddSpaceModal({
   const stepWrapperRef = useRef<HTMLDivElement | null>(null);
 
   const [data, setData] = useState<iSpaceData>(intialData);
+  const [actualImages, setActualImages] = useState<iAcutalImages[]>([]);
 
   const handleSubmit = (actualImages: iAcutalImages[]) => {
     const {
@@ -66,6 +67,7 @@ export default function AddSpaceModal({
       .then((res) => {
         toast.success(res.message);
         setData(intialData);
+        setActualImages([]);
       })
       .catch((error) => {
         toast.error(error.message);
@@ -101,6 +103,8 @@ export default function AddSpaceModal({
               data={data}
               setData={setData}
               handleSubmit={handleSubmit}
+              actualImages={actualImages}
+              setActualImages={setActualImages}
             />
           )}
         </div>
