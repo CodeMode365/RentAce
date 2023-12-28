@@ -88,16 +88,14 @@ body {
   display: none;
 }
 
-
 /* dark space basic info */
-.mapboxgl-popup-content{
+.mapboxgl-popup-content {
   @apply dark:bg-slate-900 dark:text-white/70;
+}
+.mapboxgl-popup-content h3 {
+  @apply text-white;
+}
 
-  h3{
-    @apply text-white;
-  }
-
-  .mapboxgl-popup-close-button{
-    @apply my-1 px-2 scale-150;
-  }
+.mapboxgl-popup-content .mapboxgl-popup-close-button {
+  @apply my-1 px-2 scale-150;
 }
