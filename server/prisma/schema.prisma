@@ -111,6 +111,7 @@ model Comment {
 
 model Image {
   id           String  @id @default(uuid())
+  fileId       String
   thumbnailUrl String
   imageUrl     String
   Space        Space?  @relation(fields: [spaceId], references: [id])
