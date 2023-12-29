@@ -12,12 +12,14 @@ const createMedia = async (payload: Express.Multer.File, userId: string) => {
     const data = await compressImage(buffer)
     const meta = await uploadToImageKit(data, originalname)
     const { fileId, filePath, url } = meta
+    console.log(meta, "file data")
     const thumnbailUrl = generateThumbnailUrl(filePath)
     // const mediaData = {
     //     id: fileId, filePath, url, thumnbailUrl, originalName
     // }
     const media = await prisma.image.create({
         data: {
+            fileId:fileId,
             imageUrl: url,
             thumbnailUrl: thumnbailUrl,
             creatorId: userId
