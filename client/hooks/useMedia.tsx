@@ -4,6 +4,7 @@ import useAuthKey from "./useAuthKey";
 
 function useMedia() {
   const uploadMedia = async (image: File | null | undefined) => {
+    toast.loading("Uploading Media!");
     const formData = new FormData();
     const token = useAuthKey();
 
@@ -18,10 +19,12 @@ function useMedia() {
           },
         })
         .then((res) => {
+          toast.remove();
           toast.success("Media Uploaded!");
           return res;
         })
         .catch((error) => {
+          toast.remove();
           toast.error("Failed to upload Media!");
           return;
         });
@@ -31,10 +34,7 @@ function useMedia() {
       return;
     }
   };
-  const deleteMedia = async () => {};
-  const getAllMedia = async () => {};
-
-  return { uploadMedia, deleteMedia, getAllMedia };
+  return { uploadMedia };
 }
 
 export default useMedia;
