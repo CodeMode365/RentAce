@@ -27,9 +27,13 @@ import { Input } from "@/components/ui/input";
 import FullImage from "@/components/reusables/FullImage";
 import { iSpaceData } from "@/types/space";
 import useMedia from "@/hooks/useMedia";
+import { deleteMedia } from "@/actions/MediaActions";
+import useAuthKey from "@/hooks/useAuthKey";
+import toast from "react-hot-toast";
 
 export interface iAcutalImages {
   id: string;
+  fileId: string;
   imageUrl: string;
   thumbnailUrl: string;
   createdAt: string;
@@ -53,10 +57,7 @@ const Step2: FC<iProps> = ({
   setActualImages,
 }) => {
   const { uploadMedia } = useMedia();
-
-  // const [actualImages, setActualImages] = useState<iAcutalImages[]>([]);
-  // const [images, setImages] = useState<FileList | null>(null);
-  // const [previews, setPreviews] = useState<string[]>([]);
+  const token = useAuthKey();
 
   const handleFileChange = async (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -67,17 +68,21 @@ const Step2: FC<iProps> = ({
         setActualImages([...actualImages, res.data as iAcutalImages]);
       }
     }
-    // console.log(images);
-    // setImages((prev) =>
-    //   prev ? ((prev as FileList).length > 0 ? prev : files) : files
-    // );
+    //
+  };
 
-    // const selectedImage = e.target.files?.[0];
-
-    // if (selectedImage) {
-    //   const imageURL = URL.createObjectURL(selectedImage);
-    //   setPreviews((prev) => [...prev, imageURL]);
-    // }
+  const handleDeleteMedia = async (fileId: string) => {
+    console.log(fileId);
+    toast.loading("Deleting Media!");
+    await deleteMedia(fileId, token)
+      .then((res) => {
+        toast.remove();
+        toast.success(res.message);
+      })
+      .catch((error) => {
+        toast.remove();
+        toast.error(error.message);
+      });
   };
 
   return (
@@ -133,7 +138,10 @@ const Step2: FC<iProps> = ({
             {[...actualImages.toReversed()].map((img, ind) => (
               <SwiperSlide key={"new-space-slide" + ind}>
                 <div className="cursor-pointer h-40 min-w-max bg-sky-100 rounded-lg flex items-center justify-center overflow-hidden">
-                  <button className="z-20 rounded-full text-rose-500 bg-white/80 absolute bottom-2 right-2 p-2 hover:bg-rose-500 hover:text-white transition-all">
+                  <button
+                    onClick={() => handleDeleteMedia(img.fileId)}
+                    className="z-20 rounded-full text-rose-500 bg-white/80 absolute bottom-2 right-2 p-2 hover:bg-rose-500 hover:text-white transition-all"
+                  >
                     <Trash2 size={18} />
                   </button>
                   <FullImage src={img.imageUrl} title={"Full screen View"}>
