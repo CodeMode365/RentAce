@@ -7,6 +7,6 @@ const router = Router()
 
     .get("/getAll", media.getAll)
     .post("/upload", authenticateToken, uploadStream.single("image"), media.create)
-    .post("/delete/:fileId", authenticateToken, media.destroy)
+    .delete("/delete/:fileId", authenticateToken, media.destroy)
 
 export default router
