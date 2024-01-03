@@ -33,15 +33,9 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
 import {
   closeLogoutModal,
-  closeSettingsModal,
-  closeSpacesModal,
-  openLogoutModal,
-  openSettingsModal,
-  openSpacesModal,
 } from "@/lib/redux/slices/modal";
 import { Badge } from "./ui/badge";
 import clsx from "clsx";
-import dynamic from "next/dynamic";
 import { closeDashboard } from "@/lib/redux/slices/dashboard";
 import { setLoggedOut } from "@/lib/redux/slices/globalSetting";
 
@@ -79,31 +73,9 @@ const Sidebar = ({
   activeIndex: number;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
-
-  function closeAllModal() {
-    dispatch(closeSettingsModal());
-    dispatch(closeSpacesModal());
-  }
-
-  function openSpecifiModal(type: string | undefined) {
-    switch (type) {
-      case "Settings":
-        closeAllModal();
-        dispatch(openSettingsModal());
-        break;
-      case "Spaces":
-        closeAllModal();
-        dispatch(openSpacesModal());
-        break;
-      default:
-        closeAllModal();
-        break;
-    }
-  }
-
-  const Open_lotout_Modal = () => {
-    dispatch(openLogoutModal());
-  };
+  const userInfo = useSelector(
+    (state: RootState) => state.globalSetting.userInfo
+  );
 
   const close = () => {
     dispatch(closeDashboard());
@@ -149,12 +121,14 @@ const Sidebar = ({
             className={clsx(
               `
               py-2 px-2 font text-xs rounded-sm mb-1 flex items-center cursor-pointer shadow-sm `,
-              activeIndex === index ? "bg-sky-400 text-white" : "text-gray-700 dark:text-gray-500",
+              activeIndex === index
+                ? "bg-sky-400 text-white"
+                : "text-gray-700 dark:text-gray-500",
               !link.isActive && "text-gray-700/60 cursor-wait"
             )}
             onClick={() => {
               link.isActive && setActiveIndex(index);
-              openSpecifiModal(link.openModal);
+              // openSpecifiModal(link.openModal);
             }}
           >
             <span className="mr-2">
@@ -178,9 +152,11 @@ const Sidebar = ({
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
         <div className="flex flex-col justify-center">
-          <h3 className="font-normal leading-tight text-sm">Ramesh Poudel</h3>
+          <h3 className="font-normal leading-tight text-sm">
+            {userInfo?.username}
+          </h3>
           <span className=" text-xs leading-tight text-sky-500 animate-pulse delay-1000">
-            Admin
+            {userInfo?.userType}
           </span>
         </div>
         <div className="ml-6 h-full my-auto flex items-center text-rose-500">
