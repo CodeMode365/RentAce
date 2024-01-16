@@ -1,5 +1,7 @@
 'use server'
 
+import { iAcutalImages } from "@/components/Modal/AddSpaceModal/Steps/Step2";
+
 // const url = `${process.env.SERVER_URL}/space` as string
 
 const url = `${process.env.SERVER_URL}/media` as string;
@@ -32,16 +34,15 @@ export const uploadMedia = async (image: File, token: string) => {
 };
 
 
-export const deleteMedia = async (fileId: string, token: string) => {
-    const res = await fetch(`${url}/delete/${fileId}`, {
+export const deleteMedia = async (image: iAcutalImages, token: string) => {
+    const res = await fetch(`${url}/delete?fileId=${image.fileId}&id=${image.id}`, {
         method: "DELETE",
-        body: JSON.stringify({
-        }),
+        body: JSON.stringify({}),
         headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
         },
-    })
+    });
 
     const data = await res.json()
 
