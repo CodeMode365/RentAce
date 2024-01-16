@@ -71,13 +71,15 @@ const Step2: FC<iProps> = ({
     //
   };
 
-  const handleDeleteMedia = async (fileId: string) => {
-    console.log(fileId);
+  const handleDeleteMedia = async (img: iAcutalImages, index: number) => {
     toast.loading("Deleting Media!");
-    await deleteMedia(fileId, token)
+    await deleteMedia(img, token)
       .then((res) => {
         toast.remove();
         toast.success(res.message);
+        setActualImages(
+          actualImages.toReversed().filter((_, i) => i !== index)
+        );
       })
       .catch((error) => {
         toast.remove();
@@ -139,7 +141,9 @@ const Step2: FC<iProps> = ({
               <SwiperSlide key={"new-space-slide" + ind}>
                 <div className="cursor-pointer h-40 min-w-max bg-sky-100 rounded-lg flex items-center justify-center overflow-hidden">
                   <button
-                    onClick={() => handleDeleteMedia(img.fileId)}
+                    onClick={() => {
+                      handleDeleteMedia(img, ind);
+                    }}
                     className="z-20 rounded-full text-rose-500 bg-white/80 absolute bottom-2 right-2 p-2 hover:bg-rose-500 hover:text-white transition-all"
                   >
                     <Trash2 size={18} />
