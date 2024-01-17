@@ -19,7 +19,7 @@ const createMedia = async (payload: Express.Multer.File, userId: string) => {
     // }
     const media = await prisma.image.create({
         data: {
-            fileId:fileId,
+            fileId: fileId,
             imageUrl: url,
             thumbnailUrl: thumnbailUrl,
             creatorId: userId
@@ -28,10 +28,10 @@ const createMedia = async (payload: Express.Multer.File, userId: string) => {
     return media
 }
 
-const deleteOneMedia = async (fileId: string) => {
+const deleteOneMedia = async (fileId: string, id: string) => {
     await deleteFromImageKit(fileId)
     const data = await prisma.image.delete({
-        where: { id: fileId },
+        where: { fileId: fileId, id: id },
     })
     return data
 }
