@@ -111,8 +111,6 @@ const findConversations = asyncHandler(async (req: Request, res: Response) => {
 const getMyConversations = asyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params
 
-
-    console.log("hello")
     const usersConversations = await prisma.conversation.findMany({
         where: {
             participates: {
