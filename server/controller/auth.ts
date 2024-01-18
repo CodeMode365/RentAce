@@ -68,9 +68,24 @@ const myInfo = asyncHandler(async (req: Request, res: Response) => {
     const findUser = await prisma.user.findFirst({
         where: {
             id: userId
+        },
+        select: {
+            id: true,
+            username: true,
+            userType: true,
+            email: true,
+            ratings: true,
+            updatedAt: true,
+            createdAt: true,
+            userInfo: true
         }
     })
+    if(!findUser){
+        res.status(404).json({message:"User not Found!"})
+        return
+    }
 
+    console.log(findUser)
     res.status(200).json(findUser)
 })
 
