@@ -1,4 +1,5 @@
 import { IConversation } from "@/types/conversation";
+import { IUser } from "@/types/user";
 import { createSlice } from "@reduxjs/toolkit"
 
 interface IGlobalState {
@@ -7,12 +8,7 @@ interface IGlobalState {
     isAddingPin: boolean,
     isLoggedIn: boolean,
     activeChat: IConversation | null,
-    userInfo?: {
-        id: string;
-        email: string;
-        userType: string;
-        username: string;
-    }
+    userInfo?: IUser
 }
 
 const initialState: IGlobalState = {
