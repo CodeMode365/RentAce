@@ -125,6 +125,7 @@ model Image {
 
 model UserInfo {
   id       String  @id @default(uuid())
+  Bio      String? @db.VarChar(255)
   phone    String? @db.VarChar(40)
   Address  String? @db.VarChar(40)
   Country  String? @db.VarChar(40)
