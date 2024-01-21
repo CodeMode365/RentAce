@@ -3,9 +3,6 @@ import React, { useEffect, useState } from "react";
 import {
   Navigation,
   Pagination,
-  Scrollbar,
-  A11y,
-  Controller,
 } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -18,10 +15,8 @@ import FullImage from "@/components/reusables/FullImage";
 import Image from "next/image";
 import { RotateCcw, Trash2 } from "lucide-react";
 import { Card } from "@/components/ui/card";
-import AlertModal from "@/components/Modal/AlertModal";
 import { Button } from "@/components/ui/button";
 import { deleteSpace, getMySpaces } from "@/actions/SpaceActions";
-import useAuthKey from "@/hooks/useAuthKey";
 import toast from "react-hot-toast";
 import {
   AlertDialogTrigger,
@@ -39,11 +34,10 @@ import { toPascalCase } from "@/lib/utilities/toPascalCase";
 import ReusableTooltip from "@/components/reusables/ReusableTooltip";
 
 const SpacesCarousel = () => {
-  const token = useAuthKey();
   const [mySpaces, setMySpaces] = useState<ISpace[]>([]);
 
   const getSpaces = () => {
-    getMySpaces(token)
+    getMySpaces()
       .then((res) => {
         toast.success(res.message);
         console.log(res.data);
@@ -55,7 +49,7 @@ const SpacesCarousel = () => {
   };
 
   const handleDeleteSpace = (spaceId: string) => {
-    deleteSpace(token, spaceId)
+    deleteSpace(spaceId)
       .then((res) => {
         toast.success(res.message);
         getSpaces();
