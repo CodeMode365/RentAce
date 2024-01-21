@@ -3,10 +3,12 @@
 import { iAcutalImages } from "@/components/Modal/AddSpaceModal/Steps/Step2"
 import { iSpaceData } from "@/types/space"
 import { revalidatePath, revalidateTag } from "next/cache"
+import { getAuthToken } from "./AuthActions"
 
 const url = `${process.env.SERVER_URL}/space` as string
 
-export const getAllSpaces = async (token: string) => {
+export const getAllSpaces = async () => {
+    const { token } = await getAuthToken()
     const res = await fetch(`${url}`, {
         method: "GET",
         headers: {
@@ -26,7 +28,8 @@ export const getAllSpaces = async (token: string) => {
     return data
 }
 
-export const getMySpaces = async (token: string) => {
+export const getMySpaces = async () => {
+    const { token } = await getAuthToken()
     const res = await fetch(`${url}/self`, {
         method: "GET",
         headers: {
@@ -46,7 +49,8 @@ export const getMySpaces = async (token: string) => {
     return data
 }
 
-export const getSingleSpace = async (token: string, spaceId: string, fulldetail: boolean = false) => {
+export const getSingleSpace = async (spaceId: string, fulldetail: boolean = false) => {
+    const { token } = await getAuthToken()
     const res = await fetch(`${url}/${spaceId}?fulldetail=${fulldetail}`, {
         method: "GET",
         headers: {
@@ -67,7 +71,8 @@ export const getSingleSpace = async (token: string, spaceId: string, fulldetail:
     return data
 }
 
-export const deleteSpace = async (token: string, spaceId: string) => {
+export const deleteSpace = async (spaceId: string) => {
+    const { token } = await getAuthToken()
     const res = await fetch(`${url}/remove/${spaceId}`, {
         method: "DELETE",
         headers: {
@@ -95,7 +100,8 @@ interface iPostingData extends Omit<iSpaceData, 'owner' | 'description' | 'image
     ownerName: string;
 }
 
-export const postNewSpace = async (token: string, postingData: iPostingData, actualImages: iAcutalImages[], pos: { lng: number, lat: number }) => {
+export const postNewSpace = async (postingData: iPostingData, actualImages: iAcutalImages[], pos: { lng: number, lat: number }) => {
+    const { token } = await getAuthToken()
     const { amount, desc, ownerName, spaceType, payType, title, } = postingData
     const res = await fetch(`${url}/add`, {
         method: "POST",
