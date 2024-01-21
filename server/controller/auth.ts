@@ -3,6 +3,9 @@ import { prisma } from "../script"
 import asyncHandler from "express-async-handler"
 import { compareWithHash, generateHash } from "../utils/Hash"
 import { generateToken } from "../utils/token.util"
+import cache from "memory-cache"
+
+const cacheDuration = 60 * 60 * 1000 //1h
 
 const register = asyncHandler(async (req: Request, res: Response) => {
     const { username, email, password } = req.body
@@ -31,6 +34,7 @@ const register = asyncHandler(async (req: Request, res: Response) => {
     })
 
     const token = generateToken(newUser.id)
+    cache.put('authToken', token, cacheDuration)
 
     res.status(201).json({
         username: newUser.username,
@@ -56,7 +60,8 @@ const login = asyncHandler(async (req: Request, res: Response) => {
         res.status(406).json({ message: "Password didn't match!" })
         return
     }
-    const token = await generateToken(findUser.id)
+    const token = generateToken(findUser.id)
+    cache.put('authToken', token, cacheDuration)
 
     res.status(200).json({ email: findUser.email, username: findUser.username, token })
 
@@ -80,13 +85,17 @@ const myInfo = asyncHandler(async (req: Request, res: Response) => {
             userInfo: true
         }
     })
-    if(!findUser){
-        res.status(404).json({message:"User not Found!"})
+    if (!findUser) {
+        res.status(404).json({ message: "User not Found!" })
         return
     }
 
-    console.log(findUser)
     res.status(200).json(findUser)
 })
 
-export { register, login, myInfo }
+const myAuthToken = asyncHandler(async (req: Request, res: Response) => {
+    const cachedToken = cache.get("authToken")
+    res.status(200).json({ token: cachedToken })
+})
+
+export { register, login, myInfo, myAuthToken }
