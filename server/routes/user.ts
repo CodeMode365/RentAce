@@ -4,9 +4,9 @@ import { getCurrentUser, getOtherUserInfo, getUserInfo, updateUserInfo } from ".
 
 const router = Router()
 
-router.get("/:userId", getOtherUserInfo);
 router.get("/userInfo", authenticateToken, getUserInfo)
 router.patch("/update/userInfo", authenticateToken, updateUserInfo);
+router.get("/:userId", getOtherUserInfo);
 // .get("/my-self", authenticateToken, getUser)
 
 export default router
