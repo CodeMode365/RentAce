@@ -148,7 +148,7 @@ enum UserType {
 }
 
 enum SpaceType {
-  PAKRING
+  PARKING
   ROOM
   FLAT
   HOUSE
