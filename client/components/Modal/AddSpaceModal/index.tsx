@@ -12,18 +12,9 @@ import Step2, { iAcutalImages } from "./Steps/Step2";
 import clsx from "clsx";
 import { iSpaceData } from "@/types/space";
 import { postNewSpace } from "@/actions/SpaceActions";
-import useAuthKey from "@/hooks/useAuthKey";
 import toast from "react-hot-toast";
-
-const intialData: iSpaceData = {
-  title: "",
-  owner: "",
-  spaceType: "",
-  amount: "",
-  payType: "",
-  description: "",
-  images: [],
-};
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/redux/store";
 
 export default function AddSpaceModal({
   children,
@@ -35,9 +26,20 @@ export default function AddSpaceModal({
     lat: number;
   };
 }) {
-  const token = useAuthKey();
+  const { userInfo } = useSelector((state: RootState) => state.globalSetting);
+
   const [currentStep, setCurrentStep] = useState(0);
   const stepWrapperRef = useRef<HTMLDivElement | null>(null);
+
+  const intialData: iSpaceData = {
+    title: "",
+    owner: userInfo?.username ?? "",
+    spaceType: "",
+    amount: "",
+    payType: "",
+    description: "",
+    images: [],
+  };
 
   const [data, setData] = useState<iSpaceData>(intialData);
   const [actualImages, setActualImages] = useState<iAcutalImages[]>([]);
@@ -52,7 +54,6 @@ export default function AddSpaceModal({
       title,
     } = data;
     postNewSpace(
-      token,
       {
         amount,
         desc,
