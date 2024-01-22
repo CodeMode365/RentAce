@@ -14,7 +14,6 @@ import "mapbox-gl/dist/mapbox-gl.css";
 import toast from "react-hot-toast";
 
 import { useDispatch, useSelector } from "react-redux";
-import useAuthKey from "@/hooks/useAuthKey";
 import { getAllSpaces, getSingleSpace } from "@/actions/SpaceActions";
 import { getDirections } from "@/actions/MapActions";
 
@@ -40,10 +39,9 @@ const AddSpaceModal = dynamic(
 );
 
 const Mapbox = () => {
-  const token = useAuthKey();
   const dispatch = useDispatch();
-  const isUserAddingPin = useSelector(
-    (state: RootState) => state.globalSetting.isAddingPin
+  const { isAddingPin, isLoggedIn, userInfo } = useSelector(
+    (state: RootState) => state.globalSetting
   );
 
   const [userLocation, setUserLocation] = useState({
@@ -69,7 +67,7 @@ const Mapbox = () => {
   >("Driving");
 
   const getSpaces = () => {
-    getAllSpaces(token)
+    getAllSpaces()
       .then((res) => {
         toast.success(res.message);
         setSpaces(res.data);
@@ -78,6 +76,10 @@ const Mapbox = () => {
         toast.error(error.message);
       });
   };
+
+  useEffect(() => {
+    console.log(spaces);
+  }, [spaces]);
 
   useEffect(() => {
     const getLocation = () => {
@@ -114,7 +116,7 @@ const Mapbox = () => {
   };
 
   const handleMapClick = (e: MapLayerMouseEvent) => {
-    if (isUserAddingPin) {
+    if (isAddingPin) {
       const { lat, lng } = e.lngLat;
 
       // Set the temporary pin coordinates in the local state
@@ -126,7 +128,6 @@ const Mapbox = () => {
     setIsLoading(true);
     try {
       const destinationResponse = await getSingleSpace(
-        token,
         currentPlaceId as string
       );
       const destination: ISpace = destinationResponse.data;
@@ -178,21 +179,28 @@ const Mapbox = () => {
         setCurrentDirOption={setCurrentDirOption}
       />
 
-      {isUserAddingPin && !tempPinCoordinates && (
+      {isAddingPin && !tempPinCoordinates && (
         <span className=" absolute top-20 left-1/2 animate-bounce -translate-x-1/2 bg-white p-2 rounded-md text-emerald-500 text-[16px] shadow-md">
           Mark your space point
         </span>
       )}
       {spaces?.map((space: ISpace) => {
-        const { lng, lat, id } = space;
+        const { lng, lat, id, creatorId } = space;
+        const isMySpace = isLoggedIn && creatorId == userInfo?.id
         return (
           <Fragment key={id}>
             <Marker
               latitude={lat}
               longitude={lng}
-              color={id === currentPlaceId ? "blue" : "red"}
+              color={
+                id === currentPlaceId
+                  ? "blue"
+                  : isMySpace
+                  ? "green"
+                  : "red"
+              }
               onClick={() => {
-                !isUserAddingPin && handleMarkerClick(id, lng, lat);
+                !isAddingPin && handleMarkerClick(id, lng, lat);
               }}
             />
             {currentPlaceId === id && (
@@ -215,7 +223,7 @@ const Mapbox = () => {
         showUserLocation
       />
       <NavigationControl position="bottom-right" />
-      {currentPlaceId && !isUserAddingPin && (
+      {currentPlaceId && !isAddingPin && (
         <DirectionFinder
           isLoading={isLoading}
           startFindingDirection={() => {
