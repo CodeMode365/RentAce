@@ -13,11 +13,7 @@ import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import React, { useEffect, useState } from "react";
-import {
-  getUserInfo,
-  submitUserUpdateForm,
-  updateUserInfo,
-} from "@/actions/UserAction";
+import { getUserInfo, updateUserInfo } from "@/actions/UserAction";
 import { IUser, IUserInfo } from "@/types/user";
 import useAuthKey from "@/hooks/useAuthKey";
 import toast from "react-hot-toast";
@@ -60,10 +56,7 @@ const GeneralTab = () => {
 
   return (
     <>
-      <form
-        className="col-span-full grid grid-cols-12"
-        action={submitUserUpdateForm}
-      >
+      <form className="col-span-full grid grid-cols-12" action={updateUserInfo}>
         <Card className="col-span-4 h-80">
           <CardContent className="">
             <Avatar className="mx-auto mt-10 shadow-md h-32 w-32 ">
@@ -186,9 +179,11 @@ const GeneralTab = () => {
             </div>
             <div className="grid grid-cols-2 gap-4 ">
               <Textarea
+                id="bio"
+                name="bio"
                 className="col-span-2 min-h-[80px]"
                 placeholder="Bio here"
-                defaultValue={userInfo?.Bio ?? undefined}
+                defaultValue={userInfo?.Bio ?? "hello"}
               />
             </div>
           </CardContent>
