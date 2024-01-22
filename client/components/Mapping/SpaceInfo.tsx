@@ -1,5 +1,5 @@
 import { ISpace } from "@/types/space";
-import React, { FC, useState } from "react";
+import React, {  useState } from "react";
 import { FaStar } from "react-icons/fa6";
 import { Popup } from "react-map-gl";
 import TimeAgo from "react-timeago";
@@ -7,20 +7,18 @@ import { Button } from "@/components/ui/button";
 import { DetailSpaceView } from "./DetailSpaceView";
 import { toPascalCase } from "@/lib/utilities/toPascalCase";
 import { SiGooglemaps } from "react-icons/si";
-import { Tooltip, TooltipTrigger, TooltipContent } from "../ui/tooltip";
 import ReusableTooltip from "../reusables/ReusableTooltip";
-import { CornerUpRight } from "lucide-react";
+import { BirdIcon, CornerUpRight } from "lucide-react";
 
-// interface iProps extends ISpace {
-//   onClose: VoidFunction;
-// }
 
 const SpaceInfo = ({
   props,
   onClose,
+  startFindingDirection,
 }: {
   props: ISpace;
   onClose: VoidFunction;
+  startFindingDirection: VoidFunction;
 }) => {
   const { lng, lat, title, amount, payType, spaceType, desc, createdAt, id } =
     props;
@@ -39,11 +37,11 @@ const SpaceInfo = ({
       onClose={onClose}
       className="w-72"
     >
-      <div>
-        <div className="pb-1 mb-2 border-b shadow-sm">
-          <h3 className="font-bold text-sky-500 text-[16px]">
+      <div className="mx-2 custom-popup">
+        <div className="pb-1 mb-2 border-b shadow-sm ">
+          <h2 className="font-bold text-sky-500 text-[16px]">
             {viewableTitle}
-          </h3>
+          </h2>
         </div>
 
         <div className="pb-1 mb-2 border-b shadow-sm">
@@ -82,7 +80,7 @@ const SpaceInfo = ({
         </div>
         <div className="w-full flex items-center justify-between mt-2">
           <div className="flex items-center">
-            <span className="mx-1 bg-gray-100 hover:bg-gray-200 flex items-center rounded-full p-1">
+            <span className="mx-1 bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-600 transition-colors flex items-center rounded-full p-1">
               <ReusableTooltip content={<p>View on google maps</p>}>
                 <a
                   href={`https://www.google.com/maps/search/?api=1&query=${lat},${lng}
@@ -93,10 +91,11 @@ const SpaceInfo = ({
                 </a>
               </ReusableTooltip>
             </span>
-            <span className="mx-1 bg-gray-100 hover:bg-gray-200 flex items-center rounded-full p-1">
+            <span className="mx-1 bg-gray-100 hover:bg-gray-200 dark:bg-slate-800 dark:hover:bg-slate-600 transition-colors flex items-center rounded-full p-1">
               <ReusableTooltip content={<p>Find Direction</p>}>
-                {/* <SiGooglemaps size={28} className="text-rose-500" /> */}
-                <CornerUpRight size={28} className="text-green-500" />
+                <button onClick={startFindingDirection}>
+                  <CornerUpRight size={28} className="text-green-500" />
+                </button>
               </ReusableTooltip>
             </span>
           </div>
@@ -107,7 +106,7 @@ const SpaceInfo = ({
             isDetailView={isDetailView}
           >
             <Button
-              className="float-right"
+              className="float-right dark:border dark:border-black/50"
               size={"sm"}
               onClick={() => setIsDetailView(true)}
             >

@@ -209,6 +209,9 @@ const Mapbox = () => {
                 onClose={() => {
                   setCurrentPlaceId(null);
                 }}
+                startFindingDirection={() => {
+                  findDirection();
+                }}
               />
             )}
           </Fragment>
