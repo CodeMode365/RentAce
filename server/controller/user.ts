@@ -52,6 +52,7 @@ const getOtherUserInfo = asyncHandler(async (req: Request, res: Response) => {
 const getUserInfo = asyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params
 
+
     if (!userId) {
         res.status(401).json({ message: "User not found!" })
         return
@@ -65,24 +66,33 @@ const getUserInfo = asyncHandler(async (req: Request, res: Response) => {
         }
     })
 
+
     res.status(200).json({ message: "User Info Fetched!", data: userInfo })
 })
 
 const updateUserInfo = asyncHandler(async (req: Request, res: Response) => {
     const { userId } = req.params
-    const { phone, Address, Country, State, City, Zip, isPublic, id } = req.body
+    const { phone, Address, Country, State, City, Zip, isPublic, Bio } = req.body
 
     if (!userId) {
         res.status(401).json({ message: "User not found!" })
         return
     }
 
-    const updateUser = await prisma.userInfo.update({
+    const findUserInfo = await prisma.userInfo.findFirst({
         where: {
-            id,
             User: {
                 id: userId
             }
+        },
+        select: {
+            id: true
+        }
+    })
+
+    const updateUser = await prisma.userInfo.update({
+        where: {
+            id: findUserInfo?.id,
         },
         data: {
             phone,
@@ -91,7 +101,8 @@ const updateUserInfo = asyncHandler(async (req: Request, res: Response) => {
             State,
             Zip,
             isPublic,
-            Country
+            Country,
+            Bio
         }
     })
 
