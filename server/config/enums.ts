@@ -1,6 +1,6 @@
 
 enum SpaceTypeEnum {
-    PAKRING = "PARKING",
+    PARKING = "PARKING",
     ROOM = "ROOM",
     FLAT = "FLAT",
     HOUSE = "HOUSE",
@@ -8,9 +8,9 @@ enum SpaceTypeEnum {
 }
 
 enum PayTypeEnum {
-    HOURLY = "DAILY",
-    DAILY = "WEEKLY",
-    WEEKLY = "HOURLY",
+    HOURLY = "HOURLY",
+    DAILY = "DAILY",
+    WEEKLY = "WEEKLY",
     MONTHLY = "MONTHLY",
     ANNUALLY = "ANNUALLY",
 }
