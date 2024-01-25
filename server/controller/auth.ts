@@ -98,4 +98,29 @@ const myAuthToken = asyncHandler(async (req: Request, res: Response) => {
     res.status(200).json({ token: cachedToken })
 })
 
-export { register, login, myInfo, myAuthToken }
+const updatePassword = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params
+    const { oldPassword, newPassword } = req.body
+    const findUser = await prisma.user.findFirst({
+        where: { id: userId }
+    })
+    if (!findUser) {
+        res.status(404).json({ message: "User not found!" })
+        return
+    }
+    if (!(await compareWithHash(oldPassword, findUser.password))) {
+        res.status(401).json({ message: "Incorrect old password!" })
+        return
+    }
+    await prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: {
+            password: await generateHash(newPassword)
+        }
+    })
+    res.status(200).json({ message: "Password Updated!" })
+})
+
+export { register, login, myInfo, myAuthToken, updatePassword }

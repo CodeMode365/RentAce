@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, myAuthToken, myInfo, register } from "../controller/auth";
+import { login, myAuthToken, myInfo, register, updatePassword } from "../controller/auth";
 import authenticateToken from "../middleware/token.mw";
 
 const router = Router()
@@ -8,4 +8,6 @@ const router = Router()
     .post("/register", register)
     .get("/authToken", myAuthToken)
     .get("/my-info", authenticateToken, myInfo)
+    .patch("/updatePassword", authenticateToken, updatePassword)
+    
 export default router
