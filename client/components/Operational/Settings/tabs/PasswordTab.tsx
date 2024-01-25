@@ -1,3 +1,4 @@
+import { updateMyPassword } from "@/actions/AuthActions";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,7 +9,6 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import useSettings from "@/hooks/useSetting";
-import { error } from "console";
 import React, { useState } from "react";
 import toast from "react-hot-toast";
 
@@ -25,13 +25,19 @@ const PasswordTab = () => {
   const handleSubmit = async () => {
     console.log(password);
     if (password.new !== password.retype) {
-      toast.error("The new passwords doesn't match!");
+      toast.error("New passwords don't match!");
     } else {
-      await updatePassword(password.old, password.new)
+      toast.loading("Updating!");
+      await updateMyPassword(password.old, password.new)
         .then((res) => {
+          toast.remove();
+          toast.success(res.mmessage);
           setPassword(initial);
         })
-        .catch((err) => toast.error(err.message));
+        .catch((err) => {
+          toast.remove();
+          toast.error(err.message);
+        });
     }
   };
 
