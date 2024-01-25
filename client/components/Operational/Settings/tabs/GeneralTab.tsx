@@ -148,7 +148,7 @@ const GeneralTab = () => {
                 />
               </div>
               <div className="space-y-1 col-span-1">
-                <Label htmlFor="state">State</Label>
+                <Label htmlFor="state">State / Province</Label>
                 <Input
                   id="state"
                   name="state"
