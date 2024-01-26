@@ -17,8 +17,10 @@ model User {
   password String   @db.VarChar(250)
   userType UserType @default(CANDIDATE)
 
-  userInfo   UserInfo @relation(fields: [userInfoId], references: [id])
-  userInfoId String   @unique
+  userInfo             UserInfo            @relation(fields: [userInfoId], references: [id])
+  userInfoId           String              @unique
+  notificationSettings NotificationSetting @relation(fields: [userNotifiSetId], references: [id])
+  userNotifiSetId      String              @unique
 
   Image         Image[]
   spaces        Space[]
@@ -27,6 +29,7 @@ model User {
   notification  Notification[]
   comments      Comment[]
   ratings       Rating[]
+  // NotificationSetting NotificationSetting[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -134,6 +137,19 @@ model UserInfo {
   Zip      String? @db.VarChar(40)
   User     User?
   isPublic Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model NotificationSetting {
+  id               String  @id @default(uuid())
+  User             User?
+  Email_on_comment Boolean @default(false)
+  Email_on_follow  Boolean @default(false)
+  Email_on_message Boolean @default(false)
+  Subscribe_news   Boolean @default(false)
+  Approvals        Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
