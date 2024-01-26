@@ -90,4 +90,24 @@ const updateUserInfo = asyncHandler(async (req: Request, res: Response) => {
     res.status(200).json({ message: "User Info Updated!", data: updateUser })
 })
 
+
+const getUserNotiicationSetting = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params
+    if (!userId) {
+        res.status(401).json({ message: "User not found!" })
+        return
+    }
+
+    const userInfo = await prisma.userInfo.findFirst({
+        where: {
+            User: {
+                id: userId
+            }
+        }
+    })
+
+
+    res.status(200).json({ message: "User Info Fetched!", data: userInfo })
+})
+
 export { getCurrentUser, getOtherUserInfo, getUserInfo, updateUserInfo }
