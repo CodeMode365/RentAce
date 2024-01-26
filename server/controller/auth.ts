@@ -10,32 +10,28 @@ const cacheDuration = 60 * 60 * 1000 //1h
 const register = asyncHandler(async (req: Request, res: Response) => {
     const { username, email, password } = req.body
     const hashedPassword = await generateHash(password)
-
     const existingUser = await prisma.user.findFirst({
         where: { email }
     })
-
     if (existingUser) {
         res.status(409).json({ message: "Email Already Taken!" })
         return
     }
-
     const userInfoStore = await prisma.userInfo.create({ data: {}, select: { id: true } },)
-
+    const userNotificationSetting = await prisma.notificationSetting.create({ data: {}, select: { id: true } })
     const newUser = await prisma.user.create({
         data: {
             username, email, password: hashedPassword,
-            userInfoId: userInfoStore.id
+            userInfoId: userInfoStore.id,
+            userNotifiSetId: userNotificationSetting.id
         }, select: {
             id: true,
             email: true,
             username: true,
         }
     })
-
     const token = generateToken(newUser.id)
     cache.put('authToken', token, cacheDuration)
-
     res.status(201).json({
         username: newUser.username,
         email: newUser.email,
