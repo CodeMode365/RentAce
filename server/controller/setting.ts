@@ -44,10 +44,34 @@ const updateGeneralInfo = asyncHandler(async (req: Request, res: Response) => {
 
 })
 
-const updateNotificationSetting = asyncHandler(async (req: Request, res: Response) => {
 
+const getNotificationSetting = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params
+    const userInfo = await prisma.notificationSetting.findFirst({
+        where: {
+            User: {
+                id: userId
+            }
+        }
+    })
+    res.status(200).json({ message: "Notification setting fetched!!", data: userInfo })
+})
+
+const updateNotificationSetting = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = req.params
+    const { SubscribeComments, SubscribeMessages, SubscribeFollows, SubscribeNews, SubscribeApprovals, } = req.body
+    const userNotificationSettting = await prisma.notificationSetting.findFirst({ where: { User: { id: userId } }, select: { id: true } })
+    const updatedSetting = await prisma.notificationSetting.update({
+        where: {
+            id: userNotificationSettting?.id
+        },
+        data: {
+            SubscribeApprovals, SubscribeComments, SubscribeFollows,
+            SubscribeMessages, SubscribeNews
+        }
+    })
+    res.status(200).json({ message: "Setting Updated!", data: updatedSetting })
 })
 
 
-
-export { updatePassword, updateGeneralInfo, updateNotificationSetting }
+export { updatePassword, updateGeneralInfo, getNotificationSetting, updateNotificationSetting }
