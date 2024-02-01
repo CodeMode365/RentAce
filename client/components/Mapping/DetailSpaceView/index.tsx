@@ -9,20 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import useAuthKey from "@/hooks/useAuthKey";
 import { ISpace } from "@/types/space";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import ReactTimeago from "react-timeago";
-import { Card } from "@/components/ui/card";
 
-import {
-  Navigation,
-  Pagination,
-  Scrollbar,
-  A11y,
-  Controller,
-} from "swiper/modules";
+import { Navigation, Pagination } from "swiper/modules";
 
 // Import Swiper styles
 import "swiper/css";
@@ -35,6 +27,7 @@ import Image from "next/image";
 import FullImage from "@/components/reusables/FullImage";
 import { FaStar } from "react-icons/fa";
 import CommentSection from "./CommentSection";
+import ProviderInfo from "./ProviderInfo";
 
 export function DetailSpaceView({
   children,
@@ -47,12 +40,11 @@ export function DetailSpaceView({
   isDetailView: boolean;
   setIsDetailView: Dispatch<SetStateAction<boolean>>;
 }) {
-  const token = useAuthKey();
   const [spaceData, setSpaceData] = useState<ISpace>();
 
   const getDetails = () => {
     if (isDetailView) {
-      getSingleSpace(token, spaceId, true)
+      getSingleSpace(spaceId, true)
         .then((res) => {
           setSpaceData(res.data);
           console.log(res.data);
@@ -163,6 +155,7 @@ export function DetailSpaceView({
             <h3>
               <ReactTimeago date={spaceData?.createdAt as Date} />
             </h3>
+            <ProviderInfo />
           </div>
           <DialogFooter>
             <Button variant={"destructive"}>Report</Button>
