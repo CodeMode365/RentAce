@@ -66,7 +66,7 @@ const GeneralTab = () => {
 
             <div className="text-center w-full mt-4 mx-auto">
               <h2 className="text-xl font-medium text-gray-600">
-                Ramesh Paudel
+                {userData!.username}
               </h2>
               <span className="text-sm text-gray-500">
                 Senior Dev on RentAce
