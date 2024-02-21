@@ -8,6 +8,7 @@ import {
   setLoggedOut,
   setUserInfo,
 } from "../redux/slices/globalSetting";
+import { getAuthToken } from "@/actions/AuthActions";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -19,6 +20,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         if (window) {
           if (localStorage.getItem("token")) {
             if (localStorage.getItem("isAuthorized")) {
+              await getAuthToken();
               const res = await fetch(
                 `${process.env.NEXT_PUBLIC_SERVER_URL}/auth/my-info`,
                 {

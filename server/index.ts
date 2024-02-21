@@ -6,14 +6,14 @@ import allRoutes from "./routes"
 import { limiter } from "./utils/reqlimiter.util";
 
 const app = express()
-const { server, io } = initializeSocketIO(app)
 
 async function main() {
     const PORT = process.env.PORT || 3700;
     const corsOptions: CorsOptions = {
         origin: "http://localhost:3000",
         methods: "*",
-        credentials: true
+        credentials: true,
+        allowedHeaders: ["*", "Authorization"]
     }
 
     app.use(express.json())
@@ -30,6 +30,7 @@ async function main() {
         res.status(404).json({ message: "Route not found!" })
     })
 
+    const { server, io } = initializeSocketIO(app)
     server.listen(PORT, () => {
         console.log(`Server on: http://localhost:${PORT}`)
     })

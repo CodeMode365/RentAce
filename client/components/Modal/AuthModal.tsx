@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import AuthInput, { inputProps } from "@/components/reusables/AuthInput";
 
-import useMedia from "@/hooks/useMedia";
+import { uploadMedia } from "@/actions/MediaActions";
 import {
   Dialog,
   DialogTrigger,
@@ -21,9 +21,10 @@ import { Button } from "../ui/button";
 import { useDispatch } from "react-redux";
 import { setLoggedIn } from "@/lib/redux/slices/globalSetting";
 import { Auth } from "@/actions/AuthActions";
+import useAuthKey from "@/hooks/useAuthKey";
 
 export default function AuthModal() {
-  const { uploadMedia } = useMedia();
+  const token = useAuthKey();
   const dispatch = useDispatch();
 
   const [isLogin, setIsLogin] = useState(true);
@@ -78,7 +79,11 @@ export default function AuthModal() {
 
   const onSubmit: SubmitHandler<FormSchemaType> = async (data) => {
     const { username, email, password } = data;
-    if (!isLogin) await uploadMedia(image);
+    if (!isLogin) {
+      if (image) {
+        await uploadMedia(image as File, token);
+      }
+    }
 
     await Auth({ username, email, password, isLogin })
       .then((res) => {
@@ -154,7 +159,7 @@ export default function AuthModal() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent >
+      <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)} className="px-6">
           <DialogHeader>
             <DialogTitle>

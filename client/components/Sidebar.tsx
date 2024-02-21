@@ -31,13 +31,14 @@ import {
 
 import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "@/lib/redux/store";
-import {
-  closeLogoutModal,
-} from "@/lib/redux/slices/modal";
+import { closeLogoutModal } from "@/lib/redux/slices/modal";
 import { Badge } from "./ui/badge";
 import clsx from "clsx";
 import { closeDashboard } from "@/lib/redux/slices/dashboard";
-import { setLoggedOut } from "@/lib/redux/slices/globalSetting";
+import {
+  setIsNotAddingPin,
+  setLoggedOut,
+} from "@/lib/redux/slices/globalSetting";
 
 const navLinks = [
   { name: "Home", icon: Home, isActive: true, openModal: undefined },
@@ -83,8 +84,8 @@ const Sidebar = ({
 
   const logOut = () => {
     localStorage.clear();
+    dispatch(setIsNotAddingPin());
     dispatch(closeLogoutModal());
-    dispatch(setLoggedOut());
     dispatch(setLoggedOut());
   };
   return (

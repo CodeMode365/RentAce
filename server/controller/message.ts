@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler"
 import { Request, Response } from "express"
 import { prisma } from "../script"
-import { io } from ".."
+// import { io } from ".."
 
 const sendMessage = asyncHandler(async (req: Request, res: Response) => {
     const { message, convId } = req.body;
@@ -69,7 +69,7 @@ const editMessage = asyncHandler(async (req: Request, res: Response) => {
         }
     })
 
-    io.emit(`message-${updatedMessage.conversationId}`, updatedMessage)
+    // io.emit(`message-${updatedMessage.conversationId}`, updatedMessage)
     res.send(200).json(updatedMessage)
 })
 

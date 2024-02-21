@@ -9,6 +9,7 @@ import messageRoute from "./message"
 import ratingRoute from "./rating"
 import notificationRoute from "./notification"
 import settingRoute from "./setting"
+import userRoute from "./user"
 import routePaster from "../utils/routepaster.util"
 
 
@@ -24,5 +25,6 @@ router.use("/notification", notificationRoute)
 router.use("/rating", ratingRoute)
 router.use("/comment", commentRoute)
 router.use("/settings", settingRoute)
+router.use("/users", userRoute)
 
 export default router

@@ -10,29 +10,48 @@ import { IConversation } from "@/types/conversation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/redux/store";
 import { setActiveChat } from "@/lib/redux/slices/globalSetting";
+// import io from "socket.io-client";
+
+// const socket = io("http://localhost:3700/");
 
 const Chats = () => {
   const token = useAuthKey();
+  const dispatch = useDispatch();
   const [conversations, setConversations] = useState<IConversation[]>([]);
   const activeChat = useSelector(
     (state: RootState) => state.globalSetting.activeChat
   );
-  const activeChatId = useSelector(
-    (state: RootState) => state.globalSetting.activeChat
-  );
-  const dispatch = useDispatch();
 
   useEffect(() => {
+    // socket.connect();
     getExisitngConv(token)
       .then((res) => {
         setConversations(res);
-        console.log(res);
       })
       .catch((err) => {
         toast.error(err.message);
         console.log(err);
       });
+
+    return () => {
+      // socket.off("message");
+      // socket.disconnect();
+    };
   }, []);
+
+  useEffect(() => {
+    // socket.connect();
+    if (conversations.length > 0) {
+      for (let conv of conversations) {
+        console.log(conv, "joiner");
+        // socket.emit("joinConversation", conv.id);
+      }
+    }
+    return () => {
+      // socket.off("message");
+      // socket.disconnect();
+    };
+  }, [conversations]);
 
   const changeActiveChat = (conversation: IConversation) => {
     dispatch(setActiveChat({ activeChat: conversation }));
